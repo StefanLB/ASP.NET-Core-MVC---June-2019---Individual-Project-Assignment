@@ -6,10 +6,20 @@
     <title>@this.ViewData["Title"] - TrainConnected</title>
 
     <environment names="Development">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700" rel="stylesheet" asp-append-version="true" />
         <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/css/bootstrap-responsive.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/css/docs.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/js/google-code-prettify/prettify.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/css/style.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/color/default.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/css/prettyPhoto.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/css/flexslider.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/css/sequence.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     <environment names="Staging,Production">
+        <!-- TODO: Add .min.css files for Production -->
         <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true" />
     </environment>
@@ -48,9 +58,28 @@
         </main>
     </div>
     
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; @DateTime.Now.Year - TrainConnected - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="footer">
+        <div class="verybottom">
+            <div class="container">
+                <div class="row">
+                    <div class="span6">
+                        <p>
+                            &copy; @DateTime.Now.Year - TrainConnected - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </p>
+                    </div>
+                    <div class="span5">
+                        <div class="credits">
+                            <!--
+                              All the links in the footer should remain intact.
+                              You can delete the links only if you purchased the pro version.
+                              Licensing information: https://bootstrapmade.com/license/
+                              Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Serenity
+                            -->
+                            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 
@@ -58,10 +87,26 @@
         <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/jquery.easing.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/google-code-prettify/prettify.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/modernizr.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/jquery.elastislide.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/sequence/sequence.jquery-min.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/sequence/setting.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/jquery.prettyPhoto.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/portfolio/jquery.quicksand.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/portfolio/setting.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/application.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/jquery.flexslider.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/hover/jquery-hover-effect.js" asp-append-version="true"></script>
+        <script src="~/lib/assets/js/hover/setting.js" asp-append-version="true"></script>
+        <!-- Template Custom JavaScript File -->
+        <script src="~/lib/assets/js/custom.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
+        <!-- TODO: Add .min.css files for Production -->
         <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
