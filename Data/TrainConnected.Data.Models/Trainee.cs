@@ -1,11 +1,11 @@
 ﻿namespace TrainConnected.Data.Models
 {
     using System.Collections.Generic;
-    using TrainConnected.Data.Common.Models;
 
-    public class Trainee : BaseDeletableModel<string>, ITrainee
+    public class Trainee : ApplicationUser, ITrainee
     {
         public Trainee()
+            : base()
         {
             this.Workouts = new HashSet<Workout>();
 

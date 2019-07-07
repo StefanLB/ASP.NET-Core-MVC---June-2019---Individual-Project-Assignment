@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class Coach : Trainee, ICoach
+    public class Coach : ApplicationUser, ICoach
     {
         public Coach()
             : base()
