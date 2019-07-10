@@ -8,7 +8,7 @@ namespace TrainConnected.Data.Models
 
     using Microsoft.AspNetCore.Identity;
 
-    public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
+    public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity, IApplicationUser
     {
         public ApplicationUser()
         {
@@ -16,6 +16,10 @@ namespace TrainConnected.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+            this.Workouts = new HashSet<Workout>();
+            this.Bookings = new HashSet<Booking>();
+            this.Achievements = new HashSet<Achievement>();
+            this.Certificates = new HashSet<Certificate>();
         }
 
         // Audit info
@@ -33,5 +37,20 @@ namespace TrainConnected.Data.Models
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
+
+        // Application properties
+        public string Password { get; set; }
+
+        public string FullName { get; set; }
+
+        public decimal Balance { get; set; }
+
+        public ICollection<Workout> Workouts { get; set; }
+
+        public ICollection<Booking> Bookings { get; set; }
+
+        public ICollection<Achievement> Achievements { get; set; }
+
+        public ICollection<Certificate> Certificates { get; set; }
     }
 }

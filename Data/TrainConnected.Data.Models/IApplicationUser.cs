@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
 
-    public interface ITrainee
+    public interface IApplicationUser
     {
-        string Username { get; set; }
+        string UserName { get; set; }
 
         string Password { get; set; }
 
@@ -13,6 +13,10 @@
         string FullName { get; set; }
 
         string PhoneNumber { get; set; }
+
+        decimal Balance { get; set; }
+
+        ICollection<Certificate> Certificates { get; set; }
 
         ICollection<Workout> Workouts { get; set; }
 
