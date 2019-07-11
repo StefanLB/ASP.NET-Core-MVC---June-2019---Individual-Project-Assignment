@@ -1,4 +1,4 @@
-﻿namespace TrainConnected.Services.Data
+﻿namespace TrainConnected.Services.Data.Contracts
 {
     public interface ISettingsService
     {
