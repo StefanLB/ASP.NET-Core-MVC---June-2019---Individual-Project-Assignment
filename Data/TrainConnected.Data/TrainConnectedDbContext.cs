@@ -12,19 +12,32 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
+    public class TrainConnectedDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         private static readonly MethodInfo SetIsDeletedQueryFilterMethod =
-            typeof(ApplicationDbContext).GetMethod(
+            typeof(TrainConnectedDbContext).GetMethod(
                 nameof(SetIsDeletedQueryFilter),
                 BindingFlags.NonPublic | BindingFlags.Static);
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public TrainConnectedDbContext(DbContextOptions<TrainConnectedDbContext> options)
             : base(options)
         {
         }
 
         public DbSet<Setting> Settings { get; set; }
+
+        public DbSet<Achievement> Achievements { get; set; }
+
+        public DbSet<Booking> Bookings { get; set; }
+
+        public DbSet<Certificate> Certificates { get; set; }
+
+        public DbSet<Withdrawal> Withdrawals { get; set; }
+
+        public DbSet<Workout> Workouts { get; set; }
+
+        public DbSet<ApplicationUsersWorkouts> ApplicationUsersWorkouts { get; set; }
+
 
         public override int SaveChanges() => this.SaveChanges(true);
 
@@ -96,6 +109,17 @@
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ApplicationUsersWorkouts>()
+                .HasKey(uw => new { uw.UserId, uw.WorkoutId });
+            builder.Entity<ApplicationUsersWorkouts>()
+                .HasOne(uw => uw.User)
+                .WithMany(w => w.Workouts)
+                .HasForeignKey(uw => uw.UserId);
+            builder.Entity<ApplicationUsersWorkouts>()
+                .HasOne(uw => uw.Workout)
+                .WithMany(u => u.Users)
+                .HasForeignKey(uw => uw.WorkoutId);
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

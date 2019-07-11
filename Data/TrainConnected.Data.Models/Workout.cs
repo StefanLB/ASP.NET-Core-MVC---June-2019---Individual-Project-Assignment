@@ -10,6 +10,7 @@
         public Workout()
         {
             this.Bookings = new HashSet<Booking>();
+            this.Users = new HashSet<ApplicationUsersWorkouts>();
         }
 
         public WorkoutCategory Category { get; set; }
@@ -31,5 +32,7 @@
         public int CurrentlySignedUp { get => this.Bookings.Count; }
 
         public int MaxParticipants { get; set; }
+
+        public ICollection<ApplicationUsersWorkouts> Users { get; set; }
     }
 }

@@ -9,12 +9,12 @@
 
     public class ApplicationRoleStore : RoleStore<
         ApplicationRole,
-        ApplicationDbContext,
+        TrainConnectedDbContext,
         string,
         IdentityUserRole<string>,
         IdentityRoleClaim<string>>
     {
-        public ApplicationRoleStore(ApplicationDbContext context, IdentityErrorDescriber describer = null)
+        public ApplicationRoleStore(TrainConnectedDbContext context, IdentityErrorDescriber describer = null)
             : base(context, describer)
         {
         }

@@ -25,5 +25,7 @@
         int CurrentlySignedUp { get; }
 
         int MaxParticipants { get; set; }
+
+        ICollection<ApplicationUsersWorkouts> Users { get; set; }
     }
 }

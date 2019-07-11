@@ -16,7 +16,7 @@ namespace TrainConnected.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
-            this.Workouts = new HashSet<Workout>();
+            this.Workouts = new HashSet<ApplicationUsersWorkouts>();
             this.Bookings = new HashSet<Booking>();
             this.Achievements = new HashSet<Achievement>();
             this.Certificates = new HashSet<Certificate>();
@@ -45,7 +45,7 @@ namespace TrainConnected.Data.Models
 
         public decimal Balance { get; set; }
 
-        public ICollection<Workout> Workouts { get; set; }
+        public ICollection<ApplicationUsersWorkouts> Workouts { get; set; }
 
         public ICollection<Booking> Bookings { get; set; }
 

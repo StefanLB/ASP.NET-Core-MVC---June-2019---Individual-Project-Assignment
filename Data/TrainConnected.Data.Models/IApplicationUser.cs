@@ -18,7 +18,7 @@
 
         ICollection<Certificate> Certificates { get; set; }
 
-        ICollection<Workout> Workouts { get; set; }
+        ICollection<ApplicationUsersWorkouts> Workouts { get; set; }
 
         ICollection<Booking> Bookings { get; set; }
 

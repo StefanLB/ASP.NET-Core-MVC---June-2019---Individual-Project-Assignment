@@ -7,7 +7,7 @@ namespace TrainConnected.Data.Migrations
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.EntityFrameworkCore.Metadata;
 
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(TrainConnectedDbContext))]
     public partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

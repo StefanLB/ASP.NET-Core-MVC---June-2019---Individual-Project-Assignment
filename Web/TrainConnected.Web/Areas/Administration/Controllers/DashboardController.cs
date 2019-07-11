@@ -4,6 +4,7 @@
     using TrainConnected.Web.Areas.Administration.ViewModels.Dashboard;
 
     using Microsoft.AspNetCore.Mvc;
+    using TrainConnected.Services.Data.Contracts;
 
     public class DashboardController : AdministrationController
     {
