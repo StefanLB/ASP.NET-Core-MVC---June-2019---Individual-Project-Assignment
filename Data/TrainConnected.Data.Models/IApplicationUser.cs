@@ -10,7 +10,9 @@
 
         string Email { get; set; }
 
-        string FullName { get; set; }
+        string FirstName { get; set; }
+
+        string LastName { get; set; }
 
         string PhoneNumber { get; set; }
 

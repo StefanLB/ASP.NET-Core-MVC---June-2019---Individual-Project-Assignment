@@ -44,7 +44,9 @@ namespace TrainConnected.Data.Models
         // Application properties
         public string Password { get; set; }
 
-        public string FullName { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
 
         public decimal Balance { get; set; }
 
