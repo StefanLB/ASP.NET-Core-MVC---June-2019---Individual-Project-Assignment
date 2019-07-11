@@ -23,5 +23,7 @@
         ICollection<Booking> Bookings { get; set; }
 
         ICollection<Achievement> Achievements { get; set; }
+
+        ICollection<Withdrawal> Withdrawals { get; set; }
     }
 }

@@ -4,9 +4,7 @@
 
     public interface IBooking
     {
-        Workout Workout { get; set; }
-
-        ApplicationUser User { get; set; }
+        ApplicationUser ApplicationUser { get; set; }
 
         PaymentMethod PaymentMethod { get; set; }
 

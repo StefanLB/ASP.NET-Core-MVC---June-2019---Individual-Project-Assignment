@@ -110,6 +110,27 @@
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<ApplicationUser>()
+                .HasMany(e => e.Achievements)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(e => e.Certificates)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(e => e.Bookings)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Workout>()
+                .HasMany(w => w.Bookings)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             builder.Entity<ApplicationUsersWorkouts>()
                 .HasKey(uw => new { uw.UserId, uw.WorkoutId });
             builder.Entity<ApplicationUsersWorkouts>()

@@ -6,7 +6,9 @@ namespace TrainConnected.Data.Models
     using TrainConnected.Data.Common.Models;
 
     using Microsoft.AspNetCore.Identity;
+    using System.ComponentModel.DataAnnotations.Schema;
 
+    [Table("AspNetRoles")]
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {
         public ApplicationRole()

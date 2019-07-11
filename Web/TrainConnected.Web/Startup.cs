@@ -25,6 +25,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using TrainConnected.Services.Data.Contracts;
+    using System.Linq;
 
     public class Startup
     {
@@ -100,6 +101,11 @@
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISmsSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<IAchievementsService, AchievementsService>();
+            services.AddTransient<IBookingsService, BookingsService>();
+            services.AddTransient<ICertificatesService, CertificatesService>();
+            services.AddTransient<IWithdrawalsService, WithdrawalsService>();
+            services.AddTransient<IWorkoutsService, WorkoutsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -110,12 +116,23 @@
             // Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
+
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<TrainConnectedDbContext>();
+
+                dbContext.Database.EnsureCreated();
 
                 if (env.IsDevelopment())
                 {
                     dbContext.Database.Migrate();
                 }
+
+                if (!dbContext.Roles.Any())
+                {
+                    dbContext.Roles.Add(new ApplicationRole { Name = "TraineeUser", NormalizedName = "TRAINEEUSER" });
+                    dbContext.Roles.Add(new ApplicationRole { Name = "CoachUser", NormalizedName = "COACHUSER" });
+                }
+
+                dbContext.SaveChanges();
 
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }

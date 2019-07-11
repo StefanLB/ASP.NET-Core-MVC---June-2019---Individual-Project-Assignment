@@ -7,7 +7,9 @@ namespace TrainConnected.Data.Models
     using TrainConnected.Data.Common.Models;
 
     using Microsoft.AspNetCore.Identity;
+    using System.ComponentModel.DataAnnotations.Schema;
 
+    [Table("AspNetUsers")]
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity, IApplicationUser
     {
         public ApplicationUser()
@@ -20,6 +22,7 @@ namespace TrainConnected.Data.Models
             this.Bookings = new HashSet<Booking>();
             this.Achievements = new HashSet<Achievement>();
             this.Certificates = new HashSet<Certificate>();
+            this.Withdrawals = new HashSet<Withdrawal>();
         }
 
         // Audit info
@@ -52,5 +55,7 @@ namespace TrainConnected.Data.Models
         public ICollection<Achievement> Achievements { get; set; }
 
         public ICollection<Certificate> Certificates { get; set; }
+
+        public ICollection<Withdrawal> Withdrawals { get; set; }
     }
 }
