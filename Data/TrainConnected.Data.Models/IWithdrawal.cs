@@ -4,6 +4,6 @@
     {
         decimal Amount { get; set; }
 
-        Coach CreatedBy { get; set; }
+        ApplicationUser CreatedBy { get; set; }
     }
 }

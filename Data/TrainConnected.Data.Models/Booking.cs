@@ -7,7 +7,7 @@
     {
         public Workout Workout { get; set; }
 
-        public Trainee Trainee { get; set; }
+        public ApplicationUser User { get; set; }
 
         public PaymentMethod PaymentMethod { get; set; }
 

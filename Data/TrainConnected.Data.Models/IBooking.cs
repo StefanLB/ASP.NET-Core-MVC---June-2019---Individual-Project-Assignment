@@ -6,7 +6,7 @@
     {
         Workout Workout { get; set; }
 
-        Trainee Trainee { get; set; }
+        ApplicationUser User { get; set; }
 
         PaymentMethod PaymentMethod { get; set; }
 

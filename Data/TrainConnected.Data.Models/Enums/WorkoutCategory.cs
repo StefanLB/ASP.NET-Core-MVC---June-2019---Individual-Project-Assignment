@@ -11,5 +11,7 @@ namespace TrainConnected.Data.Models.Enums
         Tennis = 2500,
         Yoga = 3000,
         Zumba = 4000,
+
+        // TODO: Add additional workout categories
     }
 }

@@ -8,7 +8,7 @@
     {
         WorkoutCategory Category { get; set; }
 
-        Coach Coach { get; set; }
+        ApplicationUser Coach { get; set; }
 
         DateTime Time { get; set; }
 

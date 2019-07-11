@@ -6,6 +6,6 @@
     {
         public decimal Amount { get; set; }
 
-        public Coach CreatedBy { get; set; }
+        public ApplicationUser CreatedBy { get; set; }
     }
 }

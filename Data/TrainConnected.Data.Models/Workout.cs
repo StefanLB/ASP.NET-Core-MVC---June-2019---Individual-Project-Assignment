@@ -14,7 +14,7 @@
 
         public WorkoutCategory Category { get; set; }
 
-        public Coach Coach { get; set; }
+        public ApplicationUser Coach { get; set; }
 
         public DateTime Time { get; set; }
 

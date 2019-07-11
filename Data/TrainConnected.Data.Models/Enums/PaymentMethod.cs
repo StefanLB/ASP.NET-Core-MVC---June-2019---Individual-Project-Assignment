@@ -4,5 +4,7 @@
     {
         Cash = 1,
         Multisport = 2,
+
+        // TODO: Add additional payment methods
     }
 }
