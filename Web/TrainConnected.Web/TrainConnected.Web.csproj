@@ -38,4 +38,9 @@
     <ProjectReference Include="..\TrainConnected.Web.Infrastructure\TrainConnected.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\TrainConnected.Web.ViewModels\TrainConnected.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Achievements\" />
+    <Folder Include="Views\Workouts\" />
+  </ItemGroup>
 </Project>
