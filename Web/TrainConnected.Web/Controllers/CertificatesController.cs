@@ -3,24 +3,29 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using TrainConnected.Data;
     using TrainConnected.Data.Models;
+    using TrainConnected.Services.Data.Contracts;
 
+    [Authorize]
     public class CertificatesController : BaseController
     {
-        private readonly TrainConnectedDbContext _context;
+        private readonly ICertificatesService certificatesService;
 
-        public CertificatesController(TrainConnectedDbContext context)
+        public CertificatesController(ICertificatesService certificatesService)
         {
-            _context = context;
+            this.certificatesService = certificatesService;
         }
 
-        // GET: Certificates
+        [HttpGet]
         public async Task<IActionResult> All()
         {
-            return View(await _context.Certificates.ToListAsync());
+            var username = this.User.Identity.Name;
+            var certificates = await this.certificatesService.GetAllAsync(username);
+            return this.View(certificates);
         }
 
         // GET: Certificates/Details/5

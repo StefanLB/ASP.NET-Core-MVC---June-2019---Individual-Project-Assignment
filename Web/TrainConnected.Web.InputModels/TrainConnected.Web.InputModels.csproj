@@ -19,9 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Data\TrainConnected.Data.Common\TrainConnected.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\TrainConnected.Data.Models\TrainConnected.Data.Models.csproj" />
-    <ProjectReference Include="..\..\Web\TrainConnected.Web.ViewModels\TrainConnected.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\..\Services\TrainConnected.Services.Mapping\TrainConnected.Services.Mapping.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Certificates\" />
   </ItemGroup>
 
 </Project>
