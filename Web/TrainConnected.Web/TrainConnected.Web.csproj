@@ -36,6 +36,7 @@
     <ProjectReference Include="..\..\Services\TrainConnected.Services.Messaging\TrainConnected.Services.Messaging.csproj" />
     <ProjectReference Include="..\..\Services\TrainConnected.Services\TrainConnected.Services.csproj" />
     <ProjectReference Include="..\TrainConnected.Web.Infrastructure\TrainConnected.Web.Infrastructure.csproj" />
+    <ProjectReference Include="..\TrainConnected.Web.InputModels\TrainConnected.Web.InputModels.csproj" />
     <ProjectReference Include="..\TrainConnected.Web.ViewModels\TrainConnected.Web.ViewModels.csproj" />
   </ItemGroup>
 

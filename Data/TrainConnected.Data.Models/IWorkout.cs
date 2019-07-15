@@ -6,7 +6,7 @@
 
     public interface IWorkout
     {
-        WorkoutCategory Category { get; set; }
+        WorkoutActivity Category { get; set; }
 
         ApplicationUser Coach { get; set; }
 

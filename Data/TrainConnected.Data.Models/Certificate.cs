@@ -1,12 +1,13 @@
 ﻿namespace TrainConnected.Data.Models
 {
     using System;
+
     using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models.Enums;
 
     public class Certificate : BaseDeletableModel<string>, ICertificate
     {
-        public WorkoutCategory Category { get; set; }
+        public WorkoutActivity Activity { get; set; }
 
         public string IssuedBy { get; set; }
 

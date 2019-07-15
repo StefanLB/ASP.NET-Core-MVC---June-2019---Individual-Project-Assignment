@@ -1,11 +1,12 @@
 ﻿namespace TrainConnected.Data.Models
 {
     using System;
+
     using TrainConnected.Data.Models.Enums;
 
     public interface ICertificate
     {
-        WorkoutCategory Category { get; set; }
+        WorkoutActivity Activity { get; set; }
 
         string IssuedBy { get; set; }
 

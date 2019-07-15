@@ -1,14 +1,11 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using TrainConnected.Data;
-    using TrainConnected.Data.Models;
     using TrainConnected.Services.Data.Contracts;
+    using TrainConnected.Web.InputModels.Certificates;
 
     [Authorize]
     public class CertificatesController : BaseController
@@ -28,129 +25,109 @@
             return this.View(certificates);
         }
 
-        // GET: Certificates/Details/5
+        // TODO: If a user tries to view details of a different user, redirect to All?
+        [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            var certificate = await _context.Certificates
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var certificate = await this.certificatesService.GetDetailsAsync(id);
+
             if (certificate == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(certificate);
+            return this.View(certificate);
         }
 
-        // GET: Certificates/Add
+        [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            return this.View();
         }
 
-        // POST: Certificates/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Category,IssuedBy,IssuedTo,IssuedOn,ExpiresOn,Description,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")] Certificate certificate)
+        public async Task<IActionResult> Add(CertificateCreateInputModel certificateCreateInputModel)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                _context.Add(certificate);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(All));
+                await this.certificatesService.CreateAsync(certificateCreateInputModel);
+
+                return this.RedirectToAction(nameof(this.All));
             }
-            return View(certificate);
+
+            return this.View(certificateCreateInputModel);
         }
 
-        // GET: Certificates/Edit/5
+
+
+        [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            var certificate = await _context.Certificates.FindAsync(id);
+            var certificate = await this.certificatesService.GetDetailsAsync(id);
+
             if (certificate == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
-            return View(certificate);
+
+            return this.View(certificate);
         }
 
-        // POST: Certificates/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Category,IssuedBy,IssuedTo,IssuedOn,ExpiresOn,Description,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")] Certificate certificate)
+        public async Task<IActionResult> Edit(string id, CertificateEditInputModel certificateEditInputModel)
         {
-            if (id != certificate.Id)
+            if (id != certificateEditInputModel.Id)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(certificate);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CertificateExists(certificate.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(All));
+                await this.certificatesService.UpdateAsync(certificateEditInputModel);
+
+                return this.RedirectToAction(nameof(this.All));
             }
-            return View(certificate);
+
+            return this.View(certificateEditInputModel);
         }
 
-        // GET: Certificates/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            var certificate = await _context.Certificates
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var certificate = await this.certificatesService.GetDetailsAsync(id);
+
             if (certificate == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(certificate);
+            return this.View(certificate);
         }
 
-        // POST: Certificates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var certificate = await _context.Certificates.FindAsync(id);
-            _context.Certificates.Remove(certificate);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(All));
-        }
+            await this.certificatesService.DeleteAsync(id);
 
-        private bool CertificateExists(string id)
-        {
-            return _context.Certificates.Any(e => e.Id == id);
+            return this.RedirectToAction(nameof(this.All));
         }
     }
 }

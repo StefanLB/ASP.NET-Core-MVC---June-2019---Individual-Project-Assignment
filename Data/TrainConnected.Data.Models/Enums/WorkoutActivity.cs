@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TrainConnected.Data.Models.Enums
+﻿namespace TrainConnected.Data.Models.Enums
 {
-    public enum WorkoutCategory
+    public enum WorkoutActivity
     {
         Boxing = 1000,
         CrossFit = 2000,

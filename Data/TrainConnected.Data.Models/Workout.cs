@@ -13,7 +13,7 @@
             this.Users = new HashSet<ApplicationUsersWorkouts>();
         }
 
-        public WorkoutCategory Category { get; set; }
+        public WorkoutActivity Category { get; set; }
 
         public ApplicationUser Coach { get; set; }
 
