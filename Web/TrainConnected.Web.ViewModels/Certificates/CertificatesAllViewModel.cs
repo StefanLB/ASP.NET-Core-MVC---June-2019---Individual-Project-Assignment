@@ -1,6 +1,7 @@
 ﻿namespace TrainConnected.Web.ViewModels.Certificates
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using TrainConnected.Data.Models;
@@ -15,9 +16,6 @@
 
         [Display(Name = "Issued By")]
         public string IssuedBy { get; set; }
-
-        [Display(Name = "Issued To")]
-        public string IssuedTo { get; set; }
 
         [Display(Name = "Issued On")]
         public DateTime IssuedOn { get ; set; }

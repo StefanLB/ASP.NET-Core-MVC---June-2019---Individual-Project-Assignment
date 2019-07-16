@@ -12,12 +12,8 @@
         public WorkoutActivity Activity { get; set; }
 
         [Required]
-        [StringLength(100,ErrorMessage = "Field cannot contain more than 100 characters")]
-        public string IssuedBy { get; set; }
-
-        [Required]
         [StringLength(100, ErrorMessage = "Field cannot contain more than 100 characters")]
-        public string IssuedTo { get; set; }
+        public string IssuedBy { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

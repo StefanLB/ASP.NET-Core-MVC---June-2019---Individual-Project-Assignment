@@ -11,13 +11,17 @@
     using TrainConnected.Web.InputModels.Certificates;
     using TrainConnected.Web.ViewModels.Certificates;
 
+    using AutoMap = AutoMapper;
+
     public class CertificatesService : ICertificatesService
     {
         private readonly IRepository<Certificate> certificatesRepository;
+        private readonly IRepository<ApplicationUser> usersRepository;
 
-        public CertificatesService(IRepository<Certificate> certificatesRepository)
+        public CertificatesService(IRepository<Certificate> certificatesRepository, IRepository<ApplicationUser> usersRepository)
         {
             this.certificatesRepository = certificatesRepository;
+            this.usersRepository = usersRepository;
         }
 
         public Task<CertificateDetailsViewModel> UpdateAsync(CertificateEditInputModel certificateEditInputModel)
@@ -54,8 +58,14 @@
 
         public async Task<IEnumerable<CertificatesAllViewModel>> GetAllAsync(string username)
         {
+            var userCertificates = this.usersRepository.All()
+                .FirstOrDefault(x => x.UserName == username)
+                .Certificates
+                .Select(x => x.Id)
+                .ToArray();
+
             var certificates = await this.certificatesRepository.All()
-                .Where(x => x.IssuedTo == username)
+                .Where(x => userCertificates.Contains(x.Id))
                 .To<CertificatesAllViewModel>()
                 .OrderBy(x => x.Activity)
                 .ThenByDescending(x => x.IssuedOn)

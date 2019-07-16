@@ -1,6 +1,7 @@
 ﻿namespace TrainConnected.Web.ViewModels.Certificates
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     using TrainConnected.Data.Models;
     using TrainConnected.Data.Models.Enums;
@@ -12,12 +13,13 @@
 
         public WorkoutActivity Activity { get; set; }
 
+        [Display(Name = "Issued By")]
         public string IssuedBy { get; set; }
 
-        public string IssuedTo { get; set; }
-
+        [Display(Name = "Issued On")]
         public DateTime IssuedOn { get; set; }
 
+        [Display(Name = "Expires On")]
         public DateTime? ExpiresOn { get; set; }
 
         public string Description { get; set; }

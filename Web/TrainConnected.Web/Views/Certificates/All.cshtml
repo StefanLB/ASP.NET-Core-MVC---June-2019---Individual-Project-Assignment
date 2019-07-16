@@ -21,9 +21,6 @@
                 @Html.DisplayNameFor(model => model.IssuedBy)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IssuedTo)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.IssuedOn)
             </th>
             <th>
@@ -44,9 +41,6 @@
                 </td>
                 <td>
                     @item.IssuedBy
-                </td>
-                <td>
-                    @item.IssuedTo
                 </td>
                 <td>
                     @item.IssuedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)

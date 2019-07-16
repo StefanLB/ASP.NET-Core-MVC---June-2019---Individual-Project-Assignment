@@ -10,8 +10,6 @@
 
         string IssuedBy { get; set; }
 
-        string IssuedTo { get; set; }
-
         DateTime IssuedOn { get; set; }
 
         DateTime? ExpiresOn { get; set; }

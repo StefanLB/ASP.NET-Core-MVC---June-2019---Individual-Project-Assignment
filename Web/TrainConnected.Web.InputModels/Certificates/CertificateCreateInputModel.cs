@@ -17,10 +17,6 @@
         public string IssuedBy { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Field cannot contain more than 100 characters")]
-        public string IssuedTo { get; set; }
-
-        [Required]
         [DataType(DataType.Date)]
         public DateTime IssuedOn { get; set; }
 
