@@ -10,15 +10,15 @@ namespace TrainConnected.Data.Models
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("AspNetUsers")]
-    public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity, IApplicationUser
+    public class TrainConnectedUser : IdentityUser, IAuditInfo, IDeletableEntity, ITrainConnectedUser
     {
-        public ApplicationUser()
+        public TrainConnectedUser()
         {
             this.Id = Guid.NewGuid().ToString();
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
-            this.Workouts = new HashSet<ApplicationUsersWorkouts>();
+            this.Workouts = new HashSet<TrainConnectedUsersWorkouts>();
             this.Bookings = new HashSet<Booking>();
             this.Achievements = new HashSet<Achievement>();
             this.Certificates = new HashSet<Certificate>();
@@ -50,7 +50,7 @@ namespace TrainConnected.Data.Models
 
         public decimal Balance { get; set; }
 
-        public ICollection<ApplicationUsersWorkouts> Workouts { get; set; }
+        public ICollection<TrainConnectedUsersWorkouts> Workouts { get; set; }
 
         public ICollection<Booking> Bookings { get; set; }
 

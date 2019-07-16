@@ -17,10 +17,10 @@
     public class LoginWith2faModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly SignInManager<TrainConnectedUser> signInManager;
         private readonly ILogger<LoginWith2faModel> logger;
 
-        public LoginWith2faModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginWith2faModel> logger)
+        public LoginWith2faModel(SignInManager<TrainConnectedUser> signInManager, ILogger<LoginWith2faModel> logger)
         {
             this.signInManager = signInManager;
             this.logger = logger;

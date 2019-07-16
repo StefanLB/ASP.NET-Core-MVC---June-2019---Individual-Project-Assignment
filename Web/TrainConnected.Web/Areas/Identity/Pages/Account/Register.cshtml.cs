@@ -18,14 +18,14 @@
     public class RegisterModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<TrainConnectedUser> signInManager;
+        private readonly UserManager<TrainConnectedUser> userManager;
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
 
         public RegisterModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<TrainConnectedUser> userManager,
+            SignInManager<TrainConnectedUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -50,7 +50,7 @@
             returnUrl = returnUrl ?? this.Url.Content("~/");
             if (this.ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = this.Input.UserName, Email = this.Input.Email,
+                var user = new TrainConnectedUser { UserName = this.Input.UserName, Email = this.Input.Email,
                                                 PhoneNumber = this.Input.PhoneNumber,
                                                 FirstName = this.Input.FirstName,
                                                 LastName = this.Input.LastName};

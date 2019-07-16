@@ -10,12 +10,12 @@
         public Workout()
         {
             this.Bookings = new HashSet<Booking>();
-            this.Users = new HashSet<ApplicationUsersWorkouts>();
+            this.Users = new HashSet<TrainConnectedUsersWorkouts>();
         }
 
         public WorkoutActivity Category { get; set; }
 
-        public ApplicationUser Coach { get; set; }
+        public TrainConnectedUser Coach { get; set; }
 
         public DateTime Time { get; set; }
 
@@ -33,6 +33,6 @@
 
         public int MaxParticipants { get; set; }
 
-        public ICollection<ApplicationUsersWorkouts> Users { get; set; }
+        public ICollection<TrainConnectedUsersWorkouts> Users { get; set; }
     }
 }

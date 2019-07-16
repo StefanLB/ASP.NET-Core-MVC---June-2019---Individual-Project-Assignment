@@ -8,7 +8,7 @@
     {
         WorkoutActivity Category { get; set; }
 
-        ApplicationUser Coach { get; set; }
+        TrainConnectedUser Coach { get; set; }
 
         DateTime Time { get; set; }
 
@@ -26,6 +26,6 @@
 
         int MaxParticipants { get; set; }
 
-        ICollection<ApplicationUsersWorkouts> Users { get; set; }
+        ICollection<TrainConnectedUsersWorkouts> Users { get; set; }
     }
 }

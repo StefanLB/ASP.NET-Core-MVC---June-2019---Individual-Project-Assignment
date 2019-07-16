@@ -17,13 +17,13 @@
     public class ExternalLoginModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<TrainConnectedUser> signInManager;
+        private readonly UserManager<TrainConnectedUser> userManager;
         private readonly ILogger<ExternalLoginModel> logger;
 
         public ExternalLoginModel(
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
+            SignInManager<TrainConnectedUser> signInManager,
+            UserManager<TrainConnectedUser> userManager,
             ILogger<ExternalLoginModel> logger)
         {
             this.signInManager = signInManager;
@@ -116,7 +116,7 @@
 
             if (this.ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = this.Input.Email, Email = this.Input.Email };
+                var user = new TrainConnectedUser { UserName = this.Input.Email, Email = this.Input.Email };
                 var result = await this.userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

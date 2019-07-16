@@ -12,7 +12,7 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class TrainConnectedDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
+    public class TrainConnectedDbContext : IdentityDbContext<TrainConnectedUser, ApplicationRole, string>
     {
         private static readonly MethodInfo SetIsDeletedQueryFilterMethod =
             typeof(TrainConnectedDbContext).GetMethod(
@@ -36,7 +36,7 @@
 
         public DbSet<Workout> Workouts { get; set; }
 
-        public DbSet<ApplicationUsersWorkouts> ApplicationUsersWorkouts { get; set; }
+        public DbSet<TrainConnectedUsersWorkouts> TrainConnectedUsersWorkouts { get; set; }
 
 
         public override int SaveChanges() => this.SaveChanges(true);
@@ -89,38 +89,38 @@
 
         private static void ConfigureUserIdentityRelations(ModelBuilder builder)
         {
-            builder.Entity<ApplicationUser>()
+            builder.Entity<TrainConnectedUser>()
                 .HasMany(e => e.Claims)
                 .WithOne()
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<ApplicationUser>()
+            builder.Entity<TrainConnectedUser>()
                 .HasMany(e => e.Logins)
                 .WithOne()
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<ApplicationUser>()
+            builder.Entity<TrainConnectedUser>()
                 .HasMany(e => e.Roles)
                 .WithOne()
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<ApplicationUser>()
+            builder.Entity<TrainConnectedUser>()
                 .HasMany(e => e.Achievements)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<ApplicationUser>()
+            builder.Entity<TrainConnectedUser>()
                 .HasMany(e => e.Certificates)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<ApplicationUser>()
+            builder.Entity<TrainConnectedUser>()
                 .HasMany(e => e.Bookings)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
@@ -131,13 +131,13 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
 
-            builder.Entity<ApplicationUsersWorkouts>()
-                .HasKey(uw => new { uw.UserId, uw.WorkoutId });
-            builder.Entity<ApplicationUsersWorkouts>()
-                .HasOne(uw => uw.User)
+            builder.Entity<TrainConnectedUsersWorkouts>()
+                .HasKey(uw => new { uw.TrainConnectedUserId, uw.WorkoutId });
+            builder.Entity<TrainConnectedUsersWorkouts>()
+                .HasOne(uw => uw.TrainConnectedUser)
                 .WithMany(w => w.Workouts)
-                .HasForeignKey(uw => uw.UserId);
-            builder.Entity<ApplicationUsersWorkouts>()
+                .HasForeignKey(uw => uw.TrainConnectedUserId);
+            builder.Entity<TrainConnectedUsersWorkouts>()
                 .HasOne(uw => uw.Workout)
                 .WithMany(u => u.Users)
                 .HasForeignKey(uw => uw.WorkoutId);

@@ -45,7 +45,7 @@
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
             services
-                .AddIdentity<ApplicationUser, ApplicationRole>(options =>
+                .AddIdentity<TrainConnectedUser, ApplicationRole>(options =>
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
@@ -89,7 +89,7 @@
             services.AddSingleton(this.configuration);
 
             // Identity stores
-            services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
+            services.AddTransient<IUserStore<TrainConnectedUser>, ApplicationUserStore>();
             services.AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
 
             // Data repositories

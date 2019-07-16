@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public interface IApplicationUser
+    public interface ITrainConnectedUser
     {
         string UserName { get; set; }
 
@@ -20,7 +20,7 @@
 
         ICollection<Certificate> Certificates { get; set; }
 
-        ICollection<ApplicationUsersWorkouts> Workouts { get; set; }
+        ICollection<TrainConnectedUsersWorkouts> Workouts { get; set; }
 
         ICollection<Booking> Bookings { get; set; }
 

@@ -5,7 +5,7 @@
 
     public class Booking : BaseDeletableModel<int>, IBooking
     {
-        public ApplicationUser ApplicationUser { get; set; }
+        public TrainConnectedUser TrainConnectedUser { get; set; }
 
         public PaymentMethod PaymentMethod { get; set; }
 

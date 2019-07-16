@@ -8,7 +8,7 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
     public class ApplicationUserStore : UserStore<
-        ApplicationUser,
+        TrainConnectedUser,
         ApplicationRole,
         TrainConnectedDbContext,
         string,
@@ -23,19 +23,19 @@
         {
         }
 
-        protected override IdentityUserRole<string> CreateUserRole(ApplicationUser user, ApplicationRole role)
+        protected override IdentityUserRole<string> CreateUserRole(TrainConnectedUser user, ApplicationRole role)
         {
             return new IdentityUserRole<string> { RoleId = role.Id, UserId = user.Id };
         }
 
-        protected override IdentityUserClaim<string> CreateUserClaim(ApplicationUser user, Claim claim)
+        protected override IdentityUserClaim<string> CreateUserClaim(TrainConnectedUser user, Claim claim)
         {
             var identityUserClaim = new IdentityUserClaim<string> { UserId = user.Id };
             identityUserClaim.InitializeFromClaim(claim);
             return identityUserClaim;
         }
 
-        protected override IdentityUserLogin<string> CreateUserLogin(ApplicationUser user, UserLoginInfo login) =>
+        protected override IdentityUserLogin<string> CreateUserLogin(TrainConnectedUser user, UserLoginInfo login) =>
             new IdentityUserLogin<string>
             {
                 UserId = user.Id,
@@ -45,7 +45,7 @@
             };
 
         protected override IdentityUserToken<string> CreateUserToken(
-            ApplicationUser user,
+            TrainConnectedUser user,
             string loginProvider,
             string name,
             string value)

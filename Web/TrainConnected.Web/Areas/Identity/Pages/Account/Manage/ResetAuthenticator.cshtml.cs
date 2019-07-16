@@ -13,13 +13,13 @@
     public class ResetAuthenticatorModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<TrainConnectedUser> userManager;
+        private readonly SignInManager<TrainConnectedUser> signInManager;
         private readonly ILogger<ResetAuthenticatorModel> logger;
 
         public ResetAuthenticatorModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<TrainConnectedUser> userManager,
+            SignInManager<TrainConnectedUser> signInManager,
             ILogger<ResetAuthenticatorModel> logger)
         {
             this.userManager = userManager;

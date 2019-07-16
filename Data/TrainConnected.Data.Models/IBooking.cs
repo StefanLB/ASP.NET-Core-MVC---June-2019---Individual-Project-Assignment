@@ -4,7 +4,7 @@
 
     public interface IBooking
     {
-        ApplicationUser ApplicationUser { get; set; }
+        TrainConnectedUser TrainConnectedUser { get; set; }
 
         PaymentMethod PaymentMethod { get; set; }
 

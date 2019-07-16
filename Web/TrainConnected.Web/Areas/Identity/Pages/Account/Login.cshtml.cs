@@ -19,10 +19,10 @@
     public class LoginModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly SignInManager<TrainConnectedUser> signInManager;
         private readonly ILogger<LoginModel> logger;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<TrainConnectedUser> signInManager, ILogger<LoginModel> logger)
         {
             this.signInManager = signInManager;
             this.logger = logger;

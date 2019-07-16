@@ -13,11 +13,11 @@
     public class PersonalDataModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<TrainConnectedUser> userManager;
         private readonly ILogger<PersonalDataModel> logger;
 
         public PersonalDataModel(
-            UserManager<ApplicationUser> userManager,
+            UserManager<TrainConnectedUser> userManager,
             ILogger<PersonalDataModel> logger)
         {
             this.userManager = userManager;

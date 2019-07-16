@@ -13,12 +13,12 @@
     public class SetPasswordModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<TrainConnectedUser> userManager;
+        private readonly SignInManager<TrainConnectedUser> signInManager;
 
         public SetPasswordModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            UserManager<TrainConnectedUser> userManager,
+            SignInManager<TrainConnectedUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;

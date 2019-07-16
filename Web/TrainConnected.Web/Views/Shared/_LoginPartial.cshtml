@@ -1,8 +1,8 @@
 ﻿@using TrainConnected.Common
 @using TrainConnected.Data.Models
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<TrainConnectedUser> SignInManager
+@inject UserManager<TrainConnectedUser> UserManager
 
     <ul class="navbar-nav">
         @if (this.SignInManager.IsSignedIn(this.User))

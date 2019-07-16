@@ -16,9 +16,9 @@
     public class CertificatesService : ICertificatesService
     {
         private readonly IRepository<Certificate> certificatesRepository;
-        private readonly IRepository<ApplicationUser> usersRepository;
+        private readonly IRepository<TrainConnectedUser> usersRepository;
 
-        public CertificatesService(IRepository<Certificate> certificatesRepository, IRepository<ApplicationUser> usersRepository)
+        public CertificatesService(IRepository<Certificate> certificatesRepository, IRepository<TrainConnectedUser> usersRepository)
         {
             this.certificatesRepository = certificatesRepository;
             this.usersRepository = usersRepository;
