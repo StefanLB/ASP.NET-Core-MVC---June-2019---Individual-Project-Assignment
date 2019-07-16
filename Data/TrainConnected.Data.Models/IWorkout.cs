@@ -8,6 +8,7 @@
     {
         WorkoutActivity Category { get; set; }
 
+        string CoachId { get; set; }
         TrainConnectedUser Coach { get; set; }
 
         DateTime Time { get; set; }

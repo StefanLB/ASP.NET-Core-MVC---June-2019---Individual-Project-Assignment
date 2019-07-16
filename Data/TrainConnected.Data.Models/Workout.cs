@@ -15,6 +15,7 @@
 
         public WorkoutActivity Category { get; set; }
 
+        public string CoachId { get; set; }
         public TrainConnectedUser Coach { get; set; }
 
         public DateTime Time { get; set; }

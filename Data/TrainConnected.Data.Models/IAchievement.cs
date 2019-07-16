@@ -13,5 +13,9 @@
         int TimesAchieved { get; set; }
 
         string Description { get; set; }
+
+        string TrainConnectedUserId { get; set; }
+        TrainConnectedUser TrainConnectedUser { get; set; }
+
     }
 }

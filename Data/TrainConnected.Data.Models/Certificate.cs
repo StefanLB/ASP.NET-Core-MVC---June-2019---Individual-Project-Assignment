@@ -25,5 +25,9 @@
         [Required]
         [StringLength(200, ErrorMessage = "Field cannot contain more than 200 characters")]
         public string Description { get; set; }
+
+        public string TrainConnectedUserId { get; set; }
+        public TrainConnectedUser TrainConnectedUser { get; set; }
+
     }
 }

@@ -1,14 +1,19 @@
 ﻿namespace TrainConnected.Data.Models
 {
+    using System.ComponentModel.DataAnnotations.Schema;
     using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models.Enums;
 
-    public class Booking : BaseDeletableModel<int>, IBooking
+    public class Booking : BaseDeletableModel<string>, IBooking
     {
+        public string TrainConnectedUserId { get; set; }
         public TrainConnectedUser TrainConnectedUser { get; set; }
 
         public PaymentMethod PaymentMethod { get; set; }
 
         public decimal Price { get; set; }
+
+        public string WorkoutId { get; set; }
+        public Workout Workout { get; set; }
     }
 }

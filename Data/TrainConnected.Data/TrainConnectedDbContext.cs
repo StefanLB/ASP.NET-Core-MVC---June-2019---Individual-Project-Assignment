@@ -38,7 +38,6 @@
 
         public DbSet<TrainConnectedUsersWorkouts> TrainConnectedUsersWorkouts { get; set; }
 
-
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -110,33 +109,18 @@
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<TrainConnectedUser>()
-                .HasMany(e => e.Achievements)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<TrainConnectedUser>()
-                .HasMany(e => e.Certificates)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<TrainConnectedUser>()
-                .HasMany(e => e.Bookings)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Workout>()
-                .HasMany(w => w.Bookings)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Restrict);
-
+            builder.Entity<Booking>()
+                .HasOne(u => u.TrainConnectedUser)
+                .WithMany(b => b.Bookings);
 
             builder.Entity<TrainConnectedUsersWorkouts>()
                 .HasKey(uw => new { uw.TrainConnectedUserId, uw.WorkoutId });
+
             builder.Entity<TrainConnectedUsersWorkouts>()
                 .HasOne(uw => uw.TrainConnectedUser)
                 .WithMany(w => w.Workouts)
                 .HasForeignKey(uw => uw.TrainConnectedUserId);
+
             builder.Entity<TrainConnectedUsersWorkouts>()
                 .HasOne(uw => uw.Workout)
                 .WithMany(u => u.Users)
