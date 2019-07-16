@@ -9,5 +9,6 @@
         Zumba = 4000,
 
         // TODO: Add additional workout categories
+        // TODO: Make the enum a class, add permissions for Admin to add additional activities via the admin panel
     }
 }
