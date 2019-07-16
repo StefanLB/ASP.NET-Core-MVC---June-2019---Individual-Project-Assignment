@@ -40,22 +40,22 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Activity)
+                    @item.Activity
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IssuedBy)
+                    @item.IssuedBy
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IssuedTo)
+                    @item.IssuedTo
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IssuedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))
+                    @item.IssuedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ExpiresOn == null ? "" : ((DateTime)item.ExpiresOn).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))
+                    @(item.ExpiresOn == null ? "" : ((DateTime)item.ExpiresOn).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @item.Description
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
