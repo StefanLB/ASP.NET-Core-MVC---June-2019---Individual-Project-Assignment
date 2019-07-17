@@ -2,10 +2,9 @@
 {
     using System;
 
-    using TrainConnected.Data.Models.Enums;
-
     public interface ICertificate
     {
+        string ActivityId { get; set; }
         WorkoutActivity Activity { get; set; }
 
         string IssuedBy { get; set; }

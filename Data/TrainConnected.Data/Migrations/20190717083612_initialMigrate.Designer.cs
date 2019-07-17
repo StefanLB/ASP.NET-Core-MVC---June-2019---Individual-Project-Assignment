@@ -10,8 +10,8 @@ using TrainConnected.Data;
 namespace TrainConnected.Data.Migrations
 {
     [DbContext(typeof(TrainConnectedDbContext))]
-    [Migration("20190716135726_initialmigration")]
-    partial class initialmigration
+    [Migration("20190717083612_initialMigrate")]
+    partial class initialMigrate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -215,7 +215,8 @@ namespace TrainConnected.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Activity");
+                    b.Property<string>("ActivityId")
+                        .IsRequired();
 
                     b.Property<DateTime>("CreatedOn");
 
@@ -240,6 +241,8 @@ namespace TrainConnected.Data.Migrations
                     b.Property<string>("TrainConnectedUserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ActivityId");
 
                     b.HasIndex("IsDeleted");
 
@@ -386,7 +389,7 @@ namespace TrainConnected.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Category");
+                    b.Property<string>("ActivityId");
 
                     b.Property<string>("CoachId");
 
@@ -412,11 +415,37 @@ namespace TrainConnected.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ActivityId");
+
                     b.HasIndex("CoachId");
 
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Workouts");
+                });
+
+            modelBuilder.Entity("TrainConnected.Data.Models.WorkoutActivity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("WorkoutActivities");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -484,6 +513,11 @@ namespace TrainConnected.Data.Migrations
 
             modelBuilder.Entity("TrainConnected.Data.Models.Certificate", b =>
                 {
+                    b.HasOne("TrainConnected.Data.Models.WorkoutActivity", "Activity")
+                        .WithMany()
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("TrainConnected.Data.Models.TrainConnectedUser", "TrainConnectedUser")
                         .WithMany("Certificates")
                         .HasForeignKey("TrainConnectedUserId");
@@ -511,6 +545,10 @@ namespace TrainConnected.Data.Migrations
 
             modelBuilder.Entity("TrainConnected.Data.Models.Workout", b =>
                 {
+                    b.HasOne("TrainConnected.Data.Models.WorkoutActivity", "Activity")
+                        .WithMany()
+                        .HasForeignKey("ActivityId");
+
                     b.HasOne("TrainConnected.Data.Models.TrainConnectedUser", "Coach")
                         .WithMany()
                         .HasForeignKey("CoachId");

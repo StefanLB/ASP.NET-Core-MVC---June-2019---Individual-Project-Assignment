@@ -2,11 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using TrainConnected.Data.Models.Enums;
 
     public interface IWorkout
     {
-        WorkoutActivity Category { get; set; }
+        string ActivityId { get; set; }
+        WorkoutActivity Activity { get; set; }
 
         string CoachId { get; set; }
         TrainConnectedUser Coach { get; set; }

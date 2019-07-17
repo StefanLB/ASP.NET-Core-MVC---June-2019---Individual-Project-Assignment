@@ -36,6 +36,8 @@
 
         public DbSet<Workout> Workouts { get; set; }
 
+        public DbSet<WorkoutActivity> WorkoutActivities { get; set; }
+
         public DbSet<TrainConnectedUsersWorkouts> TrainConnectedUsersWorkouts { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);

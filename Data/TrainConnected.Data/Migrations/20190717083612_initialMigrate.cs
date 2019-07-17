@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TrainConnected.Data.Migrations
 {
-    public partial class initialmigration : Migration
+    public partial class initialMigrate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -75,6 +75,23 @@ namespace TrainConnected.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Settings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkoutActivities",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkoutActivities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -211,33 +228,6 @@ namespace TrainConnected.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Certificates",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    ModifiedOn = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    DeletedOn = table.Column<DateTime>(nullable: true),
-                    Activity = table.Column<int>(nullable: false),
-                    IssuedBy = table.Column<string>(maxLength: 100, nullable: false),
-                    IssuedOn = table.Column<DateTime>(nullable: false),
-                    ExpiresOn = table.Column<DateTime>(nullable: true),
-                    Description = table.Column<string>(maxLength: 200, nullable: false),
-                    TrainConnectedUserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Certificates", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Certificates_AspNetUsers_TrainConnectedUserId",
-                        column: x => x.TrainConnectedUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Withdrawals",
                 columns: table => new
                 {
@@ -261,6 +251,39 @@ namespace TrainConnected.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Certificates",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    ActivityId = table.Column<string>(nullable: false),
+                    IssuedBy = table.Column<string>(maxLength: 100, nullable: false),
+                    IssuedOn = table.Column<DateTime>(nullable: false),
+                    ExpiresOn = table.Column<DateTime>(nullable: true),
+                    Description = table.Column<string>(maxLength: 200, nullable: false),
+                    TrainConnectedUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Certificates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Certificates_WorkoutActivities_ActivityId",
+                        column: x => x.ActivityId,
+                        principalTable: "WorkoutActivities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Certificates_AspNetUsers_TrainConnectedUserId",
+                        column: x => x.TrainConnectedUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Workouts",
                 columns: table => new
                 {
@@ -269,7 +292,7 @@ namespace TrainConnected.Data.Migrations
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true),
-                    Category = table.Column<int>(nullable: false),
+                    ActivityId = table.Column<string>(nullable: true),
                     CoachId = table.Column<string>(nullable: true),
                     Time = table.Column<DateTime>(nullable: false),
                     Location = table.Column<string>(nullable: true),
@@ -281,6 +304,12 @@ namespace TrainConnected.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Workouts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Workouts_WorkoutActivities_ActivityId",
+                        column: x => x.ActivityId,
+                        principalTable: "WorkoutActivities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Workouts_AspNetUsers_CoachId",
                         column: x => x.CoachId,
@@ -419,6 +448,11 @@ namespace TrainConnected.Data.Migrations
                 column: "WorkoutId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Certificates_ActivityId",
+                table: "Certificates",
+                column: "ActivityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Certificates_IsDeleted",
                 table: "Certificates",
                 column: "IsDeleted");
@@ -447,6 +481,16 @@ namespace TrainConnected.Data.Migrations
                 name: "IX_Withdrawals_TrainConnectedUserId",
                 table: "Withdrawals",
                 column: "TrainConnectedUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkoutActivities_IsDeleted",
+                table: "WorkoutActivities",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Workouts_ActivityId",
+                table: "Workouts",
+                column: "ActivityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workouts_CoachId",
@@ -499,6 +543,9 @@ namespace TrainConnected.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Workouts");
+
+            migrationBuilder.DropTable(
+                name: "WorkoutActivities");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

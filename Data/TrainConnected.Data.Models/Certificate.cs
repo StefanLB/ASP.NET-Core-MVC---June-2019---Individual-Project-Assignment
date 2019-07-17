@@ -4,10 +4,11 @@
     using System.ComponentModel.DataAnnotations;
 
     using TrainConnected.Data.Common.Models;
-    using TrainConnected.Data.Models.Enums;
 
     public class Certificate : BaseDeletableModel<string>, ICertificate
     {
+        public string ActivityId { get; set; }
+
         [Required]
         public WorkoutActivity Activity { get; set; }
 

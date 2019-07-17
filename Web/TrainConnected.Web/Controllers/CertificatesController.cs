@@ -1,6 +1,7 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -49,10 +50,7 @@
         [HttpGet]
         public IActionResult Add()
         {
-            var activities = new []
-            {
-                Enum.GetValues(typeof(WorkoutActivity))
-            };
+            var activities = new List<string>();
 
             this.ViewData["Activities"] = activities;
 

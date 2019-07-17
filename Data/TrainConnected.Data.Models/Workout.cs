@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using TrainConnected.Data.Common.Models;
-    using TrainConnected.Data.Models.Enums;
 
     public class Workout : BaseDeletableModel<string>, IWorkout
     {
@@ -13,7 +12,8 @@
             this.Users = new HashSet<TrainConnectedUsersWorkouts>();
         }
 
-        public WorkoutActivity Category { get; set; }
+        public string ActivityId { get; set; }
+        public WorkoutActivity Activity { get; set; }
 
         public string CoachId { get; set; }
         public TrainConnectedUser Coach { get; set; }
