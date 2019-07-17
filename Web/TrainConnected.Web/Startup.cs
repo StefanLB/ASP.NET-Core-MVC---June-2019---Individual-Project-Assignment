@@ -26,6 +26,7 @@
     using Microsoft.Extensions.Logging;
     using TrainConnected.Services.Data.Contracts;
     using System.Linq;
+    using AutoMapper;
 
     public class Startup
     {
@@ -58,6 +59,9 @@
                 .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI(UIFramework.Bootstrap4);
+
+            services
+                .AddAutoMapper();
 
             services
                 .AddMvc()

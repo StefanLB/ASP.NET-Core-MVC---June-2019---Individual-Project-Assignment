@@ -1,9 +1,11 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using TrainConnected.Data.Models.Enums;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Certificates;
 
@@ -47,6 +49,13 @@
         [HttpGet]
         public IActionResult Add()
         {
+            var activities = new []
+            {
+                Enum.GetValues(typeof(WorkoutActivity))
+            };
+
+            this.ViewData["Activities"] = activities;
+
             return this.View();
         }
 
@@ -56,7 +65,9 @@
         {
             if (this.ModelState.IsValid)
             {
-                await this.certificatesService.CreateAsync(certificateCreateInputModel);
+                var username = this.User.Identity.Name;
+
+                await this.certificatesService.CreateAsync(certificateCreateInputModel, username);
 
                 return this.RedirectToAction(nameof(this.All));
             }

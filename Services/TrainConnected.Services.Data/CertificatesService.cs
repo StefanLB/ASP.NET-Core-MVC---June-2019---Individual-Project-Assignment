@@ -1,11 +1,13 @@
 ﻿namespace TrainConnected.Services.Data
 {
     using Microsoft.EntityFrameworkCore;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using TrainConnected.Data.Common.Repositories;
     using TrainConnected.Data.Models;
+    using TrainConnected.Data.Models.Enums;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Services.Mapping;
     using TrainConnected.Web.InputModels.Certificates;
@@ -46,12 +48,36 @@
         }
 
 
-        public Task<CertificateDetailsViewModel> CreateAsync(CertificateCreateInputModel certificatesCreateInputModel)
+        public async Task<CertificateDetailsViewModel> CreateAsync(CertificateCreateInputModel certificatesCreateInputModel, string username)
         {
-            throw new System.NotImplementedException();
+            // TODO: make the workoutActivity a class and check if it exists in the database
+            //if (!Enum.TryParse(certificatesCreateInputModel.Activity, true, out WorkoutActivity workoutActivity))
+            //{
+            //    throw new ArgumentException();
+            //}
+
+            var user = this.usersRepository.All()
+                .FirstOrDefault(x => x.UserName == username);
+
+            var certificate = new Certificate
+            {
+                Activity = certificatesCreateInputModel.Activity,
+                IssuedBy = certificatesCreateInputModel.IssuedBy,
+                IssuedOn = certificatesCreateInputModel.IssuedOn,
+                ExpiresOn = certificatesCreateInputModel.ExpiresOn,
+                Description = certificatesCreateInputModel.Description,
+                TrainConnectedUser = user,
+                TrainConnectedUserId = user.Id
+            };
+
+            await this.certificatesRepository.AddAsync(certificate);
+            await this.certificatesRepository.SaveChangesAsync();
+
+            var certificateDetailsViewModel = AutoMapper.Mapper.Map<CertificateDetailsViewModel>(certificate);
+            return certificateDetailsViewModel;
         }
 
-        public Task<CertificateDetailsViewModel> DeleteAsync(string id)
+        public async Task DeleteAsync(string id)
         {
             throw new System.NotImplementedException();
         }

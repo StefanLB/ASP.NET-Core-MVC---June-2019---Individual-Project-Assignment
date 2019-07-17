@@ -11,11 +11,11 @@
 
         Task<IEnumerable<CertificatesAllViewModel>> GetAllAsync(string username);
 
-        Task<CertificateDetailsViewModel> CreateAsync(CertificateCreateInputModel certificatesCreateInputModel);
+        Task<CertificateDetailsViewModel> CreateAsync(CertificateCreateInputModel certificatesCreateInputModel, string username);
 
         Task<CertificateDetailsViewModel> UpdateAsync(CertificateEditInputModel certificateEditInputModel);
 
-        Task<CertificateDetailsViewModel> DeleteAsync(string id);
+        Task DeleteAsync(string id);
 
         bool CertificateExists(string id);
     }
