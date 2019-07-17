@@ -76,7 +76,7 @@
                 return NotFound();
             }
 
-            var workoutActivity = await this.workoutActivitiesService.GetDetailsAsync(id);
+            var workoutActivity = await this.workoutActivitiesService.GetEditDetailsAsync(id);
 
             if (workoutActivity == null)
             {
@@ -92,9 +92,17 @@
         {
             if (this.ModelState.IsValid)
             {
-                await this.workoutActivitiesService.UpdateAsync(workoutActivityEditInputModel);
+                try
+                {
+                    await this.workoutActivitiesService.UpdateAsync(workoutActivityEditInputModel);
 
-                return this.RedirectToAction(nameof(All));
+                    return this.RedirectToAction(nameof(All));
+                }
+                catch (InvalidOperationException)
+                {
+                    return View(workoutActivityEditInputModel);
+                }
+
             }
 
             return View(workoutActivityEditInputModel);

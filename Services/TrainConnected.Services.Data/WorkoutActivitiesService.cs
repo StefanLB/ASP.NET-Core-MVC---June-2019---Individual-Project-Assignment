@@ -80,6 +80,15 @@
             return workoutActivityDetailsViewModel;
         }
 
+        public async Task<WorkoutActivityEditInputModel> GetEditDetailsAsync(string id)
+        {
+            var workoutActivity = await this.workoutActivitiesRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            var workoutActivityEditInputModel = AutoMapper.Mapper.Map<WorkoutActivityEditInputModel>(workoutActivity);
+            return workoutActivityEditInputModel;
+        }
+
         public async Task UpdateAsync(WorkoutActivityEditInputModel workoutActivityEditInputModel)
         {
             var workoutActivity = this.workoutActivitiesRepository.All()

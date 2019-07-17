@@ -27,6 +27,7 @@
     using TrainConnected.Services.Data.Contracts;
     using System.Linq;
     using AutoMapper;
+    using TrainConnected.Web.InputModels.WorkoutActivities;
 
     public class Startup
     {
@@ -116,7 +117,11 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
+            AutoMapperConfig.RegisterMappings( new[]
+            {
+                typeof(ErrorViewModel).GetTypeInfo().Assembly,
+                typeof(WorkoutActivityEditInputModel).GetTypeInfo().Assembly
+            });
 
             // Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())

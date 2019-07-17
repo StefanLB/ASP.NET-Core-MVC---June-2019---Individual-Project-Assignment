@@ -10,6 +10,8 @@
     {
         Task<WorkoutActivityDetailsViewModel> GetDetailsAsync(string id);
 
+        Task<WorkoutActivityEditInputModel> GetEditDetailsAsync(string id);
+
         Task<IEnumerable<WorkoutActivitiesAllViewModel>> GetAllAsync();
 
         Task<WorkoutActivityDetailsViewModel> CreateAsync(WorkoutActivityCreateInputModel workoutActivityCreateInputModel);
