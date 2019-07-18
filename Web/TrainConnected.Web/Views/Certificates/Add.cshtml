@@ -16,7 +16,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Activity" ></label>
-                <select class="form-control col-md-12" asp-for="Activity" asp-items="activities">
+                <select asp-for="Activity" asp-items="activities" class="form-control col-md-12">
                     <option selected="" disabled="">--Select activity type--</option>
                 </select>
                 <span asp-validation-for="Activity" class="text-danger"></span>

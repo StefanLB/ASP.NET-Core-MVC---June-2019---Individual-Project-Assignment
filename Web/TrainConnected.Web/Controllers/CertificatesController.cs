@@ -2,22 +2,27 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using TrainConnected.Data.Models.Enums;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Certificates;
+    using TrainConnected.Web.ViewModels.WorkoutActivities;
 
     [Authorize]
     public class CertificatesController : BaseController
     {
         private readonly ICertificatesService certificatesService;
+        private readonly IWorkoutActivitiesService workoutActivitiesService;
 
-        public CertificatesController(ICertificatesService certificatesService)
+        public CertificatesController(ICertificatesService certificatesService, IWorkoutActivitiesService workoutActivitiesService)
         {
             this.certificatesService = certificatesService;
+            this.workoutActivitiesService = workoutActivitiesService;
         }
 
         [HttpGet]
@@ -48,11 +53,13 @@
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
-            var activities = new List<string>();
+            var activities = await this.workoutActivitiesService.GetAllAsync();
 
-            this.ViewData["Activities"] = activities;
+            var activitiesSelectList = await this.GetAllWorkoutActivitiesAsSelectListItems(activities);
+
+            this.ViewData["Activities"] = activitiesSelectList;
 
             return this.View();
         }
@@ -65,9 +72,9 @@
             {
                 var username = this.User.Identity.Name;
 
-                await this.certificatesService.CreateAsync(certificateCreateInputModel, username);
+                var result = await this.certificatesService.CreateAsync(certificateCreateInputModel, username);
 
-                return this.RedirectToAction(nameof(this.All));
+                return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
             }
 
             return this.View(certificateCreateInputModel);
@@ -137,6 +144,23 @@
             await this.certificatesService.DeleteAsync(id);
 
             return this.RedirectToAction(nameof(this.All));
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<SelectListItem>> GetAllWorkoutActivitiesAsSelectListItems(IEnumerable<WorkoutActivitiesAllViewModel> activities)
+        {
+            var selectList = new List<SelectListItem>();
+
+            foreach (var element in activities)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = element.Name,
+                    Text = element.Name
+                });
+            }
+
+            return selectList;
         }
     }
 }

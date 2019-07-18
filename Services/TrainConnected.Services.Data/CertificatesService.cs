@@ -19,14 +19,16 @@
     {
         private readonly IRepository<Certificate> certificatesRepository;
         private readonly IRepository<TrainConnectedUser> usersRepository;
+        private readonly IRepository<WorkoutActivity> workoutActivityRepository;
 
-        public CertificatesService(IRepository<Certificate> certificatesRepository, IRepository<TrainConnectedUser> usersRepository)
+        public CertificatesService(IRepository<Certificate> certificatesRepository, IRepository<TrainConnectedUser> usersRepository, IRepository<WorkoutActivity> workoutActivityRepository)
         {
             this.certificatesRepository = certificatesRepository;
             this.usersRepository = usersRepository;
+            this.workoutActivityRepository = workoutActivityRepository;
         }
 
-        public Task<CertificateDetailsViewModel> UpdateAsync(CertificateEditInputModel certificateEditInputModel)
+        public async Task<CertificateDetailsViewModel> UpdateAsync(CertificateEditInputModel certificateEditInputModel)
         {
             //    try
             //    {
@@ -50,18 +52,25 @@
 
         public async Task<CertificateDetailsViewModel> CreateAsync(CertificateCreateInputModel certificatesCreateInputModel, string username)
         {
-            // TODO: make the workoutActivity a class and check if it exists in the database
-            //if (!Enum.TryParse(certificatesCreateInputModel.Activity, true, out WorkoutActivity workoutActivity))
-            //{
-            //    throw new ArgumentException();
-            //}
+            var workoutActivity = this.workoutActivityRepository.All()
+                .FirstOrDefault(x => x.Name == certificatesCreateInputModel.Activity);
+
+            if (workoutActivity == null)
+            {
+                throw new NullReferenceException();
+            }
 
             var user = this.usersRepository.All()
                 .FirstOrDefault(x => x.UserName == username);
 
+            if (user == null)
+            {
+                throw new NullReferenceException();
+            }
+
             var certificate = new Certificate
             {
-                Activity = certificatesCreateInputModel.Activity,
+                Activity = workoutActivity,
                 IssuedBy = certificatesCreateInputModel.IssuedBy,
                 IssuedOn = certificatesCreateInputModel.IssuedOn,
                 ExpiresOn = certificatesCreateInputModel.ExpiresOn,
@@ -100,14 +109,19 @@
             return certificates;
         }
 
-        public Task<CertificateDetailsViewModel> GetDetailsAsync(string id)
+        public async Task<CertificateDetailsViewModel> GetDetailsAsync(string id)
         {
-            throw new System.NotImplementedException();
+            var certificate = await this.certificatesRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            var certificateDetailsViewModel = AutoMapper.Mapper.Map<CertificateDetailsViewModel>(certificate);
+            return certificateDetailsViewModel;
         }
 
         public bool CertificateExists(string id)
         {
             throw new System.NotImplementedException();
         }
+
     }
 }

@@ -1,5 +1,4 @@
-﻿@model TrainConnected.Data.Models.Certificate
-
+﻿@model TrainConnected.Web.ViewModels.Certificates.CertificateDetailsViewModel
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -15,7 +14,7 @@
             @Html.DisplayNameFor(model => model.Activity)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Activity)
+            @Html.DisplayFor(model => model.Activity.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IssuedBy)
@@ -45,5 +44,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="All">Back to List</a>
 </div>

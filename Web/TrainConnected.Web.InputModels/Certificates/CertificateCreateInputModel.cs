@@ -10,7 +10,7 @@
     public class CertificateCreateInputModel : IMapFrom<Certificate>
     {
         [Required]
-        public WorkoutActivity Activity { get; set; }
+        public string Activity { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "Field cannot contain more than 100 characters")]
