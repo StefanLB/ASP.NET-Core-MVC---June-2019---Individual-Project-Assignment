@@ -9,14 +9,14 @@
     {
         Task<CertificateDetailsViewModel> GetDetailsAsync(string id);
 
+        Task<CertificateEditInputModel> GetEditDetailsAsync(string id);
+
         Task<IEnumerable<CertificatesAllViewModel>> GetAllAsync(string username);
 
         Task<CertificateDetailsViewModel> CreateAsync(CertificateCreateInputModel certificatesCreateInputModel, string username);
 
-        Task<CertificateDetailsViewModel> UpdateAsync(CertificateEditInputModel certificateEditInputModel);
+        Task UpdateAsync(CertificateEditInputModel certificateEditInputModel);
 
         Task DeleteAsync(string id);
-
-        bool CertificateExists(string id);
     }
 }

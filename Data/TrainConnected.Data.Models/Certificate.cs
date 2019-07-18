@@ -10,7 +10,7 @@
         public string ActivityId { get; set; }
 
         [Required]
-        public WorkoutActivity Activity { get; set; }
+        public virtual WorkoutActivity Activity { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "Field cannot contain more than 100 characters")]
@@ -28,7 +28,6 @@
         public string Description { get; set; }
 
         public string TrainConnectedUserId { get; set; }
-        public TrainConnectedUser TrainConnectedUser { get; set; }
-
+        public virtual TrainConnectedUser TrainConnectedUser { get; set; }
     }
 }

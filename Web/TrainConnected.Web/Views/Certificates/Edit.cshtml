@@ -1,8 +1,9 @@
-﻿@model TrainConnected.Data.Models.Certificate
+﻿@model TrainConnected.Web.InputModels.Certificates.CertificateEditInputModel
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var activities = this.ViewData["Activities"] as IEnumerable<SelectListItem>;
 }
 
 <h1>Edit</h1>
@@ -14,9 +15,11 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Activity" class="control-label"></label>
-                <select asp-for="Activity" class="form-control"></select>
-                <span asp-validation-for="Activity" class="text-danger"></span>
+                <label asp-for="ActivityName"></label>
+                <select asp-for="ActivityName" asp-items="activities" class="form-control col-md-12">
+                    <option selected="selected">@Model.ActivityName</option>
+                </select>
+                <span asp-validation-for="ActivityName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IssuedBy" class="control-label"></label>
@@ -46,7 +49,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="All">Back to List</a>
 </div>
 
 @section Scripts {

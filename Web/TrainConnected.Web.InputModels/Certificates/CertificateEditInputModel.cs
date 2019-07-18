@@ -12,8 +12,11 @@
         [Required]
         public string Id { get; set; }
 
+        public string AcitvityId { get; set; }
+
         [Required]
-        public WorkoutActivity Activity { get; set; }
+        [Display(Name = "Activity")]
+        public string ActivityName { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "Field cannot contain more than 100 characters")]

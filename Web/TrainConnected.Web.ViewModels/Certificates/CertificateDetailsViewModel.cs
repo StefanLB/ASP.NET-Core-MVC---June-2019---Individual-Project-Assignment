@@ -4,14 +4,16 @@
     using System.ComponentModel.DataAnnotations;
 
     using TrainConnected.Data.Models;
-    using TrainConnected.Data.Models.Enums;
     using TrainConnected.Services.Mapping;
 
     public class CertificateDetailsViewModel : IMapFrom<Certificate>
     {
         public string Id { get; set; }
 
-        public WorkoutActivity Activity { get; set; }
+        public string ActivityId { get; set; }
+
+        [Display(Name = "Activity")]
+        public string ActivityName { get; set; }
 
         [Display(Name = "Issued By")]
         public string IssuedBy { get; set; }

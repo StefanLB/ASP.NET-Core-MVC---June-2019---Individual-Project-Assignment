@@ -28,25 +28,36 @@
             this.workoutActivityRepository = workoutActivityRepository;
         }
 
-        public async Task<CertificateDetailsViewModel> UpdateAsync(CertificateEditInputModel certificateEditInputModel)
+        public async Task UpdateAsync(CertificateEditInputModel certificateEditInputModel)
         {
-            //    try
-            //    {
-            //        _context.Update(certificate);
-            //        await _context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!CertificateExists(certificate.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            throw new System.NotImplementedException();
+            var certificate = await this.certificatesRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == certificateEditInputModel.Id);
+
+            if (certificate == null)
+            {
+                // TODO: catch exception and redirect appropriately
+                throw new NullReferenceException();
+            }
+
+            var workoutActivity = await this.workoutActivityRepository.All()
+                .FirstOrDefaultAsync(x => x.Name == certificateEditInputModel.ActivityName);
+
+            if (workoutActivity == null)
+            {
+                // TODO: catch exception and redirect appropriately
+                throw new NullReferenceException();
+            }
+
+            certificate.ActivityId = workoutActivity.Id;
+            certificate.Activity = workoutActivity;
+            certificate.IssuedBy = certificateEditInputModel.IssuedBy;
+            certificate.IssuedOn = certificateEditInputModel.IssuedOn;
+            certificate.ExpiresOn = certificateEditInputModel.ExpiresOn;
+            certificate.Description = certificateEditInputModel.Description;
+
+
+            this.certificatesRepository.Update(certificate);
+            await this.certificatesRepository.SaveChangesAsync();
         }
 
 
@@ -88,21 +99,26 @@
 
         public async Task DeleteAsync(string id)
         {
-            throw new System.NotImplementedException();
+            var certificate = await this.certificatesRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (certificate == null)
+            {
+                // TODO: catch exception and redirect appropriately
+                throw new NullReferenceException();
+            }
+
+            certificate.IsDeleted = true;
+            this.certificatesRepository.Update(certificate);
+            await this.certificatesRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CertificatesAllViewModel>> GetAllAsync(string username)
+        public async Task<IEnumerable<CertificatesAllViewModel>> GetAllAsync(string userId)
         {
-            var userCertificates = this.usersRepository.All()
-                .FirstOrDefault(x => x.UserName == username)
-                .Certificates
-                .Select(x => x.Id)
-                .ToArray();
-
             var certificates = await this.certificatesRepository.All()
-                .Where(x => userCertificates.Contains(x.Id))
+                .Where(x => x.TrainConnectedUserId == userId)
                 .To<CertificatesAllViewModel>()
-                .OrderBy(x => x.Activity)
+                .OrderBy(x => x.ActivityName)
                 .ThenByDescending(x => x.IssuedOn)
                 .ToArrayAsync();
 
@@ -112,16 +128,31 @@
         public async Task<CertificateDetailsViewModel> GetDetailsAsync(string id)
         {
             var certificate = await this.certificatesRepository.All()
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .Where(x => x.Id == id)
+                .To<CertificateDetailsViewModel>()
+                .FirstOrDefaultAsync();
 
-            var certificateDetailsViewModel = AutoMapper.Mapper.Map<CertificateDetailsViewModel>(certificate);
-            return certificateDetailsViewModel;
+            if (certificate == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return certificate;
         }
 
-        public bool CertificateExists(string id)
+        public async Task<CertificateEditInputModel> GetEditDetailsAsync(string id)
         {
-            throw new System.NotImplementedException();
-        }
+            var certificate = await this.certificatesRepository.All()
+                .Where(x => x.Id == id)
+                .To<CertificateEditInputModel>()
+                .FirstOrDefaultAsync();
 
+            if (certificate == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return certificate;
+        }
     }
 }

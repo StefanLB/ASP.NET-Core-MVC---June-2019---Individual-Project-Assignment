@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Claims;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -28,8 +29,8 @@
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var username = this.User.Identity.Name;
-            var certificates = await this.certificatesService.GetAllAsync(username);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var certificates = await this.certificatesService.GetAllAsync(userId);
             return this.View(certificates);
         }
 
@@ -55,10 +56,12 @@
         [HttpGet]
         public async Task<IActionResult> Add()
         {
+            // TODO: failing validation does not bring back the dropdown menu
+            // TODO: validation for expires on to be after issued on
+            // TODO: validation for issued on to be in the past
+
             var activities = await this.workoutActivitiesService.GetAllAsync();
-
             var activitiesSelectList = await this.GetAllWorkoutActivitiesAsSelectListItems(activities);
-
             this.ViewData["Activities"] = activitiesSelectList;
 
             return this.View();
@@ -90,7 +93,11 @@
                 return this.NotFound();
             }
 
-            var certificate = await this.certificatesService.GetDetailsAsync(id);
+            var activities = await this.workoutActivitiesService.GetAllAsync();
+            var activitiesSelectList = await this.GetAllWorkoutActivitiesAsSelectListItems(activities);
+            this.ViewData["Activities"] = activitiesSelectList;
+
+            var certificate = await this.certificatesService.GetEditDetailsAsync(id);
 
             if (certificate == null)
             {

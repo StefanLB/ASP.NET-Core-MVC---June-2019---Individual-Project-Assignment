@@ -91,8 +91,8 @@
 
         public async Task UpdateAsync(WorkoutActivityEditInputModel workoutActivityEditInputModel)
         {
-            var workoutActivity = this.workoutActivitiesRepository.All()
-                .FirstOrDefault(x => x.Id == workoutActivityEditInputModel.Id);
+            var workoutActivity = await this.workoutActivitiesRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == workoutActivityEditInputModel.Id);
 
             if (workoutActivity == null)
             {
@@ -100,8 +100,8 @@
                 throw new NullReferenceException();
             }
 
-            var existingActivityWithSameName = this.workoutActivitiesRepository.All()
-                .FirstOrDefault(x => x.Name == workoutActivityEditInputModel.Name);
+            var existingActivityWithSameName = await this.workoutActivitiesRepository.All()
+                .FirstOrDefaultAsync(x => x.Name == workoutActivityEditInputModel.Name);
 
             if (existingActivityWithSameName != null)
             {
