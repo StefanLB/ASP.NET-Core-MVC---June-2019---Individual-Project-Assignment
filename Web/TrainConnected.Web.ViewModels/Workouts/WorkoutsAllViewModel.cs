@@ -1,12 +1,11 @@
 ﻿namespace TrainConnected.Web.ViewModels.Workouts
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
-    public class WorkoutDetailsViewModel : IMapFrom<Workout>
+    public class WorkoutsAllViewModel : IMapFrom<Workout>
     {
         public string Id { get; set; }
 

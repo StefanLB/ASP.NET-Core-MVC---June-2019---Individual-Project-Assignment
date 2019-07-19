@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TrainConnected.Data.Models.Workout>
+﻿@model IEnumerable<TrainConnected.Web.ViewModels.Workouts.WorkoutsAllViewModel>
+@using  System.Globalization;
 
 @{
     ViewData["Title"] = "All";
@@ -14,19 +15,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Activity)
+                @Html.DisplayNameFor(model => model.ActivityName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Coach)
+                @Html.DisplayNameFor(model => model.CoachUserName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Time)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Location)
+                @Html.DisplayNameFor(model => model.Duration)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Duration)
+                @Html.DisplayNameFor(model => model.Location)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
@@ -35,19 +36,10 @@
                 @Html.DisplayNameFor(model => model.Notes)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaxParticipants)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedOn)
+                @Html.DisplayNameFor(model => model.CurrentlySignedUp)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedOn)
             </th>
             <th></th>
         </tr>
@@ -56,40 +48,31 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Activity.Id)
+                @item.ActivityName
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Coach.Id)
+                @item.CoachUserName
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Time)
+                @item.Time.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Location)
+                @item.Duration
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Duration)
+                @item.Location
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                @item.Price
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Notes)
+                @item.Notes
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaxParticipants)
+                @item.CurrentlySignedUp / @item.MaxParticipants
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedOn)
+                @item.CreatedOn
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

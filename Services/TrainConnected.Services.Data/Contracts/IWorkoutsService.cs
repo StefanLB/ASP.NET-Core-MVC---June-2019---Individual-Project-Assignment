@@ -1,5 +1,6 @@
 ﻿namespace TrainConnected.Services.Data.Contracts
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using TrainConnected.Web.InputModels.Workouts;
@@ -9,5 +10,6 @@
     {
         Task<WorkoutDetailsViewModel> CreateAsync(WorkoutCreateInputModel workoutCreateInputModel, string userId);
         Task<WorkoutDetailsViewModel> GetDetailsAsync(string id);
+        Task<IEnumerable<WorkoutsAllViewModel>> GetAllAsync();
     }
 }

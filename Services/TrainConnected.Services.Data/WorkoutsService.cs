@@ -2,6 +2,7 @@
 {
     using Microsoft.EntityFrameworkCore;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using TrainConnected.Data.Common.Repositories;
@@ -61,6 +62,17 @@
 
             var workoutDetailsViewModel = AutoMapper.Mapper.Map<WorkoutDetailsViewModel>(workout);
             return workoutDetailsViewModel;
+        }
+
+        public async Task<IEnumerable<WorkoutsAllViewModel>> GetAllAsync()
+        {
+            var certificates = await this.workoutsRepository.All()
+                .To<WorkoutsAllViewModel>()
+                .OrderBy(x => x.ActivityName)
+                .ThenByDescending(x => x.CreatedOn)
+                .ToArrayAsync();
+
+            return certificates;
         }
 
         public async Task<WorkoutDetailsViewModel> GetDetailsAsync(string id)

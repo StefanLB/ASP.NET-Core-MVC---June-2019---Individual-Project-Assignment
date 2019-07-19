@@ -28,10 +28,8 @@
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            //var trainConnectedDbContext = _context.Workouts.Include(w => w.Activity).Include(w => w.Coach);
-            //return View(await trainConnectedDbContext.ToListAsync());
-
-            return View();
+            var workouts = await this.workoutsService.GetAllAsync();
+            return this.View(workouts);
         }
 
         [HttpGet]
@@ -46,10 +44,10 @@
 
             if (workout == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(workout);
+            return this.View(workout);
         }
 
         [HttpGet]
