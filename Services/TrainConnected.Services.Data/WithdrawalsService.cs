@@ -33,16 +33,23 @@
                 throw new NullReferenceException();
             }
 
-            var withdrawal = new Withdrawal
+            if (user.Balance >= withdrawalCreateInputModel.Amount && withdrawalCreateInputModel.Amount > 0)
             {
-                Amount = withdrawalCreateInputModel.Amount,
-                TrainConnectedUserId = user.Id,
-                TrainConnectedUser = user,
-            };
+                var withdrawal = new Withdrawal
+                {
+                    Amount = withdrawalCreateInputModel.Amount,
+                    TrainConnectedUserId = user.Id,
+                    TrainConnectedUser = user,
+                };
 
-            await this.withdrawalsRepository.AddAsync(withdrawal);
-            await this.withdrawalsRepository.SaveChangesAsync();
+                await this.withdrawalsRepository.AddAsync(withdrawal);
+                await this.withdrawalsRepository.SaveChangesAsync();
 
+                user.Balance -= withdrawalCreateInputModel.Amount;
+
+                this.usersRepository.Update(user);
+                await this.usersRepository.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<WithdrawalsAllViewModel>> GetAllAsync(string userId)
