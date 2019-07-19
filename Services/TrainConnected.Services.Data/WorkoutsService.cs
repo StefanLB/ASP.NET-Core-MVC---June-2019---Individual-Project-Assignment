@@ -64,6 +64,27 @@
             return workoutDetailsViewModel;
         }
 
+        public async Task DeleteAsync(string id)
+        {
+            var workout = await this.workoutsRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (workout == null)
+            {
+                // TODO: catch exception and redirect appropriately
+                throw new NullReferenceException();
+            }
+
+            if (workout.CurrentlySignedUp == 0)
+            {
+                // TODO: Return warning in case workout cannot be deleted
+                workout.IsDeleted = true;
+                this.workoutsRepository.Update(workout);
+                await this.workoutsRepository.SaveChangesAsync();
+            }
+
+        }
+
         public async Task<IEnumerable<WorkoutsAllViewModel>> GetAllAsync()
         {
             var certificates = await this.workoutsRepository.All()

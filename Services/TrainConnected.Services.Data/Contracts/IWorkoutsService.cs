@@ -11,5 +11,6 @@
         Task<WorkoutDetailsViewModel> CreateAsync(WorkoutCreateInputModel workoutCreateInputModel, string userId);
         Task<WorkoutDetailsViewModel> GetDetailsAsync(string id);
         Task<IEnumerable<WorkoutsAllViewModel>> GetAllAsync();
+        Task DeleteAsync(string id);
     }
 }
