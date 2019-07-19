@@ -1,0 +1,42 @@
+﻿@model IEnumerable<TrainConnected.Web.ViewModels.Withdrawals.WithdrawalsAllViewModel>
+
+@{
+    ViewData["Title"] = "All";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.Id
+            </td>
+            <td>
+                @item.Amount
+            </td>
+            <td>
+                @item.CreatedOn
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
