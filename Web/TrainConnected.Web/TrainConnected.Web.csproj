@@ -43,6 +43,5 @@
 
   <ItemGroup>
     <Folder Include="Views\Achievements\" />
-    <Folder Include="Views\Workouts\" />
   </ItemGroup>
 </Project>

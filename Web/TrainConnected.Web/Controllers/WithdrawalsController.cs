@@ -27,7 +27,7 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateAsync()
+        public async Task<IActionResult> Create()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             this.ViewData["userBalance"] = await this.withdrawalsService.GetUserBalanceAsync(userId);
