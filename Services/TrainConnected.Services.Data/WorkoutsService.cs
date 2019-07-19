@@ -87,13 +87,13 @@
 
         public async Task<IEnumerable<WorkoutsAllViewModel>> GetAllAsync()
         {
-            var certificates = await this.workoutsRepository.All()
+            var workouts = await this.workoutsRepository.All()
                 .To<WorkoutsAllViewModel>()
                 .OrderBy(x => x.ActivityName)
                 .ThenByDescending(x => x.CreatedOn)
                 .ToArrayAsync();
 
-            return certificates;
+            return workouts;
         }
 
         public async Task<WorkoutDetailsViewModel> GetDetailsAsync(string id)

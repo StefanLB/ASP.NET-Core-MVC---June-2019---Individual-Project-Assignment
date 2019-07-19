@@ -55,10 +55,10 @@
             @Model.Notes
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CurrentlySignedUp)
+            @Html.DisplayNameFor(model => model.UsersCount)
         </dt>
         <dd class="col-sm-10">
-            @Model.CurrentlySignedUp / @Model.MaxParticipants
+            @Model.UsersCount / @Model.MaxParticipants
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedOn)
@@ -69,5 +69,9 @@
     </dl>
 </div>
 <div>
+    @if (Model.UsersCount < Model.MaxParticipants)
+    {
+        <a asp-controller="Bookings" asp-action="Create" asp-route-id="@Model.Id">Sign Up |</a>
+    }
     <a asp-action="All">Back to List</a>
 </div>

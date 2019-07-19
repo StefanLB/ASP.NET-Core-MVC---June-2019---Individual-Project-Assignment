@@ -1,0 +1,109 @@
+﻿@model TrainConnected.Web.InputModels.Bookings.BookingCreateInputModel
+@using  TrainConnected.Web.ViewModels.Workouts;
+@using  System.Globalization;
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var workout = ViewData["Workout"] as WorkoutDetailsViewModel;
+    var paymentMethods = ViewData["PaymentMethods"] as IEnumerable<SelectListItem>;
+}
+
+<h1>Create</h1>
+
+<h4>Booking</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PaymentMethod"></label>
+                <select asp-for="PaymentMethod" asp-items="paymentMethods" class="form-control col-md-12">
+                    <option selected="" disabled="">--Select activity type--</option>
+                </select>
+                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" value="@workout.Price" readonly />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="WorkoutId" class="form-control" value="@workout.Id" hidden />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <h4>Workout Details:</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Activity Name
+        </dt>
+        <dd class="col-sm-10">
+            @workout.ActivityName
+        </dd>
+        <dt class="col-sm-2">
+            Coach
+        </dt>
+        <dd class="col-sm-10">
+            @workout.CoachUserName
+        </dd>
+        <dt class="col-sm-2">
+            Start
+        </dt>
+        <dd class="col-sm-10">
+            @workout.Time.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+        </dd>
+        <dt class="col-sm-2">
+            Duration
+        </dt>
+        <dd class="col-sm-10">
+            @workout.Duration
+        </dd>
+        <dt class="col-sm-2">
+            Location
+        </dt>
+        <dd class="col-sm-10">
+            @workout.Location
+        </dd>
+        <dt class="col-sm-2">
+            Price
+        </dt>
+        <dd class="col-sm-10">
+            @workout.Price
+        </dd>
+        <dt class="col-sm-2">
+            Notes
+        </dt>
+        <dd class="col-sm-10">
+            @workout.Notes
+        </dd>
+        <dt class="col-sm-2">
+            Currently Signed Up
+        </dt>
+        <dd class="col-sm-10">
+            @workout.UsersCount / @workout.MaxParticipants
+        </dd>
+        <dt class="col-sm-2">
+            Created On
+        </dt>
+        <dd class="col-sm-10">
+            @workout.CreatedOn.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="All">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

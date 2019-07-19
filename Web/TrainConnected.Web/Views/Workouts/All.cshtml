@@ -36,7 +36,7 @@
                 @Html.DisplayNameFor(model => model.Notes)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CurrentlySignedUp)
+                @Html.DisplayNameFor(model => model.UsersCount)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedOn)
@@ -69,12 +69,16 @@
                 @item.Notes
             </td>
             <td>
-                @item.CurrentlySignedUp / @item.MaxParticipants
+                @item.UsersCount / @item.MaxParticipants
             </td>
             <td>
                 @item.CreatedOn
             </td>
             <td>
+                @if (item.UsersCount < item.MaxParticipants)
+                {
+                    <a asp-controller="Bookings" asp-action="Create" asp-route-id="@item.Id">Sign Up |</a>
+                }
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>

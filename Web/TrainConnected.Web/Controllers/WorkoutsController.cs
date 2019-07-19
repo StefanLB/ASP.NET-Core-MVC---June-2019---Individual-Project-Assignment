@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
@@ -14,6 +14,7 @@
     using TrainConnected.Web.InputModels.Workouts;
     using TrainConnected.Web.ViewModels.WorkoutActivities;
 
+    [Authorize]
     public class WorkoutsController : BaseController
     {
         private readonly IWorkoutsService workoutsService;

@@ -27,7 +27,7 @@
         public string Notes { get; set; }
 
         [Display(Name = "Currently Signed Up")]
-        public int CurrentlySignedUp { get; set; }
+        public int UsersCount { get; set; }
 
         [Display(Name = "Max Participants")]
         public int MaxParticipants { get; set; }

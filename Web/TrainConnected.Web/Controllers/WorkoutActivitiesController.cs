@@ -2,11 +2,12 @@
 {
     using System;
     using System.Threading.Tasks;
-
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.WorkoutActivities;
 
+    [Authorize]
     public class WorkoutActivitiesController : BaseController
     {
         private readonly IWorkoutActivitiesService workoutActivitiesService;
