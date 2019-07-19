@@ -1,43 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using TrainConnected.Data;
-using TrainConnected.Data.Models;
-
-namespace TrainConnected.Web.Controllers
+﻿namespace TrainConnected.Web.Controllers
 {
-    public class WorkoutsController : Controller
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.EntityFrameworkCore;
+    using TrainConnected.Data;
+    using TrainConnected.Data.Models;
+    using TrainConnected.Services.Data.Contracts;
+    using TrainConnected.Web.InputModels.Workouts;
+    using TrainConnected.Web.ViewModels.WorkoutActivities;
+
+    public class WorkoutsController : BaseController
     {
-        private readonly TrainConnectedDbContext _context;
+        private readonly IWorkoutsService workoutsService;
+        private readonly IWorkoutActivitiesService workoutActivitiesService;
 
-        public WorkoutsController(TrainConnectedDbContext context)
+        public WorkoutsController(IWorkoutsService workoutsService, IWorkoutActivitiesService workoutActivitiesService)
         {
-            _context = context;
+            this.workoutsService = workoutsService;
+            this.workoutActivitiesService = workoutActivitiesService;
         }
 
-        // GET: Workouts
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> All()
         {
-            var trainConnectedDbContext = _context.Workouts.Include(w => w.Activity).Include(w => w.Coach);
-            return View(await trainConnectedDbContext.ToListAsync());
+            //var trainConnectedDbContext = _context.Workouts.Include(w => w.Activity).Include(w => w.Coach);
+            //return View(await trainConnectedDbContext.ToListAsync());
+
+            return View();
         }
 
-        // GET: Workouts/Details/5
+        [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            var workout = await _context.Workouts
-                .Include(w => w.Activity)
-                .Include(w => w.Coach)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var workout = await this.workoutsService.GetDetailsAsync(id);
+
             if (workout == null)
             {
                 return NotFound();
@@ -46,121 +52,138 @@ namespace TrainConnected.Web.Controllers
             return View(workout);
         }
 
-        // GET: Workouts/Create
-        public IActionResult Create()
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
-            ViewData["ActivityId"] = new SelectList(_context.WorkoutActivities, "Id", "Id");
-            ViewData["CoachId"] = new SelectList(_context.Users, "Id", "Id");
+            var activities = await this.workoutActivitiesService.GetAllAsync();
+            var activitiesSelectList = await this.GetAllWorkoutActivitiesAsSelectListItems(activities);
+            this.ViewData["Activities"] = activitiesSelectList;
+
             return View();
         }
 
-        // POST: Workouts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ActivityId,CoachId,Time,Location,Duration,Price,Notes,MaxParticipants,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")] Workout workout)
+        public async Task<IActionResult> Create(WorkoutCreateInputModel workoutCreateInputModel)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                _context.Add(workout);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                var result = await this.workoutsService.CreateAsync(workoutCreateInputModel, userId);
+
+                return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
             }
-            ViewData["ActivityId"] = new SelectList(_context.WorkoutActivities, "Id", "Id", workout.ActivityId);
-            ViewData["CoachId"] = new SelectList(_context.Users, "Id", "Id", workout.CoachId);
-            return View(workout);
+
+            return this.View(workoutCreateInputModel);
         }
 
-        // GET: Workouts/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        //// GET: Workouts/Edit/5
+        //public async Task<IActionResult> Edit(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var workout = await _context.Workouts.FindAsync(id);
+        //    if (workout == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["ActivityId"] = new SelectList(_context.WorkoutActivities, "Id", "Id", workout.ActivityId);
+        //    ViewData["CoachId"] = new SelectList(_context.Users, "Id", "Id", workout.CoachId);
+        //    return View(workout);
+        //}
+
+        //// POST: Workouts/Edit/5
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(string id, [Bind("ActivityId,CoachId,Time,Location,Duration,Price,Notes,MaxParticipants,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")] Workout workout)
+        //{
+        //    if (id != workout.Id)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(workout);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!WorkoutExists(workout.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["ActivityId"] = new SelectList(_context.WorkoutActivities, "Id", "Id", workout.ActivityId);
+        //    ViewData["CoachId"] = new SelectList(_context.Users, "Id", "Id", workout.CoachId);
+        //    return View(workout);
+        //}
+
+        //// GET: Workouts/Delete/5
+        //public async Task<IActionResult> Delete(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var workout = await _context.Workouts
+        //        .Include(w => w.Activity)
+        //        .Include(w => w.Coach)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (workout == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(workout);
+        //}
+
+        //// POST: Workouts/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(string id)
+        //{
+        //    var workout = await _context.Workouts.FindAsync(id);
+        //    _context.Workouts.Remove(workout);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+        //private bool WorkoutExists(string id)
+        //{
+        //    return _context.Workouts.Any(e => e.Id == id);
+        //}
+
+        [NonAction]
+        private async Task<IEnumerable<SelectListItem>> GetAllWorkoutActivitiesAsSelectListItems(IEnumerable<WorkoutActivitiesAllViewModel> activities)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var selectList = new List<SelectListItem>();
 
-            var workout = await _context.Workouts.FindAsync(id);
-            if (workout == null)
+            foreach (var element in activities)
             {
-                return NotFound();
-            }
-            ViewData["ActivityId"] = new SelectList(_context.WorkoutActivities, "Id", "Id", workout.ActivityId);
-            ViewData["CoachId"] = new SelectList(_context.Users, "Id", "Id", workout.CoachId);
-            return View(workout);
-        }
-
-        // POST: Workouts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ActivityId,CoachId,Time,Location,Duration,Price,Notes,MaxParticipants,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")] Workout workout)
-        {
-            if (id != workout.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                selectList.Add(new SelectListItem
                 {
-                    _context.Update(workout);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!WorkoutExists(workout.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ActivityId"] = new SelectList(_context.WorkoutActivities, "Id", "Id", workout.ActivityId);
-            ViewData["CoachId"] = new SelectList(_context.Users, "Id", "Id", workout.CoachId);
-            return View(workout);
-        }
-
-        // GET: Workouts/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                    Value = element.Name,
+                    Text = element.Name
+                });
             }
 
-            var workout = await _context.Workouts
-                .Include(w => w.Activity)
-                .Include(w => w.Coach)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (workout == null)
-            {
-                return NotFound();
-            }
-
-            return View(workout);
-        }
-
-        // POST: Workouts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var workout = await _context.Workouts.FindAsync(id);
-            _context.Workouts.Remove(workout);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool WorkoutExists(string id)
-        {
-            return _context.Workouts.Any(e => e.Id == id);
+            return selectList;
         }
     }
 }

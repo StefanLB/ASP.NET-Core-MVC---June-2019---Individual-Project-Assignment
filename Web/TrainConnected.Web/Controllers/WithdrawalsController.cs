@@ -9,7 +9,7 @@
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Withdrawals;
 
-    public class WithdrawalsController : Controller
+    public class WithdrawalsController : BaseController
     {
         private readonly IWithdrawalsService withdrawalsService;
 

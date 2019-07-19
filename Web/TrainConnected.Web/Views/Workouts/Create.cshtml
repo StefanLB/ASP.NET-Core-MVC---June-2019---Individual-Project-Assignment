@@ -1,8 +1,9 @@
-﻿@model TrainConnected.Data.Models.Workout
+﻿@model TrainConnected.Web.InputModels.Workouts.WorkoutCreateInputModel
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var activities = this.ViewData["Activities"] as IEnumerable<SelectListItem>;
 }
 
 <h1>Create</h1>
@@ -14,12 +15,11 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ActivityId" class="control-label"></label>
-                <select asp-for="ActivityId" class ="form-control" asp-items="ViewBag.ActivityId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CoachId" class="control-label"></label>
-                <select asp-for="CoachId" class ="form-control" asp-items="ViewBag.CoachId"></select>
+                <label asp-for="Activity"></label>
+                <select asp-for="Activity" asp-items="activities" class="form-control col-md-12">
+                    <option selected="" disabled="">--Select activity type--</option>
+                </select>
+                <span asp-validation-for="Activity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Time" class="control-label"></label>
@@ -51,26 +51,6 @@
                 <input asp-for="MaxParticipants" class="form-control" />
                 <span asp-validation-for="MaxParticipants" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="DeletedOn" class="control-label"></label>
-                <input asp-for="DeletedOn" class="form-control" />
-                <span asp-validation-for="DeletedOn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedOn" class="control-label"></label>
-                <input asp-for="CreatedOn" class="form-control" />
-                <span asp-validation-for="CreatedOn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ModifiedOn" class="control-label"></label>
-                <input asp-for="ModifiedOn" class="form-control" />
-                <span asp-validation-for="ModifiedOn" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -79,7 +59,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="All">Back to List</a>
 </div>
 
 @section Scripts {
