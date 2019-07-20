@@ -1,0 +1,98 @@
+﻿@model TrainConnected.Web.ViewModels.Bookings.BookingDetailsViewModel
+@using System.Globalization;
+
+@{
+    ViewData["Title"] = "Cancel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Cancel Booking</h1>
+
+<h3>Are you sure you want to cancel this booking?</h3>
+
+<p>Note: You may only cancel a booking prior to the start of the workout.</p>
+<div>
+    <h4>Booking</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PaymentMethod)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.PaymentMethod
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Price
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.CreatedOn.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Id
+        </dd>
+    </dl>
+
+    <form asp-action="Cancel">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Cancel" class="btn btn-danger" /> |
+        <a asp-action="All">Back to List</a>
+    </form>
+</div>
+
+<div>
+    <h4>Workout Details:</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkoutActivityName)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.WorkoutActivityName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkoutCoachUserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.WorkoutCoachUserName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkoutTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.WorkoutTime.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkoutDuration)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.WorkoutDuration
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkoutLocation)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.WorkoutLocation
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkoutNotes)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.WorkoutNotes
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkoutBookingsCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.WorkoutBookingsCount / @Model.WorkoutMaxParticipants
+        </dd>
+    </dl>
+</div>
