@@ -37,7 +37,7 @@
         public string WorkoutNotes { get; set; }
 
         [Display(Name = "Currently Signed Up")]
-        public int WorkoutCurrentlySignedUp { get; set; }
+        public int WorkoutBookingsCount { get; set; }
 
         [Display(Name = "Max Participants")]
         public int WorkoutMaxParticipants { get; set; }
