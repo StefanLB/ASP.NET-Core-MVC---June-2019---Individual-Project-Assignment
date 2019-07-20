@@ -90,9 +90,23 @@
                 throw new NullReferenceException();
             }
 
-            booking.IsDeleted = true;
-            this.bookingsRepository.Update(booking);
-            await this.bookingsRepository.SaveChangesAsync();
+            var workout = await this.workoutsRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == booking.WorkoutId);
+
+            var user = await this.usersRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == booking.TrainConnectedUserId);
+
+            if (workout.Time > DateTime.UtcNow)
+            {
+                booking.IsDeleted = true;
+                user.Balance += booking.Price;
+
+                this.bookingsRepository.Update(booking);
+                await this.bookingsRepository.SaveChangesAsync();
+
+                this.usersRepository.Update(user);
+                await this.usersRepository.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<BookingsAllViewModel>> GetAllAsync(string userId)

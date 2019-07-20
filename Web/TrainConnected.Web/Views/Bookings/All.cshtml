@@ -69,7 +69,7 @@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                 @if (item.WorkoutTime > DateTime.UtcNow)
                 {
-                    <a asp-action="Cancel" asp-route-id="@item.Id"> |Cancel</a>
+                    <a asp-action="Cancel" asp-route-id="@item.Id"> | Cancel</a>
                 }
             </td>
         </tr>
