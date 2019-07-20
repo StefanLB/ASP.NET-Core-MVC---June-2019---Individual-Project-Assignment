@@ -20,13 +20,15 @@
         private readonly IRepository<TrainConnectedUser> usersRepository;
         private readonly IWorkoutsService workoutsService;
         private readonly IRepository<Booking> bookingsRepository;
+        private readonly IRepository<ITrainConnectedUsersWorkouts> trainConnectedUsersWorkoutsRepository;
 
-        public BookingsService(IRepository<Workout> workoutsRepository, IRepository<TrainConnectedUser> usersRepository, IWorkoutsService workoutsService, IRepository<Booking> bookingsRepository)
+        public BookingsService(IRepository<Workout> workoutsRepository, IRepository<TrainConnectedUser> usersRepository, IWorkoutsService workoutsService, IRepository<Booking> bookingsRepository, IRepository<ITrainConnectedUsersWorkouts> trainConnectedUsersWorkoutsRepository)
         {
             this.workoutsRepository = workoutsRepository;
             this.usersRepository = usersRepository;
             this.workoutsService = workoutsService;
             this.bookingsRepository = bookingsRepository;
+            this.trainConnectedUsersWorkoutsRepository = trainConnectedUsersWorkoutsRepository;
         }
 
         public async Task<BookingDetailsViewModel> CreateAsync(BookingCreateInputModel bookingCreateInputModel, string userId)
@@ -47,6 +49,12 @@
                 throw new NullReferenceException();
             }
 
+            if (user.Bookings.Any(x => x.WorkoutId == workout.Id))
+            {
+                //TODO: user already has booked this workout, do not allow a second booking, also try to hide the "Sign Up" button from them
+                throw new NullReferenceException();
+            }
+
             var booking = new Booking
             {
                 TrainConnectedUser = user,
@@ -57,11 +65,46 @@
                 Workout = workout,
             };
 
+            await this.trainConnectedUsersWorkoutsRepository.AddAsync(new TrainConnectedUsersWorkouts
+            {
+                TrainConnectedUserId = user.Id,
+                WorkoutId = workout.Id,
+            });
+            await this.trainConnectedUsersWorkoutsRepository.SaveChangesAsync();
+
             await this.bookingsRepository.AddAsync(booking);
             await this.bookingsRepository.SaveChangesAsync();
 
             var bookingDetailsViewModel = AutoMapper.Mapper.Map<BookingDetailsViewModel>(booking);
             return bookingDetailsViewModel;
+        }
+
+        public async Task CancelAsync(string id)
+        {
+            var booking = await this.bookingsRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (booking == null)
+            {
+                // TODO: catch exception and redirect appropriately
+                throw new NullReferenceException();
+            }
+
+            booking.IsDeleted = true;
+            this.bookingsRepository.Update(booking);
+            await this.bookingsRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<BookingsAllViewModel>> GetAllAsync(string userId)
+        {
+            var bookings = await this.bookingsRepository.All()
+                .Where(x => x.TrainConnectedUserId == userId)
+                .To<BookingsAllViewModel>()
+                .OrderByDescending(x => x.WorkoutTime)
+                .ThenByDescending(x => x.CreatedOn)
+                .ToArrayAsync();
+
+            return bookings;
         }
 
         public async Task<BookingDetailsViewModel> GetDetailsAsync(string id)

@@ -88,6 +88,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    @if (Model.WorkoutTime > DateTime.UtcNow)
+    {
+    <a asp-action="Cancel" asp-route-id="@Model.Id">Cancel |</a>
+    }
     <a asp-action="All">Back to List</a>
 </div>

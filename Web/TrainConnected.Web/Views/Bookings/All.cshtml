@@ -1,21 +1,16 @@
-﻿@model IEnumerable<TrainConnected.Data.Models.Booking>
+﻿@model IEnumerable<TrainConnected.Web.ViewModels.Bookings.BookingsAllViewModel>
+@using System.Globalization;
 
 @{
     ViewData["Title"] = "All";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>My Bookings</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TrainConnectedUser)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.PaymentMethod)
             </th>
@@ -23,19 +18,22 @@
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Workout)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedOn)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.CreatedOn)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ModifiedOn)
+                @Html.DisplayNameFor(model => model.WorkoutActivityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutCoachUserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutNotes)
             </th>
             <th></th>
         </tr>
@@ -44,33 +42,35 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TrainConnectedUser.Id)
+                @item.PaymentMethod
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PaymentMethod)
+                @item.Price
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                @item.CreatedOn.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Workout.Id)
+                @item.WorkoutActivityName
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
+                @item.WorkoutCoachUserName
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DeletedOn)
+                @item.WorkoutTime.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
+                @item.WorkoutLocation
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ModifiedOn)
+                @item.WorkoutNotes
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                @if (item.WorkoutTime > DateTime.UtcNow)
+                {
+                    <a asp-action="Cancel" asp-route-id="@item.Id"> |Cancel</a>
+                }
             </td>
         </tr>
 }
