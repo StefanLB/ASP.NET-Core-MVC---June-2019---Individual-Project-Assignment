@@ -9,11 +9,8 @@
         [Required]
         public string Name { get; set; }
 
-        public DateTime? FirstAchievedOn { get; set; }
-
-        public DateTime? LastAchievedOn { get; set; }
-
-        public int TimesAchieved { get; set; }
+        [Required]
+        public DateTime AchievedOn { get; set; }
 
         [Required]
         [MaxLength(100)]

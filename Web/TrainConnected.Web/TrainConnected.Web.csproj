@@ -40,8 +40,4 @@
     <ProjectReference Include="..\TrainConnected.Web.InputModels\TrainConnected.Web.InputModels.csproj" />
     <ProjectReference Include="..\TrainConnected.Web.ViewModels\TrainConnected.Web.ViewModels.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Achievements\" />
-  </ItemGroup>
 </Project>
