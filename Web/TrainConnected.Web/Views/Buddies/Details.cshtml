@@ -1,0 +1,35 @@
+﻿@model TrainConnected.Web.ViewModels.Achievements.AchievementDetailsViewModel
+@using System.Globalization;
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h4>Details about your buddy @Model.Name</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Name
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AchievedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.AchievedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Description
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="All">Back to List</a>
+</div>
