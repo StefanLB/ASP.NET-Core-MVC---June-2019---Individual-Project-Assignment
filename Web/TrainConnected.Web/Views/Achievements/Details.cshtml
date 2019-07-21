@@ -1,4 +1,5 @@
-﻿@model TrainConnected.Data.Models.Achievement
+﻿@model TrainConnected.Web.ViewModels.Achievements.AchievementDetailsViewModel
+@using System.Globalization;
 
 @{
     ViewData["Title"] = "Details";
@@ -11,57 +12,26 @@
     <h4>Achievement</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+        <dd class="col-sm-10">
+            @Model.Name
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AchievedOn)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AchievedOn)
+        <dd class="col-sm-10">
+            @Model.AchievedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TrainConnectedUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TrainConnectedUser.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDeleted)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeletedOn)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeletedOn)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedOn)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedOn)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedOn)
+        <dd class="col-sm-10">
+            @Model.Description
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="All">Back to List</a>
 </div>
