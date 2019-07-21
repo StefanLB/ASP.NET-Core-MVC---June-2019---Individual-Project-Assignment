@@ -35,7 +35,7 @@
             var buddyToAdd = await this.usersRepository.All()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (buddyToAdd == null)
+            if (buddyToAdd == null || buddyToAdd.Id == user.Id)
             {
                 throw new InvalidOperationException();
             }
@@ -58,7 +58,7 @@
                 .ToArrayAsync();
 
             var nonBuddies = await this.usersRepository.All()
-                .Where(x => !buddiesIds.Contains(x.Id))
+                .Where(x => !buddiesIds.Contains(x.Id) && x.Id != userId)
                 .To<BuddiesAllViewModel>()
                 .OrderBy(x => x.UserName)
                 .ToArrayAsync();

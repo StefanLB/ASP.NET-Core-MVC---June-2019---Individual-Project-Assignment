@@ -16,6 +16,8 @@
             this.buddiesService = buddiesService;
         }
 
+        // TODO: Add pending buddy request and buddies will be connected after the buddy request is accepted by the other user
+
         [HttpGet]
         public async Task<IActionResult> All()
         {
@@ -48,8 +50,7 @@
             return this.View(buddyDetails);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public async Task<IActionResult> Add(string id)
         {
             if (id == null)
@@ -86,7 +87,7 @@
 
             await this.buddiesService.RemoveAsync(id, userId);
 
-            return this.RedirectToAction(nameof(this.All), userId);
+            return this.RedirectToAction(nameof(this.All));
         }
 
     }
