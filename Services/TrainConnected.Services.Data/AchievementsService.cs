@@ -105,7 +105,7 @@
                 }
             }
 
-            if (!achievements.Any(x => x.Name == "Early Bird"))
+            if (!achievements.Any(x => x.Name == "First Responder"))
             {
                 var firstToSignUpCounter = 0;
 
@@ -123,7 +123,7 @@
 
                         if (firstToSignUpCounter >= 10)
                         {
-                            var achievementName = "Early Bird";
+                            var achievementName = "First Responder";
                             var description = "Be the first person to sign up for 10 different workouts!";
                             var achievedOn = workout.Time;
 
@@ -310,6 +310,30 @@
                             break;
                         }
                     }
+                }
+            }
+
+            if (!achievements.Any(x => x.Name == "Early Bird"))
+            {
+                if (userWorkouts.Any(x => x.Time.Hour < 8))
+                {
+                    var achievementName = "Early Bird";
+                    var description = "Attend a workout before 08:00 a.m.!";
+                    var achievedOn = userWorkouts.Where(x => x.Time.Hour < 8).OrderBy(x => x.Time).First().Time;
+
+                    await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
+                }
+            }
+
+            if (!achievements.Any(x => x.Name == "Night Owl"))
+            {
+                if (userWorkouts.Any(x => x.Time.Hour >= 20))
+                {
+                    var achievementName = "Night Owl";
+                    var description = "Attend a workout after 08:00 p.m.!";
+                    var achievedOn = userWorkouts.Where(x => x.Time.Hour >= 20).OrderBy(x => x.Time).First().Time;
+
+                    await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
                 }
             }
         }
