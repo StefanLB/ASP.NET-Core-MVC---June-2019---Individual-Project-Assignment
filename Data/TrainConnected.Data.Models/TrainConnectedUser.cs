@@ -23,7 +23,7 @@ namespace TrainConnected.Data.Models
             this.Achievements = new HashSet<Achievement>();
             this.Certificates = new HashSet<Certificate>();
             this.Withdrawals = new HashSet<Withdrawal>();
-            this.Buddies = new HashSet<TrainConnectedUser>();
+            this.Buddies = new HashSet<TrainConnectedUsersBuddies>();
         }
 
         // Audit info
@@ -61,6 +61,6 @@ namespace TrainConnected.Data.Models
 
         public ICollection<Withdrawal> Withdrawals { get; set; }
 
-        public ICollection<TrainConnectedUser> Buddies { get; set; }
+        public ICollection<TrainConnectedUsersBuddies> Buddies { get; set; }
     }
 }

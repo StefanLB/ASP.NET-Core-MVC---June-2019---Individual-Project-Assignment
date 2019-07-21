@@ -28,6 +28,6 @@
 
         ICollection<Withdrawal> Withdrawals { get; set; }
 
-        ICollection<TrainConnectedUser> Buddies { get; set; }
+        ICollection<TrainConnectedUsersBuddies> Buddies { get; set; }
     }
 }

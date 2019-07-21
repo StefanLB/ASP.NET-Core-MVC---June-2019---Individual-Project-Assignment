@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainConnected.Data;
 
 namespace TrainConnected.Data.Migrations
 {
     [DbContext(typeof(TrainConnectedDbContext))]
-    partial class TrainConnectedDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190721153009_fixForBuddies")]
+    partial class fixForBuddies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -319,6 +321,8 @@ namespace TrainConnected.Data.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<string>("TrainConnectedUserId");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -336,22 +340,9 @@ namespace TrainConnected.Data.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("TrainConnectedUserId");
+
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("TrainConnected.Data.Models.TrainConnectedUsersBuddies", b =>
-                {
-                    b.Property<string>("TrainConnectedUserId");
-
-                    b.Property<string>("TrainConnectedBuddyId");
-
-                    b.Property<DateTime>("AddedOn");
-
-                    b.HasKey("TrainConnectedUserId", "TrainConnectedBuddyId");
-
-                    b.HasIndex("TrainConnectedBuddyId");
-
-                    b.ToTable("TrainConnectedUsersBuddies");
                 });
 
             modelBuilder.Entity("TrainConnected.Data.Models.TrainConnectedUsersWorkouts", b =>
@@ -532,17 +523,11 @@ namespace TrainConnected.Data.Migrations
                         .HasForeignKey("TrainConnectedUserId");
                 });
 
-            modelBuilder.Entity("TrainConnected.Data.Models.TrainConnectedUsersBuddies", b =>
+            modelBuilder.Entity("TrainConnected.Data.Models.TrainConnectedUser", b =>
                 {
-                    b.HasOne("TrainConnected.Data.Models.TrainConnectedUser", "TrainConnectedBuddy")
-                        .WithMany()
-                        .HasForeignKey("TrainConnectedBuddyId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("TrainConnected.Data.Models.TrainConnectedUser", "TrainConnectedUser")
+                    b.HasOne("TrainConnected.Data.Models.TrainConnectedUser")
                         .WithMany("Buddies")
-                        .HasForeignKey("TrainConnectedUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("TrainConnectedUserId");
                 });
 
             modelBuilder.Entity("TrainConnected.Data.Models.TrainConnectedUsersWorkouts", b =>
