@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<TrainConnected.Web.ViewModels.Buddies.BuddiesAllViewModel>
 
 @{
-    ViewData["Title"] = "All";
+    ViewData["Title"] = "Find";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>My Buddies</h1>
+<h1>Find Buddies</h1>
 
 <table class="table">
     <thead>
@@ -29,7 +29,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model) {
         <tr>
             <td>
                 @item.UserName
@@ -47,8 +47,7 @@
                 @item.AchievementsCount
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a asp-action="Remove" asp-route-id="@item.Id">Remove</a>
+                <a asp-action="Add" asp-route-id="@item.Id">Add</a>
             </td>
         </tr>
 }

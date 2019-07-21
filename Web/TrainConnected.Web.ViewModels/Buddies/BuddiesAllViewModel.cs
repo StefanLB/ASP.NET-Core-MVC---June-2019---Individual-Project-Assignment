@@ -9,6 +9,8 @@ namespace TrainConnected.Web.ViewModels.Buddies
 {
     public class BuddiesAllViewModel : IMapFrom<TrainConnectedUser>
     {
+        public string Id { get; set; }
+
         [Display(Name = "Username")]
         public string UserName { get; set; }
 

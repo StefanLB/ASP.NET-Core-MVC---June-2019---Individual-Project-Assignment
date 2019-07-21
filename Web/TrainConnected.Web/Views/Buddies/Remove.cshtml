@@ -1,31 +1,59 @@
-﻿@model TrainConnected.Web.ViewModels.WorkoutActivities.WorkoutActivityDetailsViewModel
+﻿@model TrainConnected.Web.ViewModels.Buddies.BuddyDetailsViewModel
+@using System.Globalization;
 
 @{
     ViewData["Title"] = "Remove";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Remove</h1>
-
-<h3>Are you sure you want to remove your buddy @Model.Name?</h3>
 <div>
-    <h4>WorkoutActivity</h4>
+    <h4>Are you sure you want to remove your buddy @Model.UserName?</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+        <dd class="col-sm-10">
+            @Model.UserName
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+        <dd class="col-sm-10">
+            @Model.FirstName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.LastName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.CreatedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkoutsCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.WorkoutsCount
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AchievementsCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.AchievementsCount
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AddedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.AddedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
         </dd>
     </dl>
-    
+
     <form asp-action="Remove">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Remove" class="btn btn-danger" /> |

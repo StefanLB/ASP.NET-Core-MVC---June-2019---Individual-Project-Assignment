@@ -19,21 +19,33 @@
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            return null;
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var buddies = await this.buddiesService.GetAllAsync(userId);
+
+            return this.View(buddies);
         }
 
         [HttpGet]
-        public async Task<IActionResult> My()
+        public async Task<IActionResult> Find()
         {
-            return null;
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var nonBuddyUsers = await this.buddiesService.FindAllAsync(userId);
 
+            return this.View(nonBuddyUsers);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
-            return null;
+            if (id == null)
+            {
+                return this.NotFound();
+            }
 
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var buddyDetails = await this.buddiesService.GetDetailsAsync(id, userId);
+
+            return this.View(buddyDetails);
         }
 
         [HttpPost]
@@ -49,22 +61,32 @@
 
             await this.buddiesService.AddAsync(id, userId);
 
-            return this.RedirectToAction(nameof(this.Details), id);
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [HttpGet]
         public async Task<IActionResult> Remove(string id)
         {
-            return null;
+            if (id == null)
+            {
+                return this.NotFound();
+            }
 
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var buddyDetails = await this.buddiesService.GetDetailsAsync(id, userId);
+
+            return this.View(buddyDetails);
         }
 
         [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveConfirmed(string id)
         {
-            return null;
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            await this.buddiesService.RemoveAsync(id, userId);
+
+            return this.RedirectToAction(nameof(this.All), userId);
         }
 
     }

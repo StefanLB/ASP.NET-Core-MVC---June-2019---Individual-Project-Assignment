@@ -1,4 +1,4 @@
-﻿@model TrainConnected.Web.ViewModels.Achievements.AchievementDetailsViewModel
+﻿@model TrainConnected.Web.ViewModels.Buddies.BuddyDetailsViewModel
 @using System.Globalization;
 
 @{
@@ -7,26 +7,50 @@
 }
 
 <div>
-    <h4>Details about your buddy @Model.Name</h4>
+    <h4>Details about your buddy @Model.UserName</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.UserName)
         </dt>
         <dd class="col-sm-10">
-            @Model.Name
+            @Model.UserName
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AchievedOn)
+            @Html.DisplayNameFor(model => model.FirstName)
         </dt>
         <dd class="col-sm-10">
-            @Model.AchievedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+            @Model.FirstName
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.LastName)
         </dt>
         <dd class="col-sm-10">
-            @Model.Description
+            @Model.LastName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.CreatedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkoutsCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.WorkoutsCount
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AchievementsCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.AchievementsCount
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AddedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.AddedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
         </dd>
     </dl>
 </div>

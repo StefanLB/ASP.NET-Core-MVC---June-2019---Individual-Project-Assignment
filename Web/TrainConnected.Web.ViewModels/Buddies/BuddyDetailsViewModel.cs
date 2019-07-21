@@ -7,6 +7,8 @@
 
     public class BuddyDetailsViewModel : IMapFrom<TrainConnectedUser>
     {
+        public string Id { get; set; }
+
         [Display(Name = "Username")]
         public string UserName { get; set; }
 
