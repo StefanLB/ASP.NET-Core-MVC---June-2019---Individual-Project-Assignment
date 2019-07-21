@@ -28,6 +28,9 @@
                 <a class="nav-link text-dark" asp-area="" asp-controller="WorkoutActivities" asp-action="All">Workout Activities</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Achievements" asp-action="All">Achievements</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Withdrawals" asp-action="All">Withdrawals</a>
             </li>
             if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
