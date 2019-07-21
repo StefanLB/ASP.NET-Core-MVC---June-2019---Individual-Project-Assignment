@@ -112,6 +112,7 @@
             services.AddTransient<IWithdrawalsService, WithdrawalsService>();
             services.AddTransient<IWorkoutsService, WorkoutsService>();
             services.AddTransient<IWorkoutActivitiesService, WorkoutActivitiesService>();
+            services.AddTransient<IBuddiesService, BuddiesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
