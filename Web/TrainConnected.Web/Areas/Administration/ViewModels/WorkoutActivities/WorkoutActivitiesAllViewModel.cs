@@ -1,10 +1,11 @@
-﻿namespace TrainConnected.Web.InputModels.WorkoutActivities
+﻿namespace TrainConnected.Web.Areas.Administration.ViewModels.WorkoutActivities
 {
     using System.ComponentModel.DataAnnotations;
+
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
-    public class WorkoutActivityEditInputModel : IMapFrom<WorkoutActivity>
+    public class WorkoutActivitiesAllViewModel : IMapFrom<WorkoutActivity>
     {
         [Required]
         public string Id { get; set; }

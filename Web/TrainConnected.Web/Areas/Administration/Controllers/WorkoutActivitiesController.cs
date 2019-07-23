@@ -1,14 +1,14 @@
-﻿namespace TrainConnected.Web.Controllers
+﻿namespace TrainConnected.Web.Areas.Administration.Controllers
 {
     using System;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using TrainConnected.Common;
     using TrainConnected.Services.Data.Contracts;
-    using TrainConnected.Web.InputModels.WorkoutActivities;
+    using TrainConnected.Services.Data;
 
-    [Authorize]
-    public class WorkoutActivitiesController : BaseController
+    public class WorkoutActivitiesController : AdministrationController
     {
         private readonly IWorkoutActivitiesService workoutActivitiesService;
 
