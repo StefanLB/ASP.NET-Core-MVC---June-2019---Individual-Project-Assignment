@@ -69,7 +69,7 @@
     </dl>
 </div>
 <div>
-    @if (Model.BookingsCount < Model.MaxParticipants)
+    @if (Model.IsBookableByUser)
     {
         <a asp-controller="Bookings" asp-action="Create" asp-route-id="@Model.Id">Sign Up |</a>
     }

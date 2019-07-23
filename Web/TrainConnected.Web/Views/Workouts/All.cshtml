@@ -6,11 +6,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>All Upcoming Workouts</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -45,44 +42,44 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.ActivityName
-            </td>
-            <td>
-                @item.CoachUserName
-            </td>
-            <td>
-                @item.Time.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
-            </td>
-            <td>
-                @item.Duration
-            </td>
-            <td>
-                @item.Location
-            </td>
-            <td>
-                @item.Price
-            </td>
-            <td>
-                @item.Notes
-            </td>
-            <td>
-                @item.BookingsCount / @item.MaxParticipants
-            </td>
-            <td>
-                @item.CreatedOn
-            </td>
-            <td>
-                @if (item.BookingsCount < item.MaxParticipants)
-                {
-                    <a asp-controller="Bookings" asp-action="Create" asp-route-id="@item.Id">Sign Up |</a>
-                }
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.ActivityName
+                </td>
+                <td>
+                    @item.CoachUserName
+                </td>
+                <td>
+                    @item.Time.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    @item.Duration
+                </td>
+                <td>
+                    @item.Location
+                </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                    @item.Notes
+                </td>
+                <td>
+                    @item.BookingsCount / @item.MaxParticipants
+                </td>
+                <td>
+                    @item.CreatedOn.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    @if (item.BookingsCount < item.MaxParticipants)
+                    {
+                        <a asp-controller="Bookings" asp-action="Create" asp-route-id="@item.Id">Sign Up |</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

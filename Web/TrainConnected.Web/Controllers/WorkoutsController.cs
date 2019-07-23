@@ -27,10 +27,12 @@
             this.workoutActivitiesService = workoutActivitiesService;
         }
 
+        // Displays all upcoming workouts for which the user has not signed up
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var workouts = await this.workoutsService.GetAllAsync();
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var workouts = await this.workoutsService.GetAllUpcomingAsync(userId);
             return this.View(workouts);
         }
 
@@ -43,6 +45,15 @@
         }
 
         [HttpGet]
+        [Authorize(Roles = GlobalConstants.CoachRoleName)]
+        public async Task<IActionResult> MyCreated()
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var workouts = await this.workoutsService.GetMyCreatedAsync(userId);
+            return this.View(workouts);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -50,7 +61,8 @@
                 return this.NotFound();
             }
 
-            var workout = await this.workoutsService.GetDetailsAsync(id);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var workout = await this.workoutsService.GetDetailsAsync(id, userId);
 
             if (workout == null)
             {
@@ -60,8 +72,8 @@
             return this.View(workout);
         }
 
-        [Authorize(Roles =GlobalConstants.CoachRoleName)]
         [HttpGet]
+        [Authorize(Roles =GlobalConstants.CoachRoleName)]
         public async Task<IActionResult> Create()
         {
             var activities = await this.workoutActivitiesService.GetAllAsync();
@@ -71,8 +83,8 @@
             return View();
         }
 
-        [Authorize(Roles = GlobalConstants.CoachRoleName)]
         [HttpPost]
+        [Authorize(Roles = GlobalConstants.CoachRoleName)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(WorkoutCreateInputModel workoutCreateInputModel)
         {
@@ -88,8 +100,8 @@
             return this.View(workoutCreateInputModel);
         }
 
-        [Authorize(Roles = GlobalConstants.CoachRoleName)]
         [HttpGet]
+        [Authorize(Roles = GlobalConstants.CoachRoleName)]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -97,7 +109,7 @@
                 return this.NotFound();
             }
 
-            var workout = await this.workoutsService.GetDetailsAsync(id);
+            var workout = await this.workoutsService.GetDeleteDetailsAsync(id);
 
             if (workout == null)
             {
