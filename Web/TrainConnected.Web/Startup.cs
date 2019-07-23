@@ -137,6 +137,7 @@
                     dbContext.Database.Migrate();
                 }
 
+                // TODO: Remove below if not necessary, roles added via RoleSeeder
                 if (!dbContext.Roles.Any())
                 {
                     dbContext.Roles.Add(new ApplicationRole { Name = "TraineeUser", NormalizedName = "TRAINEEUSER" });

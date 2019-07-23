@@ -4,8 +4,8 @@
     {
         public const string AdministratorRoleName = "Administrator";
 
-        public const string CoachRoleName = "Coach";
+        public const string CoachRoleName = "CoachUser";
 
-        public const string TraineeRoleName = "Trainee";
+        public const string TraineeRoleName = "TraineeUser";
     }
 }

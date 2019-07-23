@@ -9,12 +9,13 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using TrainConnected.Common;
     using TrainConnected.Data.Models.Enums;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Certificates;
     using TrainConnected.Web.ViewModels.WorkoutActivities;
 
-    [Authorize]
+    [Authorize(Roles = GlobalConstants.CoachRoleName)]
     public class CertificatesController : BaseController
     {
         private readonly ICertificatesService certificatesService;

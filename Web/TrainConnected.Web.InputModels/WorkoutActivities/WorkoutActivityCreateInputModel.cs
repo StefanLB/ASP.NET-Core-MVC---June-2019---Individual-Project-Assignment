@@ -1,4 +1,4 @@
-﻿namespace TrainConnected.Web.Areas.Administration.InputModels.WorkoutActivities
+﻿namespace TrainConnected.Web.InputModels.WorkoutActivities
 {
     using System.ComponentModel.DataAnnotations;
     using TrainConnected.Data.Models;

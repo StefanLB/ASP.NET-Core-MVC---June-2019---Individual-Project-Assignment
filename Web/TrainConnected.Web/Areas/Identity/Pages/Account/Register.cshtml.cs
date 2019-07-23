@@ -12,6 +12,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
+    using TrainConnected.Common;
 
     [AllowAnonymous]
 #pragma warning disable SA1649 // File name should match first type name
@@ -53,8 +54,13 @@
                 var user = new TrainConnectedUser { UserName = this.Input.UserName, Email = this.Input.Email,
                                                 PhoneNumber = this.Input.PhoneNumber,
                                                 FirstName = this.Input.FirstName,
-                                                LastName = this.Input.LastName};
+                                                LastName = this.Input.LastName, };
+
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
+
+                // All newly registered users are assigned the "TraineeUser" role.
+                await this.userManager.AddToRoleAsync(user, GlobalConstants.TraineeRoleName);
+
                 if (result.Succeeded)
                 {
                     this.logger.LogInformation("User created a new account with password.");

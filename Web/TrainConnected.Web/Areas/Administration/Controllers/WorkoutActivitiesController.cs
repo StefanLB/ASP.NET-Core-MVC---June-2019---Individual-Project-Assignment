@@ -7,6 +7,7 @@
     using TrainConnected.Common;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Services.Data;
+    using TrainConnected.Web.InputModels.WorkoutActivities;
 
     public class WorkoutActivitiesController : AdministrationController
     {
