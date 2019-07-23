@@ -4,8 +4,6 @@
     using System.Text.Encodings.Web;
     using System.Threading.Tasks;
 
-    using TrainConnected.Data.Models;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
@@ -13,6 +11,7 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
     using TrainConnected.Common;
+    using TrainConnected.Data.Models;
 
     [AllowAnonymous]
 #pragma warning disable SA1649 // File name should match first type name

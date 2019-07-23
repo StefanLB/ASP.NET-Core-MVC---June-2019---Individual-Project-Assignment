@@ -1,8 +1,78 @@
-﻿@{
+﻿@model IEnumerable<TrainConnected.Web.ViewModels.Workouts.WorkoutsHomeViewModel>
+@using  System.Globalization;
+
+@using TrainConnected.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<TrainConnectedUser> SignInManager
+@inject UserManager<TrainConnectedUser> UserManager
+
+@{
     this.ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome to TrainConnected!</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @if (!this.SignInManager.IsSignedIn(this.User))
+    {
+        <p><b><a asp-area="Identity" asp-page="/Account/Register">Join Us</a></b> to explore and sign up for all kinds of various workout activities.</p>
+        <p>Already a member? Well <b><a asp-area="Identity" asp-page="/Account/Login">Sign in</a></b>, buddy!</p>
+
+        <h3>A Preview of All Our Upcoming Workouts</h3>
+    }
+    else
+    {
+        <p>Hey, Buddy! Below is a list of all upcoming workouts.</p>
+        <p>To sign up for an activity, simply go to your <b><a asp-area="" asp-controller="Workouts" asp-action="Find">Find Workouts</a></b> Tab.</p>
+    }
 </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoachUserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingsCount)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.ActivityName
+                </td>
+                <td>
+                    @item.CoachUserName
+                </td>
+                <td>
+                    @item.Time.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    @item.Duration
+                </td>
+                <td>
+                    @item.Location
+                </td>
+                <td>
+                    @item.BookingsCount / @item.MaxParticipants
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

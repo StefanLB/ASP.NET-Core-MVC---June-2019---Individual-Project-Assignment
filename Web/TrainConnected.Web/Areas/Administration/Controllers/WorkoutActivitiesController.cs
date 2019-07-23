@@ -2,11 +2,9 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Authorization;
+
     using Microsoft.AspNetCore.Mvc;
-    using TrainConnected.Common;
     using TrainConnected.Services.Data.Contracts;
-    using TrainConnected.Services.Data;
     using TrainConnected.Web.InputModels.WorkoutActivities;
 
     public class WorkoutActivitiesController : AdministrationController
@@ -31,14 +29,14 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var activity = await this.workoutActivitiesService.GetDetailsAsync(id);
 
             if (activity == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             return View(activity);

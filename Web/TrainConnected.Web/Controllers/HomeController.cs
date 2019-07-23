@@ -1,12 +1,23 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using System.Threading.Tasks;
+    using TrainConnected.Services.Data.Contracts;
 
     public class HomeController : BaseController
     {
-        public IActionResult Index()
+        private readonly IWorkoutsService workoutsService;
+
+        public HomeController(IWorkoutsService workoutsService)
         {
-            return this.View();
+            this.workoutsService = workoutsService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var workouts = await this.workoutsService.GetAllUpcomingHomeAsync();
+
+            return this.View(workouts);
         }
 
         public IActionResult Privacy()

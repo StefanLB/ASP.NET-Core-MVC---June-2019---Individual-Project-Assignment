@@ -29,7 +29,7 @@
 
         // Displays all upcoming workouts for which the user has not signed up
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> Find()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var workouts = await this.workoutsService.GetAllUpcomingAsync(userId);
@@ -102,14 +102,14 @@
 
         [HttpGet]
         [Authorize(Roles = GlobalConstants.CoachRoleName)]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Cancel(string id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var workout = await this.workoutsService.GetDeleteDetailsAsync(id);
+            var workout = await this.workoutsService.GetCancelDetailsAsync(id);
 
             if (workout == null)
             {
@@ -121,13 +121,13 @@
         }
 
         [Authorize(Roles = GlobalConstants.CoachRoleName)]
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Cancel")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> CancelConfirmed(string id)
         {
-            await this.workoutsService.DeleteAsync(id);
+            await this.workoutsService.CancelAsync(id);
 
-            return this.RedirectToAction(nameof(this.All));
+            return this.RedirectToAction(nameof(this.Find));
         }
 
         [NonAction]
@@ -140,7 +140,7 @@
                 selectList.Add(new SelectListItem
                 {
                     Value = element.Name,
-                    Text = element.Name
+                    Text = element.Name,
                 });
             }
 

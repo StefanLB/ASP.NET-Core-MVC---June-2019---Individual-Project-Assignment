@@ -1,18 +1,10 @@
 ﻿namespace TrainConnected.Web
 {
+    using System.Linq;
     using System.Reflection;
 
-    using TrainConnected.Data;
-    using TrainConnected.Data.Common;
-    using TrainConnected.Data.Common.Repositories;
-    using TrainConnected.Data.Models;
-    using TrainConnected.Data.Repositories;
-    using TrainConnected.Data.Seeding;
-    using TrainConnected.Services.Data;
-    using TrainConnected.Services.Mapping;
-    using TrainConnected.Services.Messaging;
-    using TrainConnected.Web.ViewModels;
-
+    using AutoMapper;
+    using Microsoft.AspNetCore.Authentication.Facebook;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -24,11 +16,18 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using TrainConnected.Data;
+    using TrainConnected.Data.Common;
+    using TrainConnected.Data.Common.Repositories;
+    using TrainConnected.Data.Models;
+    using TrainConnected.Data.Repositories;
+    using TrainConnected.Data.Seeding;
+    using TrainConnected.Services.Data;
     using TrainConnected.Services.Data.Contracts;
-    using System.Linq;
-    using AutoMapper;
+    using TrainConnected.Services.Mapping;
+    using TrainConnected.Services.Messaging;
     using TrainConnected.Web.InputModels.WorkoutActivities;
-    using Microsoft.AspNetCore.Authentication.Facebook;
+    using TrainConnected.Web.ViewModels;
 
     public class Startup
     {
@@ -126,10 +125,10 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            AutoMapperConfig.RegisterMappings( new[]
+            AutoMapperConfig.RegisterMappings(new[]
             {
                 typeof(ErrorViewModel).GetTypeInfo().Assembly,
-                typeof(WorkoutActivityEditInputModel).GetTypeInfo().Assembly
+                typeof(WorkoutActivityEditInputModel).GetTypeInfo().Assembly,
             });
 
             // Seed data on application startup

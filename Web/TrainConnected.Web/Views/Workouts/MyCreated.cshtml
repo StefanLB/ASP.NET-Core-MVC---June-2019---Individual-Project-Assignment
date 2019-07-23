@@ -72,7 +72,7 @@
                 <a asp-action="Details" asp-route-id="@item.Id">Details </a>
                 @if(item.Time > DateTime.UtcNow && item.BookingsCount == 0)
                 {
-                    <a asp-action="Delete" asp-route-id="@item.Id">| Delete</a>
+                    <a asp-action="Cancel" asp-route-id="@item.Id">| Cancel</a>
                 }
             </td>
         </tr>
