@@ -32,6 +32,8 @@
 
         public string Username { get; set; }
 
+        public string Email { get; set; }
+
         public bool IsEmailConfirmed { get; set; }
 
         [TempData]
@@ -52,15 +54,19 @@
             var email = await this.userManager.GetEmailAsync(user);
             var phoneNumber = await this.userManager.GetPhoneNumberAsync(user);
 
-            this.Username = userName;
 
             this.Input = new InputModel
             {
+                UserName = userName,
                 Email = email,
                 PhoneNumber = phoneNumber,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
             };
 
             this.IsEmailConfirmed = await this.userManager.IsEmailConfirmedAsync(user);
+            this.Username = userName;
+            this.Email = email;
 
             return this.Page();
         }
@@ -78,8 +84,10 @@
                 return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
+
+            // If username and email are identical, the user will have to change their username prior to changing their email
             var email = await this.userManager.GetEmailAsync(user);
-            if (this.Input.Email != email)
+            if (this.Input.Email != email && email != user.UserName)
             {
                 var setEmailResult = await this.userManager.SetEmailAsync(user, this.Input.Email);
                 if (!setEmailResult.Succeeded)
@@ -99,6 +107,29 @@
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
+
+            var userName = await this.userManager.GetUserNameAsync(user);
+            if (this.Input.UserName != userName && this.Input.UserName != email)
+            {
+                var setuserNameResult = await this.userManager.SetUserNameAsync(user, this.Input.UserName);
+                if (!setuserNameResult.Succeeded)
+                {
+                    var userId = await this.userManager.GetUserIdAsync(user);
+                    throw new InvalidOperationException($"Unexpected error occurred setting username for user with ID '{userId}'.");
+                }
+            }
+
+            if (this.Input.FirstName != null && this.Input.FirstName.Length >= 3)
+            {
+                user.FirstName = this.Input.FirstName;
+            }
+
+            if (this.Input.LastName != null && this.Input.LastName.Length >= 3)
+            {
+                user.LastName = this.Input.LastName;
+            }
+
+            await this.userManager.UpdateAsync(user);
 
             await this.signInManager.RefreshSignInAsync(user);
             this.StatusMessage = "Your profile has been updated";
@@ -138,12 +169,24 @@
         public class InputModel
         {
             [Required]
+            [Display(Name = "Username")]
+            public string UserName { get; set; }
+
+            [Required]
             [EmailAddress]
             public string Email { get; set; }
 
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
+
+            [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
         }
     }
 }

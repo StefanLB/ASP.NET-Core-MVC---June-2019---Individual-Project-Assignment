@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
+    using TrainConnected.Common;
     using TrainConnected.Data;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Data.Contracts;
@@ -34,6 +35,14 @@
         }
 
         [HttpGet]
+        public async Task<IActionResult> My()
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var workouts = await this.workoutsService.GetMyAsync(userId);
+            return this.View(workouts);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -51,6 +60,7 @@
             return this.View(workout);
         }
 
+        [Authorize(Roles =GlobalConstants.CoachRoleName)]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -61,6 +71,7 @@
             return View();
         }
 
+        [Authorize(Roles = GlobalConstants.CoachRoleName)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(WorkoutCreateInputModel workoutCreateInputModel)
@@ -77,6 +88,7 @@
             return this.View(workoutCreateInputModel);
         }
 
+        [Authorize(Roles = GlobalConstants.CoachRoleName)]
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
@@ -96,6 +108,7 @@
 
         }
 
+        [Authorize(Roles = GlobalConstants.CoachRoleName)]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)

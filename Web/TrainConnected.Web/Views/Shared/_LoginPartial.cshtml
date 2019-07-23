@@ -13,9 +13,13 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropbtn text-dark" asp-area="" asp-controller="Workouts" asp-action="All" role="button" aria-haspopup="true" aria-expanded="false">Workouts</a>
                 <div class="dropdown-content">
-                    <a class="dropdown-item" href="#">Find Workouts</a>
-                    <a class="dropdown-item" href="#">My Workouts</a>
-                    <a class="dropdown-item" href="#">Create Workout</a>
+                    <a class="dropdown-item" asp-area="" asp-controller="Workouts" asp-action="All">Find Workouts</a>
+                    <a class="dropdown-item" asp-area="" asp-controller="Workouts" asp-action="My">My Workouts</a>
+                    @if (this.User.IsInRole(GlobalConstants.CoachRoleName))
+                    {
+                        <a class="dropdown-item" asp-area="" asp-controller="Workouts" asp-action="Create">Create Workout</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Workouts" asp-action="MyCreated">My Created Workouts</a>
+                    }
                 </div>
             </li>
             <li class="nav-item dropdown">
