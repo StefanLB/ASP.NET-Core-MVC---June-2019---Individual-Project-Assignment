@@ -28,6 +28,7 @@
     using System.Linq;
     using AutoMapper;
     using TrainConnected.Web.InputModels.WorkoutActivities;
+    using Microsoft.AspNetCore.Authentication.Facebook;
 
     public class Startup
     {
@@ -60,6 +61,13 @@
                 .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI(UIFramework.Bootstrap4);
+
+            services.
+                AddAuthentication().AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.AppId = this.configuration["Authentication:Facebook:AppId"];
+                    facebookOptions.AppSecret = this.configuration["Authentication:Facebook:AppSecret"];
+                });
 
             services
                 .AddAutoMapper();
