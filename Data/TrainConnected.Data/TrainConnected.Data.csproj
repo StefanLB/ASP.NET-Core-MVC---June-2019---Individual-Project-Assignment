@@ -13,6 +13,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20190711110731_initial-create.cs" />
     <Compile Remove="Migrations\20190711110731_initial-create.Designer.cs" />
+    <Compile Remove="Migrations\20190724081103_AddedPictureLinkToWorkoutActivities.cs" />
+    <Compile Remove="Migrations\20190724081103_AddedPictureLinkToWorkoutActivities.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

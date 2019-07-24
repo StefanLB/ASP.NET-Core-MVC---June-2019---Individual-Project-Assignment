@@ -17,5 +17,8 @@
         [Required]
         [StringLength(100, ErrorMessage = "Field cannot contain more than 100 characters")]
         public string Description { get; set; }
+
+        [Required]
+        public string Picture { get; set; }
     }
 }

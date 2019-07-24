@@ -11,9 +11,12 @@
     {
         private readonly IWorkoutActivitiesService workoutActivitiesService;
 
-        public WorkoutActivitiesController(IWorkoutActivitiesService workoutActivitiesService)
+        private readonly ICloudinaryService cloudinaryService;
+
+        public WorkoutActivitiesController(IWorkoutActivitiesService workoutActivitiesService, ICloudinaryService cloudinaryService)
         {
             this.workoutActivitiesService = workoutActivitiesService;
+            this.cloudinaryService = cloudinaryService;
         }
 
         [HttpGet]
@@ -54,7 +57,14 @@
         {
             if (this.ModelState.IsValid)
             {
-                var result = await this.workoutActivitiesService.CreateAsync(workoutActivityCreateInputModel);
+                string pictureUrl = await this.cloudinaryService.UploadPictureAsync(
+                    workoutActivityCreateInputModel.Picture,
+                    workoutActivityCreateInputModel.Name);
+
+                var workoutActivityServiceModel = AutoMapper.Mapper.Map<WorkoutActivityServiceModel>(workoutActivityCreateInputModel);
+                workoutActivityServiceModel.Picture = pictureUrl;
+
+                var result = await this.workoutActivitiesService.CreateAsync(workoutActivityServiceModel);
 
                 return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
             }

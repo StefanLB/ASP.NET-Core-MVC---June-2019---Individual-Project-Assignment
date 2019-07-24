@@ -1,10 +1,11 @@
 ﻿namespace TrainConnected.Services.Data
 {
-    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
     using TrainConnected.Data.Common.Repositories;
     using TrainConnected.Data.Models;
     using TrainConnected.Data.Models.Enums;
@@ -33,6 +34,7 @@
 
         public async Task<BookingDetailsViewModel> CreateAsync(BookingCreateInputModel bookingCreateInputModel, string userId)
         {
+            // TODO: coaches should not sign up for their workouts, should not be able to sign up for a fully booked workout, user should not be able to sign up twice
             var workout = await this.workoutsRepository.All()
                 .FirstOrDefaultAsync(x => x.Id == bookingCreateInputModel.WorkoutId);
 
@@ -49,9 +51,10 @@
                 throw new NullReferenceException();
             }
 
+            // TODO: If user already has a booking which overlaps with this workout, send warning message
             if (user.Bookings.Any(x => x.WorkoutId == workout.Id))
             {
-                //TODO: user already has booked this workout, do not allow a second booking, also try to hide the "Sign Up" button from them
+                // TODO: user already has booked this workout, do not allow a second booking, also try to hide the "Sign Up" button from them
                 throw new NullReferenceException();
             }
 
@@ -138,7 +141,7 @@
 
         public async Task<WorkoutDetailsViewModel> GetWorkoutByIdAsync(string id)
         {
-            var workout = await this.workoutsService.GetDetailsAsync(id);
+            var workout = await this.workoutsService.GetBookingDetailsAsync(id);
 
             return workout;
         }

@@ -4,6 +4,7 @@
     using System.Reflection;
 
     using AutoMapper;
+    using CloudinaryDotNet;
     using Microsoft.AspNetCore.Authentication.Facebook;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -60,6 +61,15 @@
                 .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI(UIFramework.Bootstrap4);
+
+            Account cloudinaryCredentials = new Account(
+                this.configuration["Authentication:Cloudinary:CloudName"],
+                this.configuration["Authentication:Cloudinary:ApiKey"],
+                this.configuration["Authentication:Cloudinary:ApiSecret"]);
+
+            Cloudinary cloudinaryUtility = new Cloudinary(cloudinaryCredentials);
+
+            services.AddSingleton(cloudinaryUtility);
 
             services.
                 AddAuthentication().AddFacebook(facebookOptions =>
@@ -120,6 +130,7 @@
             services.AddTransient<IWorkoutsService, WorkoutsService>();
             services.AddTransient<IWorkoutActivitiesService, WorkoutActivitiesService>();
             services.AddTransient<IBuddiesService, BuddiesService>();
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

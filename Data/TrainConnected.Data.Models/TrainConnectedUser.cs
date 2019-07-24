@@ -3,11 +3,10 @@ namespace TrainConnected.Data.Models
 {
     using System;
     using System.Collections.Generic;
-
-    using TrainConnected.Data.Common.Models;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using Microsoft.AspNetCore.Identity;
-    using System.ComponentModel.DataAnnotations.Schema;
+    using TrainConnected.Data.Common.Models;
 
     [Table("AspNetUsers")]
     public class TrainConnectedUser : IdentityUser, IAuditInfo, IDeletableEntity, ITrainConnectedUser

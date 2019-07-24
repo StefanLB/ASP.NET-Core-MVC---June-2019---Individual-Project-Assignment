@@ -1,10 +1,11 @@
 ﻿namespace TrainConnected.Services.Data
 {
-    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
     using TrainConnected.Data.Common.Repositories;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Data.Contracts;
@@ -21,11 +22,11 @@
             this.workoutActivitiesRepository = workoutActivitiesRepository;
         }
 
-        public async Task<WorkoutActivityDetailsViewModel> CreateAsync(WorkoutActivityCreateInputModel workoutActivityCreateInputModel)
+        public async Task<WorkoutActivityDetailsViewModel> CreateAsync(WorkoutActivityServiceModel workoutActivityServiceModel)
         {
             // TODO: create additional method, to be used in Edit as well
             var checkActivityExists = this.workoutActivitiesRepository.All()
-                .FirstOrDefault(x => x.Name == workoutActivityCreateInputModel.Name);
+                .FirstOrDefault(x => x.Name == workoutActivityServiceModel.Name);
 
             if (checkActivityExists != null)
             {
@@ -34,8 +35,9 @@
 
             var workoutActivity = new WorkoutActivity
             {
-                Name = workoutActivityCreateInputModel.Name,
-                Description = workoutActivityCreateInputModel.Description
+                Name = workoutActivityServiceModel.Name,
+                Description = workoutActivityServiceModel.Description,
+                Picture = workoutActivityServiceModel.Picture,
             };
 
             await this.workoutActivitiesRepository.AddAsync(workoutActivity);

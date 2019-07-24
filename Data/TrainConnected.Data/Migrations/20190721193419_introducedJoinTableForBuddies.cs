@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace TrainConnected.Data.Migrations
+﻿namespace TrainConnected.Data.Migrations
 {
+    using System;
+
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class introducedJoinTableForBuddies : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

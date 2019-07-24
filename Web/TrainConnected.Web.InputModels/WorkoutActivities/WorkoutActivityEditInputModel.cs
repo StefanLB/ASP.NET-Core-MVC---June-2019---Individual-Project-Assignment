@@ -1,6 +1,7 @@
 ﻿namespace TrainConnected.Web.InputModels.WorkoutActivities
 {
     using System.ComponentModel.DataAnnotations;
+
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 

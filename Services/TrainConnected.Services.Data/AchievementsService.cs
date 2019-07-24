@@ -1,12 +1,11 @@
 ﻿namespace TrainConnected.Services.Data
 {
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using TrainConnected.Data;
+
+    using Microsoft.EntityFrameworkCore;
     using TrainConnected.Data.Common.Repositories;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Data.Contracts;

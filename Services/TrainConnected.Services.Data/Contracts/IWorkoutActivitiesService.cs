@@ -14,7 +14,7 @@
 
         Task<IEnumerable<WorkoutActivitiesAllViewModel>> GetAllAsync();
 
-        Task<WorkoutActivityDetailsViewModel> CreateAsync(WorkoutActivityCreateInputModel workoutActivityCreateInputModel);
+        Task<WorkoutActivityDetailsViewModel> CreateAsync(WorkoutActivityServiceModel workoutActivityServiceModel);
 
         Task UpdateAsync(WorkoutActivityEditInputModel workoutActivityEditInputModel);
 

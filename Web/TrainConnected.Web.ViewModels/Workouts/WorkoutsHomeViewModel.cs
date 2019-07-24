@@ -2,11 +2,10 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
-    public class WorkoutDetailsViewModel : IMapFrom<Workout>
+    public class WorkoutsHomeViewModel : IMapFrom<Workout>
     {
         public string Id { get; set; }
 
@@ -22,19 +21,10 @@
 
         public int Duration { get; set; }
 
-        public decimal Price { get; set; }
-
-        public string Notes { get; set; }
-
         [Display(Name = "Currently Signed Up")]
         public int BookingsCount { get; set; }
 
         [Display(Name = "Max Participants")]
         public int MaxParticipants { get; set; }
-
-        [Display(Name = "Created On")]
-        public DateTime CreatedOn { get; set; }
-
-        public bool IsBookableByUser { get; set; }
     }
 }

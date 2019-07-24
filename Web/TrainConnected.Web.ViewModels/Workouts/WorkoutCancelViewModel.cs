@@ -1,12 +1,12 @@
 ﻿namespace TrainConnected.Web.ViewModels.Workouts
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
-    public class WorkoutDetailsViewModel : IMapFrom<Workout>
+    public class WorkoutCancelViewModel : IMapFrom<Workout>
     {
         public string Id { get; set; }
 
@@ -34,7 +34,5 @@
 
         [Display(Name = "Created On")]
         public DateTime CreatedOn { get; set; }
-
-        public bool IsBookableByUser { get; set; }
     }
 }

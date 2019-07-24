@@ -1,19 +1,17 @@
 ﻿namespace TrainConnected.Services.Data
 {
-    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
     using TrainConnected.Data.Common.Repositories;
     using TrainConnected.Data.Models;
-    using TrainConnected.Data.Models.Enums;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Services.Mapping;
     using TrainConnected.Web.InputModels.Certificates;
     using TrainConnected.Web.ViewModels.Certificates;
-
-    using AutoMap = AutoMapper;
 
     public class CertificatesService : ICertificatesService
     {
@@ -55,11 +53,9 @@
             certificate.ExpiresOn = certificateEditInputModel.ExpiresOn;
             certificate.Description = certificateEditInputModel.Description;
 
-
             this.certificatesRepository.Update(certificate);
             await this.certificatesRepository.SaveChangesAsync();
         }
-
 
         public async Task<CertificateDetailsViewModel> CreateAsync(CertificateCreateInputModel certificatesCreateInputModel, string username)
         {
@@ -87,7 +83,7 @@
                 ExpiresOn = certificatesCreateInputModel.ExpiresOn,
                 Description = certificatesCreateInputModel.Description,
                 TrainConnectedUser = user,
-                TrainConnectedUserId = user.Id
+                TrainConnectedUserId = user.Id,
             };
 
             await this.certificatesRepository.AddAsync(certificate);
