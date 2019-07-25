@@ -19,6 +19,7 @@
         public string Description { get; set; }
 
         [Required]
-        public string Picture { get; set; }
+        [Display(Name = "Activity Icon")]
+        public string ActivityIcon { get; set; }
     }
 }

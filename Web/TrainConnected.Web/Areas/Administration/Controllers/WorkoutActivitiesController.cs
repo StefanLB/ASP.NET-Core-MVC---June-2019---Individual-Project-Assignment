@@ -58,11 +58,11 @@
             if (this.ModelState.IsValid)
             {
                 string pictureUrl = await this.cloudinaryService.UploadPictureAsync(
-                    workoutActivityCreateInputModel.Picture,
+                    workoutActivityCreateInputModel.ActivityIcon,
                     workoutActivityCreateInputModel.Name);
 
                 var workoutActivityServiceModel = AutoMapper.Mapper.Map<WorkoutActivityServiceModel>(workoutActivityCreateInputModel);
-                workoutActivityServiceModel.Picture = pictureUrl;
+                workoutActivityServiceModel.ActivityIcon = pictureUrl;
 
                 var result = await this.workoutActivitiesService.CreateAsync(workoutActivityServiceModel);
 

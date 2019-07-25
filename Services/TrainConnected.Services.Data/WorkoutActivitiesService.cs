@@ -37,7 +37,7 @@
             {
                 Name = workoutActivityServiceModel.Name,
                 Description = workoutActivityServiceModel.Description,
-                Picture = workoutActivityServiceModel.Picture,
+                ActivityIcon = workoutActivityServiceModel.ActivityIcon,
             };
 
             await this.workoutActivitiesRepository.AddAsync(workoutActivity);

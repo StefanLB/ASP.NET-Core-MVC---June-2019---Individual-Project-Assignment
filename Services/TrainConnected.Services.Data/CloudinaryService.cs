@@ -34,6 +34,7 @@
                 {
                     Folder = "WorkoutActivities",
                     File = new FileDescription(fileName, ms),
+                    PublicId = fileName,
                 };
 
                 uploadResult = this.cloudinaryUtility.Upload(uploadParams);
