@@ -9,8 +9,6 @@
 
         public string Description { get; set; }
 
-
-
-        public string ActivityIcon { get; set; }
+        public string Icon { get; set; }
     }
 }

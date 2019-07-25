@@ -8,6 +8,6 @@ namespace TrainConnected.Data.Models
 
         string Description { get; set; }
 
-        string ActivityIcon { get; set; }
+        string Icon { get; set; }
     }
 }

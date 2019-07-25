@@ -14,7 +14,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ActivityIcon)
+                @Html.DisplayNameFor(model => model.Icon)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -29,7 +29,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                <img src="@Url.Content(item.ActivityIcon)" />
+                <img src="@Url.Content(item.Icon)" />
             </td>
             <td>
                 @item.Name

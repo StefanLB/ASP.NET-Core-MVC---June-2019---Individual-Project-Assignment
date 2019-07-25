@@ -20,6 +20,6 @@
 
         [Required]
         [Display(Name = "Activity Icon")]
-        public string ActivityIcon { get; set; }
+        public string Icon { get; set; }
     }
 }

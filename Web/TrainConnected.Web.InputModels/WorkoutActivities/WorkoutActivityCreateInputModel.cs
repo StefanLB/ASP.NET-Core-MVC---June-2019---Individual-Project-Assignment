@@ -17,7 +17,7 @@
         public string Description { get; set; }
 
         [Required]
-        [Display(Name="Activity Icon")]
-        public IFormFile ActivityIcon { get; set; }
+        [Display(Name="Icon")]
+        public IFormFile Icon { get; set; }
     }
 }

@@ -12,6 +12,9 @@
         [Display(Name = "Activity")]
         public string ActivityName { get; set; }
 
+        [Display(Name = "Icon")]
+        public string ActivityIcon { get; set; }
+
         [Display(Name = "Coach")]
         public string CoachUserName { get; set; }
 
@@ -21,7 +24,7 @@
 
         public int Duration { get; set; }
 
-        [Display(Name = "Currently Signed Up")]
+        [Display(Name = "Signed Up")]
         public int BookingsCount { get; set; }
 
         [Display(Name = "Max Participants")]

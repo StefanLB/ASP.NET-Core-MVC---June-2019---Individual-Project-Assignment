@@ -15,6 +15,6 @@
         public string Description { get; set; }
 
         [Required]
-        public string ActivityIcon { get; set; }
+        public string Icon { get; set; }
     }
 }
