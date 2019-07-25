@@ -99,7 +99,7 @@
                 .Where(w => !userWorkoutsIds.Contains(w.Id))
                 .Where(c => c.CoachId != userId)
                 .To<WorkoutsAllViewModel>()
-                .OrderByDescending(x => x.Time)
+                .OrderBy(x => x.Time)
                 .ThenBy(x => x.ActivityName)
                 .ThenByDescending(x => x.CreatedOn)
                 .ToArrayAsync();
@@ -112,7 +112,7 @@
             var workouts = await this.workoutsRepository.All()
                 .Where(t => t.Time > DateTime.UtcNow)
                 .To<WorkoutsHomeViewModel>()
-                .OrderByDescending(x => x.Time)
+                .OrderBy(x => x.Time)
                 .ThenBy(x => x.ActivityName)
                 .ToArrayAsync();
 
