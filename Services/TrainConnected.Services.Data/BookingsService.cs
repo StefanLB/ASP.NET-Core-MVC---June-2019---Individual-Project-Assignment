@@ -116,6 +116,20 @@
         {
             var bookings = await this.bookingsRepository.All()
                 .Where(x => x.TrainConnectedUserId == userId)
+                .Where(t => t.Workout.Time > DateTime.UtcNow)
+                .To<BookingsAllViewModel>()
+                .OrderBy(x => x.WorkoutTime)
+                .ThenByDescending(x => x.CreatedOn)
+                .ToArrayAsync();
+
+            return bookings;
+        }
+
+        public async Task<IEnumerable<BookingsAllViewModel>> GetAllHistoryAsync(string userId)
+        {
+            var bookings = await this.bookingsRepository.All()
+                .Where(x => x.TrainConnectedUserId == userId)
+                .Where(t => t.Workout.Time <= DateTime.UtcNow)
                 .To<BookingsAllViewModel>()
                 .OrderByDescending(x => x.WorkoutTime)
                 .ThenByDescending(x => x.CreatedOn)

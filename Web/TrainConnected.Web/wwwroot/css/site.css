@@ -5,6 +5,7 @@ a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
+    color: #2ECC71;
 }
 
 /* Sticky footer styles
@@ -80,7 +81,7 @@ body {
 }
 
     .dropdown-content a:hover {
-        color: #94C045;
+        color: #2ECC71;
         background-color: #ddd;
     }
 
@@ -90,5 +91,5 @@ body {
 
 .dropdown:hover .dropbtn {
     border-radius: 5px;
-    background-color: #94C045;
+    background-color: #2ECC71;
 }

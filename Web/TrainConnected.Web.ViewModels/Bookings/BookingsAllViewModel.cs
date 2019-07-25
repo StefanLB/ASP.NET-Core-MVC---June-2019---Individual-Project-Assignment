@@ -23,7 +23,7 @@
         [Display(Name = "Coach")]
         public string WorkoutCoachUserName { get; set; }
 
-        [Display(Name = "Time")]
+        [Display(Name = "Workout Time")]
         public DateTime WorkoutTime { get; set; }
 
         [Display(Name = "Location")]

@@ -32,6 +32,14 @@
         }
 
         [HttpGet]
+        public async Task<IActionResult> AllHistory()
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var bookings = await this.bookingsService.GetAllHistoryAsync(userId);
+            return this.View(bookings);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)

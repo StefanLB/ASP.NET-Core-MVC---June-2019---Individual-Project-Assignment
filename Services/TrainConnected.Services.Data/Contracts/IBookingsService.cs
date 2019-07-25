@@ -17,6 +17,8 @@
 
         Task<IEnumerable<BookingsAllViewModel>> GetAllAsync(string userId);
 
+        Task<IEnumerable<BookingsAllViewModel>> GetAllHistoryAsync(string userId);
+
         Task CancelAsync(string id);
     }
 }
