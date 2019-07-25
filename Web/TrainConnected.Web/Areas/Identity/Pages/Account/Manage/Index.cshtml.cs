@@ -110,11 +110,17 @@
             var userName = await this.userManager.GetUserNameAsync(user);
             if (this.Input.UserName != userName && this.Input.UserName != email)
             {
-                var setuserNameResult = await this.userManager.SetUserNameAsync(user, this.Input.UserName);
-                if (!setuserNameResult.Succeeded)
+                var userWithSameName = await this.userManager.FindByNameAsync(this.Input.UserName);
+
+                // Username will only be updated if there is no other user with the same name in the database
+                if (userWithSameName == null)
                 {
-                    var userId = await this.userManager.GetUserIdAsync(user);
-                    throw new InvalidOperationException($"Unexpected error occurred setting username for user with ID '{userId}'.");
+                    var setuserNameResult = await this.userManager.SetUserNameAsync(user, this.Input.UserName);
+                    if (!setuserNameResult.Succeeded)
+                    {
+                        var userId = await this.userManager.GetUserIdAsync(user);
+                        throw new InvalidOperationException($"Unexpected error occurred setting username for user with ID '{userId}'.");
+                    }
                 }
             }
 

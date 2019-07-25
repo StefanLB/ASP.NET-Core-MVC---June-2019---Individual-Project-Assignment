@@ -50,7 +50,7 @@
                     @item.ActivityName
                 </td>
                 <td>
-                    @item.CoachUserName
+                    <a asp-controller="Buddies" asp-action="CoachDetails" asp-route-coachUserName="@item.CoachUserName">@item.CoachUserName</a>
                 </td>
                 <td>
                     @item.Time.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)

@@ -11,16 +11,21 @@
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Services.Mapping;
     using TrainConnected.Web.ViewModels.Buddies;
+    using TrainConnected.Web.ViewModels.Certificates;
 
     public class BuddiesService : IBuddiesService
     {
         private readonly IRepository<TrainConnectedUser> usersRepository;
         private readonly IRepository<TrainConnectedUsersBuddies> usersBuddiesRepository;
+        private readonly IRepository<Certificate> certificatesRepository;
+        private readonly IRepository<Workout> workoutsRepository;
 
-        public BuddiesService(IRepository<TrainConnectedUser> usersRepository, IRepository<TrainConnectedUsersBuddies> usersBuddiesRepository)
+        public BuddiesService(IRepository<TrainConnectedUser> usersRepository, IRepository<TrainConnectedUsersBuddies> usersBuddiesRepository, IRepository<Certificate> certificatesRepository, IRepository<Workout> workoutsRepository)
         {
             this.usersRepository = usersRepository;
             this.usersBuddiesRepository = usersBuddiesRepository;
+            this.certificatesRepository = certificatesRepository;
+            this.workoutsRepository = workoutsRepository;
         }
 
         public async Task AddAsync(string id, string userId)
@@ -106,6 +111,31 @@
                 .FirstOrDefaultAsync();
 
             return buddy;
+        }
+
+        public async Task<CoachDetailsViewModel> GetCoachDetailsAsync(string coachUserName)
+        {
+            var coachDetailsViewModel = await this.usersRepository.All()
+                .Where(x => x.UserName == coachUserName)
+                .To<CoachDetailsViewModel>()
+                .FirstOrDefaultAsync();
+
+            if (coachDetailsViewModel == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            coachDetailsViewModel.Certificates = await this.certificatesRepository.All()
+                .Where(x => x.TrainConnectedUserId == coachDetailsViewModel.Id)
+                .Where(e => (!e.ExpiresOn.HasValue) || (e.ExpiresOn > DateTime.UtcNow))
+                .To<CertificatesAllViewModel>()
+                .ToArrayAsync();
+
+            coachDetailsViewModel.WorkoutsCoached = this.workoutsRepository.All()
+                .Where(c => c.CoachId == coachDetailsViewModel.Id)
+                .Count();
+
+            return coachDetailsViewModel;
         }
 
         public async Task RemoveAsync(string id, string userId)

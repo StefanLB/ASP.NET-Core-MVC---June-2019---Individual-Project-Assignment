@@ -11,6 +11,8 @@
 
         Task<BuddyDetailsViewModel> GetDetailsAsync(string id, string userId);
 
+        Task<CoachDetailsViewModel> GetCoachDetailsAsync(string coachUserName);
+
         Task RemoveAsync(string id, string userId);
 
         Task<IEnumerable<BuddiesAllViewModel>> GetAllAsync(string userId);

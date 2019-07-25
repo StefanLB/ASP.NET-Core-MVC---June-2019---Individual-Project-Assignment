@@ -1,0 +1,96 @@
+﻿@model TrainConnected.Web.ViewModels.Buddies.CoachDetailsViewModel
+@using System.Globalization;
+
+@{
+    ViewData["Title"] = "Coach Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h4>Details about Coach @Model.UserName</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.UserName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.FirstName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.LastName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.CreatedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkoutsCoached)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.WorkoutsCoached
+        </dd>
+    </dl>
+</div>
+@if(@Model.Certificates.Count()>0)
+{
+    <div>
+        <h4>@Model.UserName's Certificates</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Certificates.First().ActivityName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Certificates.First().IssuedBy)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Certificates.First().IssuedOn)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Certificates.First().ExpiresOn)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Certificates.First().Description)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Certificates)
+            {
+                <tr>
+                    <td>
+                        @item.ActivityName
+                    </td>
+                    <td>
+                        @item.IssuedBy
+                    </td>
+                    <td>
+                        @item.IssuedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        @(item.ExpiresOn == null ? "" : ((DateTime)item.ExpiresOn).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+<div>
+    <a asp-controller="Workouts" asp-action="Find">Back to List</a>
+</div>

@@ -51,6 +51,21 @@
         }
 
         [HttpGet]
+        public async Task<IActionResult> CoachDetails(string coachUserName)
+        {
+            if (coachUserName == null)
+            {
+                return this.NotFound();
+            }
+
+
+
+            var coachDetails = await this.buddiesService.GetCoachDetailsAsync(coachUserName);
+
+            return this.View(coachDetails);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Add(string id)
         {
             if (id == null)
