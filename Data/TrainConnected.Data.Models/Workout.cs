@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using TrainConnected.Data.Common.Models;
-    using TrainConnected.Data.Models.Enums;
 
     public class Workout : BaseDeletableModel<string>, IWorkout
     {
@@ -11,7 +10,7 @@
         {
             this.Bookings = new HashSet<Booking>();
             this.Users = new HashSet<TrainConnectedUsersWorkouts>();
-            this.AcceptedPaymentMethods = new HashSet<PaymentMethod>();
+            this.PaymentMethods = new HashSet<WorkoutsPaymentMethods>();
         }
 
         public string ActivityId { get; set; }
@@ -28,7 +27,7 @@
 
         public decimal Price { get; set; }
 
-        public ICollection<PaymentMethod> AcceptedPaymentMethods { get; set; }
+        public ICollection<WorkoutsPaymentMethods> PaymentMethods { get; set; }
 
         public string Notes { get; set; }
 

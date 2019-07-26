@@ -42,6 +42,10 @@
 
         public DbSet<TrainConnectedUsersBuddies> TrainConnectedUsersBuddies { get; set; }
 
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
+
+        public DbSet<WorkoutsPaymentMethods> WorkoutsPaymentMethods { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -137,6 +141,14 @@
                 .HasOne(ub => ub.TrainConnectedUser)
                 .WithMany(b => b.Buddies)
                 .HasForeignKey(ub => ub.TrainConnectedUserId);
+
+            builder.Entity<WorkoutsPaymentMethods>()
+                .HasKey(wp => new { wp.WorkoutId, wp.PaymentMethodId });
+
+            builder.Entity<WorkoutsPaymentMethods>()
+                .HasOne(wp => wp.Workout)
+                .WithMany(p => p.PaymentMethods)
+                .HasForeignKey(w => w.WorkoutId);
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)
