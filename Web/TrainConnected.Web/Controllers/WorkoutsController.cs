@@ -1,5 +1,6 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
@@ -11,6 +12,7 @@
     using TrainConnected.Common;
     using TrainConnected.Data;
     using TrainConnected.Data.Models;
+    using TrainConnected.Data.Models.Enums;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Workouts;
     using TrainConnected.Web.ViewModels.WorkoutActivities;
@@ -73,14 +75,17 @@
         }
 
         [HttpGet]
-        [Authorize(Roles =GlobalConstants.CoachRoleName)]
+        [Authorize(Roles = GlobalConstants.CoachRoleName)]
         public async Task<IActionResult> Create()
         {
             var activities = await this.workoutActivitiesService.GetAllAsync();
             var activitiesSelectList = await this.GetAllWorkoutActivitiesAsSelectListItems(activities);
             this.ViewData["Activities"] = activitiesSelectList;
 
-            return View();
+            var paymentMethods = this.GetAllPaymentMethodsAsList();
+            this.ViewData["PaymentMethods"] = paymentMethods;
+
+            return this.View();
         }
 
         [HttpPost]
@@ -142,6 +147,19 @@
                     Value = element.Name,
                     Text = element.Name,
                 });
+            }
+
+            return selectList;
+        }
+
+        [NonAction]
+        private IEnumerable<string> GetAllPaymentMethodsAsList()
+        {
+            var selectList = new List<string>();
+
+            foreach (PaymentMethod pm in (PaymentMethod[])Enum.GetValues(typeof(PaymentMethod)))
+            {
+                selectList.Add(pm.ToString());
             }
 
             return selectList;

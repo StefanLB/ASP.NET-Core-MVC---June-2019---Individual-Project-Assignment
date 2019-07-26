@@ -60,6 +60,7 @@
         [HttpGet]
         public async Task<IActionResult> Create(string id)
         {
+            // TODO: Perhaps workoutsService should provide the workout, instead of bookingsService
             var workout = await this.bookingsService.GetWorkoutByIdAsync(id);
             var paymentMethods = await this.GetAllPaymentMethodsAsSelectListItems();
 

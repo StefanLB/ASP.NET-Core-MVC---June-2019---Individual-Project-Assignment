@@ -1,6 +1,7 @@
 ﻿namespace TrainConnected.Web.InputModels.Workouts
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
@@ -24,6 +25,10 @@
         // TODO: Add validation - cannot be a negative number
         [Required]
         public decimal Price { get; set; }
+
+        [Required]
+        [Display(Name ="Accepted Payment Methods")]
+        public List<string> AcceptedPaymentMethods { get; set; }
 
         [Required]
         public string Notes { get; set; }

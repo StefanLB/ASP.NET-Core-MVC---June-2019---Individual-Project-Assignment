@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using TrainConnected.Data.Models.Enums;
 
     public interface IWorkout
     {
@@ -18,6 +19,8 @@
         int Duration { get; set; }
 
         decimal Price { get; set; }
+
+        ICollection<PaymentMethod> AcceptedPaymentMethods { get; set; }
 
         string Notes { get; set; }
 
