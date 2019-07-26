@@ -9,7 +9,6 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
-    using TrainConnected.Data.Models.Enums;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Bookings;
 
@@ -62,10 +61,10 @@
         {
             // TODO: Perhaps workoutsService should provide the workout, instead of bookingsService
             var workout = await this.bookingsService.GetWorkoutByIdAsync(id);
-            var paymentMethods = await this.GetAllPaymentMethodsAsSelectListItems();
+            //var paymentMethods = await this.GetAllPaymentMethodsAsSelectListItems();
 
             ViewData["Workout"] = workout;
-            ViewData["PaymentMethods"] = paymentMethods;
+            //ViewData["PaymentMethods"] = paymentMethods;
 
             return View();
         }
@@ -113,21 +112,21 @@
             return this.RedirectToAction(nameof(this.All));
         }
 
-        [NonAction]
-        private async Task<IEnumerable<SelectListItem>> GetAllPaymentMethodsAsSelectListItems()
-        {
-            var selectList = new List<SelectListItem>();
+        //[NonAction]
+        //private async Task<IEnumerable<SelectListItem>> GetAllPaymentMethodsAsSelectListItems()
+        //{
+        //    var selectList = new List<SelectListItem>();
 
-            foreach (PaymentMethod pm in (PaymentMethod[])Enum.GetValues(typeof(PaymentMethod)))
-            {
-                selectList.Add(new SelectListItem
-                {
-                    Value = pm.ToString(),
-                    Text = pm.ToString(),
-                });
-            }
+        //    foreach (PaymentMethod pm in (PaymentMethod[])Enum.GetValues(typeof(PaymentMethod)))
+        //    {
+        //        selectList.Add(new SelectListItem
+        //        {
+        //            Value = pm.ToString(),
+        //            Text = pm.ToString(),
+        //        });
+        //    }
 
-            return selectList;
-        }
+        //    return selectList;
+        //}
     }
 }

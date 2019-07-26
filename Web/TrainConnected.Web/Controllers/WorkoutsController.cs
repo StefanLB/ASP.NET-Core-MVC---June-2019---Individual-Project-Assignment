@@ -12,7 +12,6 @@
     using TrainConnected.Common;
     using TrainConnected.Data;
     using TrainConnected.Data.Models;
-    using TrainConnected.Data.Models.Enums;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Workouts;
     using TrainConnected.Web.ViewModels.WorkoutActivities;
@@ -82,8 +81,8 @@
             var activitiesSelectList = await this.GetAllWorkoutActivitiesAsSelectListItems(activities);
             this.ViewData["Activities"] = activitiesSelectList;
 
-            var paymentMethods = this.GetAllPaymentMethodsAsList();
-            this.ViewData["PaymentMethods"] = paymentMethods;
+            //var paymentMethods = this.GetAllPaymentMethodsAsList();
+            //this.ViewData["PaymentMethods"] = paymentMethods;
 
             return this.View();
         }
@@ -152,17 +151,17 @@
             return selectList;
         }
 
-        [NonAction]
-        private IEnumerable<string> GetAllPaymentMethodsAsList()
-        {
-            var selectList = new List<string>();
+        //[NonAction]
+        //private IEnumerable<string> GetAllPaymentMethodsAsList()
+        //{
+        //    var selectList = new List<string>();
 
-            foreach (PaymentMethod pm in (PaymentMethod[])Enum.GetValues(typeof(PaymentMethod)))
-            {
-                selectList.Add(pm.ToString());
-            }
+        //    foreach (PaymentMethod pm in (PaymentMethod[])Enum.GetValues(typeof(PaymentMethod)))
+        //    {
+        //        selectList.Add(pm.ToString());
+        //    }
 
-            return selectList;
-        }
+        //    return selectList;
+        //}
     }
 }

@@ -4,7 +4,6 @@
     using System.ComponentModel.DataAnnotations;
 
     using TrainConnected.Data.Models;
-    using TrainConnected.Data.Models.Enums;
     using TrainConnected.Services.Mapping;
 
     public class CertificateCreateInputModel : IMapFrom<Certificate>

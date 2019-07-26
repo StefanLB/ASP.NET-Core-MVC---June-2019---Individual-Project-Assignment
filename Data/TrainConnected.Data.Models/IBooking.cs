@@ -1,12 +1,12 @@
 ﻿namespace TrainConnected.Data.Models
 {
-    using TrainConnected.Data.Models.Enums;
 
     public interface IBooking
     {
         string TrainConnectedUserId { get; set; }
         TrainConnectedUser TrainConnectedUser { get; set; }
 
+        string PaymentMethodId { get; set; }
         PaymentMethod PaymentMethod { get; set; }
 
         decimal Price { get; set; }
