@@ -39,37 +39,41 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.PaymentMethod
-            </td>
-            <td>
-                @item.Price
-            </td>
-            <td>
-                @item.CreatedOn.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
-            </td>
-            <td>
-                @item.WorkoutActivityName
-            </td>
-            <td>
-                @item.WorkoutCoachUserName
-            </td>
-            <td>
-                @item.WorkoutTime.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
-            </td>
-            <td>
-                @item.WorkoutLocation
-            </td>
-            <td>
-                @item.WorkoutNotes
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> | 
-                <a asp-action="Cancel" asp-route-id="@item.Id">Cancel</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.PaymentMethod
+                </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                    @item.CreatedOn.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    @item.WorkoutActivityName
+                </td>
+                <td>
+                    @item.WorkoutCoachUserName
+                </td>
+                <td>
+                    @item.WorkoutTime.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    @item.WorkoutLocation
+                </td>
+                <td>
+                    @item.WorkoutNotes
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (item.PaymentMethodPaymentInAdvance == false)
+                    {
+                        <a asp-action="Cancel" asp-route-id="@item.Id">Cancel |</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

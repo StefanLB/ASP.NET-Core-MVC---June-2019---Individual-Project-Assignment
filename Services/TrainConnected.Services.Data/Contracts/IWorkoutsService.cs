@@ -14,8 +14,6 @@
 
         Task<WorkoutCancelViewModel> GetCancelDetailsAsync(string id);
 
-        Task<WorkoutDetailsViewModel> GetBookingDetailsAsync(string id);
-
         Task<IEnumerable<WorkoutsAllViewModel>> GetAllUpcomingAsync(string userId);
 
         Task<IEnumerable<WorkoutsHomeViewModel>> GetAllUpcomingHomeAsync();

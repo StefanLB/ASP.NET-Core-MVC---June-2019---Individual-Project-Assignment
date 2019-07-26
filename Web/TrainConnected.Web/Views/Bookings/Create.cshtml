@@ -6,7 +6,7 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var workout = ViewData["Workout"] as WorkoutDetailsViewModel;
-    var paymentMethods = ViewData["PaymentMethods"] as IEnumerable<SelectListItem>;
+    var acceptedPaymentMethods = workout.AcceptedPaymentMethods;
 }
 
 <h1>Create</h1>
@@ -17,11 +17,12 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="PaymentMethod"></label>
-                <select asp-for="PaymentMethod" asp-items="paymentMethods" class="form-control col-md-12">
-                    <option selected="" disabled="">--Select payment method--</option>
-                </select>
+            <div class="form-group form-check">
+                <label asp-for="PaymentMethod"></label><br/>
+                @foreach (var acceptedPaymentMethod in acceptedPaymentMethods)
+                {
+                    <input asp-for="PaymentMethod" type="radio" value="@acceptedPaymentMethod" /> @acceptedPaymentMethod<br/>
+                }
                 <span asp-validation-for="PaymentMethod" class="text-danger"></span>
             </div>
             <div class="form-group">

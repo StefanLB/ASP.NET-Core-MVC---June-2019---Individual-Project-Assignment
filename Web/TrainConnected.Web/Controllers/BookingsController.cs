@@ -16,10 +16,12 @@
     public class BookingsController : BaseController
     {
         private readonly IBookingsService bookingsService;
+        private readonly IWorkoutsService workoutsService;
 
-        public BookingsController(IBookingsService bookingsService)
+        public BookingsController(IBookingsService bookingsService, IWorkoutsService workoutsService)
         {
             this.bookingsService = bookingsService;
+            this.workoutsService = workoutsService;
         }
 
         [HttpGet]
@@ -59,14 +61,12 @@
         [HttpGet]
         public async Task<IActionResult> Create(string id)
         {
-            // TODO: Perhaps workoutsService should provide the workout, instead of bookingsService
-            var workout = await this.bookingsService.GetWorkoutByIdAsync(id);
-            //var paymentMethods = await this.GetAllPaymentMethodsAsSelectListItems();
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var workout = await this.workoutsService.GetDetailsAsync(id, userId);
 
-            ViewData["Workout"] = workout;
-            //ViewData["PaymentMethods"] = paymentMethods;
+            this.ViewData["Workout"] = workout;
 
-            return View();
+            return this.View();
         }
 
         [HttpPost]
@@ -100,6 +100,12 @@
                 return this.NotFound();
             }
 
+            if (DateTime.UtcNow > booking.WorkoutTime || booking.PaymentMethodPaymentInAdvance == true)
+            {
+                // TODO: user tried to cancel a booking which cannot be cancelled: should redirect to forbidden or something else
+                return this.NotFound();
+            }
+
             return this.View(booking);
         }
 
@@ -111,22 +117,5 @@
 
             return this.RedirectToAction(nameof(this.All));
         }
-
-        //[NonAction]
-        //private async Task<IEnumerable<SelectListItem>> GetAllPaymentMethodsAsSelectListItems()
-        //{
-        //    var selectList = new List<SelectListItem>();
-
-        //    foreach (PaymentMethod pm in (PaymentMethod[])Enum.GetValues(typeof(PaymentMethod)))
-        //    {
-        //        selectList.Add(new SelectListItem
-        //        {
-        //            Value = pm.ToString(),
-        //            Text = pm.ToString(),
-        //        });
-        //    }
-
-        //    return selectList;
-        //}
     }
 }

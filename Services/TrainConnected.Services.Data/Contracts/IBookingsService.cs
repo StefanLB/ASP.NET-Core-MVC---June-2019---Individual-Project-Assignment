@@ -9,8 +9,6 @@
 
     public interface IBookingsService
     {
-        Task<WorkoutDetailsViewModel> GetWorkoutByIdAsync(string id);
-
         Task<BookingDetailsViewModel> CreateAsync(BookingCreateInputModel bookingCreateInputModel, string userId);
 
         Task<BookingDetailsViewModel> GetDetailsAsync(string id);

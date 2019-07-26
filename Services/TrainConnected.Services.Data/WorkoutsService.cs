@@ -233,23 +233,6 @@
             return workoutDetailsViewModel;
         }
 
-        public async Task<WorkoutDetailsViewModel> GetBookingDetailsAsync(string id)
-        {
-            var workoutDetailsViewModel = await this.workoutsRepository.All()
-                .Where(x => x.Id == id)
-                .To<WorkoutDetailsViewModel>()
-                .FirstOrDefaultAsync();
-
-            if (workoutDetailsViewModel == null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            workoutDetailsViewModel.IsBookableByUser = true;
-
-            return workoutDetailsViewModel;
-        }
-
         public async Task<WorkoutCancelViewModel> GetCancelDetailsAsync(string id)
         {
             var workout = await this.workoutsRepository.All()

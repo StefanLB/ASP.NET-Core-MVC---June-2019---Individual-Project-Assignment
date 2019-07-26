@@ -13,6 +13,9 @@
         [Display(Name = "Payment Method")]
         public string PaymentMethod { get; set; }
 
+        [Display(Name ="Paid in Advance")]
+        public bool PaymentMethodPaymentInAdvance { get; set; }
+
         public decimal Price { get; set; }
 
         [Display(Name ="Created On")]

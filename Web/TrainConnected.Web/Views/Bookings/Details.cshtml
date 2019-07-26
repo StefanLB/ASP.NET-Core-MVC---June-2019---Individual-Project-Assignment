@@ -88,7 +88,8 @@
     </dl>
 </div>
 <div>
-    @if (Model.WorkoutTime > DateTime.UtcNow)
+    @if (Model.WorkoutTime > DateTime.UtcNow &&
+        Model.PaymentMethodPaymentInAdvance == false)
     {
     <a asp-action="Cancel" asp-route-id="@Model.Id">Cancel |</a>
     }

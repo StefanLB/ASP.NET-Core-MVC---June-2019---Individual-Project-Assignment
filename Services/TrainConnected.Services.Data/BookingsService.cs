@@ -21,19 +21,20 @@
         private readonly IWorkoutsService workoutsService;
         private readonly IRepository<Booking> bookingsRepository;
         private readonly IRepository<ITrainConnectedUsersWorkouts> trainConnectedUsersWorkoutsRepository;
+        private readonly IRepository<PaymentMethod> paymentMethodsRepository;
 
-        public BookingsService(IRepository<Workout> workoutsRepository, IRepository<TrainConnectedUser> usersRepository, IWorkoutsService workoutsService, IRepository<Booking> bookingsRepository, IRepository<ITrainConnectedUsersWorkouts> trainConnectedUsersWorkoutsRepository)
+        public BookingsService(IRepository<Workout> workoutsRepository, IRepository<TrainConnectedUser> usersRepository, IWorkoutsService workoutsService, IRepository<Booking> bookingsRepository, IRepository<ITrainConnectedUsersWorkouts> trainConnectedUsersWorkoutsRepository, IRepository<PaymentMethod> paymentMethodsRepository)
         {
             this.workoutsRepository = workoutsRepository;
             this.usersRepository = usersRepository;
             this.workoutsService = workoutsService;
             this.bookingsRepository = bookingsRepository;
             this.trainConnectedUsersWorkoutsRepository = trainConnectedUsersWorkoutsRepository;
+            this.paymentMethodsRepository = paymentMethodsRepository;
         }
 
         public async Task<BookingDetailsViewModel> CreateAsync(BookingCreateInputModel bookingCreateInputModel, string userId)
         {
-            // TODO: coaches should not sign up for their workouts, should not be able to sign up for a fully booked workout, user should not be able to sign up twice
             var workout = await this.workoutsRepository.All()
                 .FirstOrDefaultAsync(x => x.Id == bookingCreateInputModel.WorkoutId);
 
@@ -41,6 +42,12 @@
             {
                 throw new NullReferenceException();
             }
+
+            var workoutBookings = await this.workoutsRepository.All()
+                .Where(x => x.Id == bookingCreateInputModel.WorkoutId)
+                .To<WorkoutDetailsViewModel>()
+                .Select(b => b.BookingsCount)
+                .FirstOrDefaultAsync();
 
             var user = await this.usersRepository.All()
                 .FirstOrDefaultAsync(x => x.Id == userId);
@@ -50,18 +57,34 @@
                 throw new NullReferenceException();
             }
 
-            // TODO: If user already has a booking which overlaps with this workout, send warning message
-            if (user.Bookings.Any(x => x.WorkoutId == workout.Id))
+            var paymentMethod = await this.paymentMethodsRepository.All()
+                .FirstOrDefaultAsync(pm => pm.Name == bookingCreateInputModel.PaymentMethod);
+
+            if (paymentMethod == null)
             {
-                // TODO: user already has booked this workout, do not allow a second booking, also try to hide the "Sign Up" button from them
                 throw new NullReferenceException();
+            }
+
+            /*
+             * Check if:
+             * 1. Workout has not begun;
+             * 2. User is not the coach;
+             * 3. Workout is not fully booked;
+             * 4. user has not yet booked the workout.
+             */
+            if (workout.Time <= DateTime.UtcNow ||
+                workout.CoachId == userId ||
+                workoutBookings >= workout.MaxParticipants ||
+                user.Bookings.Any(x => x.WorkoutId == workout.Id))
+            {
+                throw new InvalidOperationException();
             }
 
             var booking = new Booking
             {
                 TrainConnectedUser = user,
                 TrainConnectedUserId = user.Id,
-                PaymentMethod = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), bookingCreateInputModel.PaymentMethod),
+                PaymentMethod = paymentMethod,
                 Price = bookingCreateInputModel.Price,
                 WorkoutId = workout.Id,
                 Workout = workout,
@@ -76,6 +99,13 @@
 
             await this.bookingsRepository.AddAsync(booking);
             await this.bookingsRepository.SaveChangesAsync();
+
+            if (booking.PaymentMethod.PaymentInAdvance)
+            {
+                user.Balance += booking.Price;
+                this.usersRepository.Update(user);
+                await this.usersRepository.SaveChangesAsync();
+            }
 
             var bookingDetailsViewModel = AutoMapper.Mapper.Map<BookingDetailsViewModel>(booking);
             return bookingDetailsViewModel;
@@ -98,10 +128,12 @@
             var user = await this.usersRepository.All()
                 .FirstOrDefaultAsync(x => x.Id == booking.TrainConnectedUserId);
 
-            if (workout.Time > DateTime.UtcNow)
+            var paymentMethod = await this.paymentMethodsRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == booking.PaymentMethodId);
+
+            if (workout.Time > DateTime.UtcNow && !paymentMethod.PaymentInAdvance)
             {
                 booking.IsDeleted = true;
-                user.Balance += booking.Price;
 
                 this.bookingsRepository.Update(booking);
                 await this.bookingsRepository.SaveChangesAsync();
@@ -150,13 +182,6 @@
             }
 
             return booking;
-        }
-
-        public async Task<WorkoutDetailsViewModel> GetWorkoutByIdAsync(string id)
-        {
-            var workout = await this.workoutsService.GetBookingDetailsAsync(id);
-
-            return workout;
         }
     }
 }
