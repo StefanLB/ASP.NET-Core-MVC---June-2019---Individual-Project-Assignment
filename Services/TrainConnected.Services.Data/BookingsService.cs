@@ -20,10 +20,10 @@
         private readonly IRepository<TrainConnectedUser> usersRepository;
         private readonly IWorkoutsService workoutsService;
         private readonly IRepository<Booking> bookingsRepository;
-        private readonly IRepository<ITrainConnectedUsersWorkouts> trainConnectedUsersWorkoutsRepository;
+        private readonly IRepository<TrainConnectedUsersWorkouts> trainConnectedUsersWorkoutsRepository;
         private readonly IRepository<PaymentMethod> paymentMethodsRepository;
 
-        public BookingsService(IRepository<Workout> workoutsRepository, IRepository<TrainConnectedUser> usersRepository, IWorkoutsService workoutsService, IRepository<Booking> bookingsRepository, IRepository<ITrainConnectedUsersWorkouts> trainConnectedUsersWorkoutsRepository, IRepository<PaymentMethod> paymentMethodsRepository)
+        public BookingsService(IRepository<Workout> workoutsRepository, IRepository<TrainConnectedUser> usersRepository, IWorkoutsService workoutsService, IRepository<Booking> bookingsRepository, IRepository<TrainConnectedUsersWorkouts> trainConnectedUsersWorkoutsRepository, IRepository<PaymentMethod> paymentMethodsRepository)
         {
             this.workoutsRepository = workoutsRepository;
             this.usersRepository = usersRepository;
@@ -102,8 +102,11 @@
 
             if (booking.PaymentMethod.PaymentInAdvance)
             {
-                user.Balance += booking.Price;
-                this.usersRepository.Update(user);
+                var coachUser = await this.usersRepository.All()
+                    .FirstOrDefaultAsync(x => x.Id == workout.CoachId);
+
+                coachUser.Balance += booking.Price;
+                this.usersRepository.Update(coachUser);
                 await this.usersRepository.SaveChangesAsync();
             }
 
@@ -140,6 +143,14 @@
 
                 this.usersRepository.Update(user);
                 await this.usersRepository.SaveChangesAsync();
+
+                var userWorkoutConnection = await this.trainConnectedUsersWorkoutsRepository.All()
+                    .Where(u => u.TrainConnectedUserId == user.Id)
+                    .Where(w => w.WorkoutId == workout.Id)
+                    .FirstOrDefaultAsync();
+
+                this.trainConnectedUsersWorkoutsRepository.Delete(userWorkoutConnection);
+                await this.trainConnectedUsersWorkoutsRepository.SaveChangesAsync();
             }
         }
 
@@ -173,6 +184,22 @@
         {
             var booking = await this.bookingsRepository.All()
                 .Where(x => x.Id == id)
+                .To<BookingDetailsViewModel>()
+                .FirstOrDefaultAsync();
+
+            if (booking == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return booking;
+        }
+
+        public async Task<BookingDetailsViewModel> GetDetailsByWorkoutIdAsync(string id, string userId)
+        {
+            var booking = await this.bookingsRepository.All()
+                .Where(x => x.WorkoutId == id)
+                .Where(x => x.TrainConnectedUserId == userId)
                 .To<BookingDetailsViewModel>()
                 .FirstOrDefaultAsync();
 

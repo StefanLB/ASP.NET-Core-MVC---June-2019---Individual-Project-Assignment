@@ -10,7 +10,7 @@
         public string Id { get; set; }
 
         [Display(Name = "Payment Method")]
-        public string PaymentMethod { get; set; }
+        public string PaymentMethodName { get; set; }
 
         [Display(Name = "Paid in Advance")]
         public bool PaymentMethodPaymentInAdvance { get; set; }

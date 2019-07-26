@@ -13,6 +13,8 @@
 
         Task<BookingDetailsViewModel> GetDetailsAsync(string id);
 
+        Task<BookingDetailsViewModel> GetDetailsByWorkoutIdAsync(string id, string userId);
+
         Task<IEnumerable<BookingsAllViewModel>> GetAllAsync(string userId);
 
         Task<IEnumerable<BookingsAllViewModel>> GetAllHistoryAsync(string userId);

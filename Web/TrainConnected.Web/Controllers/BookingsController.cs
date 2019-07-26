@@ -59,6 +59,25 @@
         }
 
         [HttpGet]
+        public async Task<IActionResult> DetailsByWorkoutId(string id)
+        {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var booking = await this.bookingsService.GetDetailsByWorkoutIdAsync(id, userId);
+
+            if (booking == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.RedirectToAction(nameof(this.Details), new { id = booking.Id });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Create(string id)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;

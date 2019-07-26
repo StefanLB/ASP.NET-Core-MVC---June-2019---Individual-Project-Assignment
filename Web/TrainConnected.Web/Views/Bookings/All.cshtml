@@ -12,7 +12,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentMethod)
+                @Html.DisplayNameFor(model => model.PaymentMethodName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
@@ -43,7 +43,7 @@
         {
             <tr>
                 <td>
-                    @item.PaymentMethod
+                    @item.PaymentMethodName
                 </td>
                 <td>
                     @item.Price
@@ -67,10 +67,10 @@
                     @item.WorkoutNotes
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details </a>
                     @if (item.PaymentMethodPaymentInAdvance == false)
                     {
-                        <a asp-action="Cancel" asp-route-id="@item.Id">Cancel |</a>
+                        <a asp-action="Cancel" asp-route-id="@item.Id">| Cancel</a>
                     }
                 </td>
             </tr>

@@ -12,7 +12,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentMethod)
+                @Html.DisplayNameFor(model => model.PaymentMethodName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
@@ -42,7 +42,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @item.PaymentMethod
+                @item.PaymentMethodName
             </td>
             <td>
                 @item.Price
