@@ -131,6 +131,8 @@
             services.AddTransient<IWorkoutActivitiesService, WorkoutActivitiesService>();
             services.AddTransient<IBuddiesService, BuddiesService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
+            services.AddTransient<IPaymentMethodsService, PaymentMethodsService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
