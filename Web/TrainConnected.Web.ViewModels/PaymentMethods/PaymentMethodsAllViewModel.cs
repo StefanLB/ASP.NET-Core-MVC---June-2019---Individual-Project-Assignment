@@ -15,6 +15,7 @@
         public string Name { get; set; }
 
         [Required]
+        [Display(Name ="Payment In Advance")]
         public bool PaymentInAdvance { get; set; }
     }
 }

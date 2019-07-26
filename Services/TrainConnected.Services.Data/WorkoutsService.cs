@@ -19,13 +19,17 @@
         private readonly IRepository<TrainConnectedUser> usersRepository;
         private readonly IRepository<WorkoutActivity> workoutActivityRepository;
         private readonly IRepository<TrainConnectedUsersWorkouts> usersWorkoutsRepository;
+        private readonly IRepository<PaymentMethod> paymentMethodsRepository;
+        private readonly IRepository<WorkoutsPaymentMethods> workoutsPaymentsMethodsRepository;
 
-        public WorkoutsService(IRepository<Workout> workoutsRepository, IRepository<TrainConnectedUser> usersRepository, IRepository<WorkoutActivity> workoutActivityRepository, IRepository<TrainConnectedUsersWorkouts> usersWorkoutsRepository)
+        public WorkoutsService(IRepository<Workout> workoutsRepository, IRepository<TrainConnectedUser> usersRepository, IRepository<WorkoutActivity> workoutActivitiesRepository, IRepository<TrainConnectedUsersWorkouts> usersWorkoutsRepository, IRepository<PaymentMethod> paymentMethodsRepository, IRepository<WorkoutsPaymentMethods> workoutsPaymentsMethodsRepository)
         {
             this.workoutsRepository = workoutsRepository;
             this.usersRepository = usersRepository;
-            this.workoutActivityRepository = workoutActivityRepository;
+            this.workoutActivityRepository = workoutActivitiesRepository;
             this.usersWorkoutsRepository = usersWorkoutsRepository;
+            this.paymentMethodsRepository = paymentMethodsRepository;
+            this.workoutsPaymentsMethodsRepository = workoutsPaymentsMethodsRepository;
         }
 
         public async Task<WorkoutDetailsViewModel> CreateAsync(WorkoutCreateInputModel workoutCreateInputModel, string userId)
@@ -46,6 +50,15 @@
                 throw new NullReferenceException();
             }
 
+            var paymentMethods = this.paymentMethodsRepository.All()
+                .Where(n => workoutCreateInputModel.PaymentMethods.Contains(n.Name))
+                .ToArray();
+
+            if (paymentMethods == null)
+            {
+                throw new NullReferenceException();
+            }
+
             var workout = new Workout
             {
                 ActivityId = workoutActivity.Id,
@@ -62,6 +75,17 @@
 
             await this.workoutsRepository.AddAsync(workout);
             await this.workoutsRepository.SaveChangesAsync();
+
+            foreach (var paymentMethod in paymentMethods)
+            {
+                await this.workoutsPaymentsMethodsRepository.AddAsync(new WorkoutsPaymentMethods
+                {
+                    WorkoutId = workout.Id,
+                    PaymentMethodId = paymentMethod.Id,
+                });
+            }
+
+            await this.workoutsPaymentsMethodsRepository.SaveChangesAsync();
 
             var workoutDetailsViewModel = AutoMapper.Mapper.Map<WorkoutDetailsViewModel>(workout);
             return workoutDetailsViewModel;
@@ -161,6 +185,18 @@
             {
                 throw new InvalidOperationException();
             }
+
+            var paymentMethodsIds = await this.workoutsPaymentsMethodsRepository.All()
+                .Where(x => x.WorkoutId == id)
+                .Select(pm => pm.PaymentMethodId)
+                .ToArrayAsync();
+
+            var paymentMethodsNames = await this.paymentMethodsRepository.All()
+                .Where(pm => paymentMethodsIds.Contains(pm.Id))
+                .Select(n => n.Name)
+                .ToArrayAsync();
+
+            workoutDetailsViewModel.AcceptedPaymentMethods = paymentMethodsNames;
 
             workoutDetailsViewModel.IsBookableByUser = false;
 

@@ -13,6 +13,7 @@
     using TrainConnected.Data;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Data.Contracts;
+    using TrainConnected.Web.InputModels.PaymentMethods;
     using TrainConnected.Web.InputModels.Workouts;
     using TrainConnected.Web.ViewModels.WorkoutActivities;
 
@@ -21,11 +22,13 @@
     {
         private readonly IWorkoutsService workoutsService;
         private readonly IWorkoutActivitiesService workoutActivitiesService;
+        private readonly IPaymentMethodsService paymentMethodsService;
 
-        public WorkoutsController(IWorkoutsService workoutsService, IWorkoutActivitiesService workoutActivitiesService)
+        public WorkoutsController(IWorkoutsService workoutsService, IWorkoutActivitiesService workoutActivitiesService, IPaymentMethodsService paymentMethodsService)
         {
             this.workoutsService = workoutsService;
             this.workoutActivitiesService = workoutActivitiesService;
+            this.paymentMethodsService = paymentMethodsService;
         }
 
         // Displays all upcoming workouts for which the user has not signed up
@@ -81,8 +84,10 @@
             var activitiesSelectList = await this.GetAllWorkoutActivitiesAsSelectListItems(activities);
             this.ViewData["Activities"] = activitiesSelectList;
 
-            //var paymentMethods = this.GetAllPaymentMethodsAsList();
-            //this.ViewData["PaymentMethods"] = paymentMethods;
+            var paymentMethods = await this.paymentMethodsService.GetAllAsync();
+            var paymentMethodsNames = paymentMethods.Select(x => x.Name).ToList();
+
+            this.ViewData["PaymentMethods"] = paymentMethodsNames;
 
             return this.View();
         }
@@ -90,10 +95,12 @@
         [HttpPost]
         [Authorize(Roles = GlobalConstants.CoachRoleName)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(WorkoutCreateInputModel workoutCreateInputModel)
+        public async Task<IActionResult> Create(WorkoutCreateInputModel workoutCreateInputModel, List<string> AcceptedPaymentMethods)
         {
-            if (this.ModelState.IsValid)
+            if (this.ModelState.IsValid && AcceptedPaymentMethods.Count > 0)
             {
+                workoutCreateInputModel.PaymentMethods = AcceptedPaymentMethods;
+
                 var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
                 var result = await this.workoutsService.CreateAsync(workoutCreateInputModel, userId);
@@ -150,18 +157,5 @@
 
             return selectList;
         }
-
-        //[NonAction]
-        //private IEnumerable<string> GetAllPaymentMethodsAsList()
-        //{
-        //    var selectList = new List<string>();
-
-        //    foreach (PaymentMethod pm in (PaymentMethod[])Enum.GetValues(typeof(PaymentMethod)))
-        //    {
-        //        selectList.Add(pm.ToString());
-        //    }
-
-        //    return selectList;
-        //}
     }
 }

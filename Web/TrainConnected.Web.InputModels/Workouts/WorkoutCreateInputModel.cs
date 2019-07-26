@@ -5,9 +5,15 @@
     using System.ComponentModel.DataAnnotations;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
+    using TrainConnected.Web.InputModels.PaymentMethods;
 
     public class WorkoutCreateInputModel : IMapFrom<Workout>
     {
+        public WorkoutCreateInputModel()
+        {
+            this.PaymentMethods = new HashSet<string>();
+        }
+
         [Required]
         public string Activity { get; set; }
 
@@ -28,7 +34,7 @@
 
         [Required]
         [Display(Name ="Accepted Payment Methods")]
-        public List<string> AcceptedPaymentMethods { get; set; }
+        public ICollection<string> PaymentMethods { get; set; }
 
         [Required]
         public string Notes { get; set; }

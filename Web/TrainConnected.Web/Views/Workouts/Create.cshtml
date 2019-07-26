@@ -1,10 +1,12 @@
 ﻿@model TrainConnected.Web.InputModels.Workouts.WorkoutCreateInputModel
+@using TrainConnected.Web.InputModels.PaymentMethods
+@using System.Linq;
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var activities = this.ViewData["Activities"] as IEnumerable<SelectListItem>;
-    var acceptedPaymentMethods = this.ViewData["PaymentMethods"] as List<string>;
+    var paymentMethods = this.ViewData["PaymentMethods"] as List<string>;
 }
 
 <h1>Create</h1>
@@ -43,12 +45,12 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AcceptedPaymentMethods" class="control-label"></label>
-                @for (var i = 0; i <= acceptedPaymentMethods.Count; i++)
+                <label asp-for="PaymentMethods" class="control-label"></label><br />
+                @foreach (var paymentMethod in paymentMethods)
                 {
-                    <input asp-for="AcceptedPaymentMethods" type="checkbox" value="@acceptedPaymentMethods[i]" /> @acceptedPaymentMethods[i]<br />
+                        <input name="AcceptedPaymentMethods" type="checkbox" value="@paymentMethod" /> @paymentMethod<br />
                 }
-                <span asp-validation-for="AcceptedPaymentMethods" class="text-danger"></span>
+                <span asp-validation-for="PaymentMethods" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Notes" class="control-label"></label>

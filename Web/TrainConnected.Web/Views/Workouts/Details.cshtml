@@ -16,7 +16,7 @@
             @Html.DisplayNameFor(model => model.ActivityName)
         </dt>
         <dd class="col-sm-10">
-            <img src="@Url.Content(Model.ActivityIcon)" /> | 
+            <img src="@Url.Content(Model.ActivityIcon)" /> |
             @Model.ActivityName
         </dd>
         <dt class="col-sm-2">
@@ -48,6 +48,12 @@
         </dt>
         <dd class="col-sm-10">
             @Model.Price
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AcceptedPaymentMethods)
+        </dt>
+        <dd class="col-sm-10">
+            @String.Join(", ", Model.AcceptedPaymentMethods)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Notes)

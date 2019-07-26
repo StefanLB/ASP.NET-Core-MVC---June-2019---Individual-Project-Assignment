@@ -1,6 +1,7 @@
 ﻿namespace TrainConnected.Web.ViewModels.Workouts
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using TrainConnected.Data.Models;
@@ -8,6 +9,11 @@
 
     public class WorkoutDetailsViewModel : IMapFrom<Workout>
     {
+        public WorkoutDetailsViewModel()
+        {
+            this.AcceptedPaymentMethods = new HashSet<string>();
+        }
+
         public string Id { get; set; }
 
         [Display(Name = "Activity")]
@@ -26,6 +32,9 @@
         public int Duration { get; set; }
 
         public decimal Price { get; set; }
+
+        [Display(Name ="Accepted Payment Methods")]
+        public ICollection<string> AcceptedPaymentMethods { get; set; }
 
         public string Notes { get; set; }
 
