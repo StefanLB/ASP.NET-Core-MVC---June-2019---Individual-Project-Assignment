@@ -61,13 +61,13 @@
             @if (!Model.RolesNames.Contains(userRole))
             {
                 <dd class="col-sm-10">
-                    <a asp-action="AddRole" asp-area="Administration" asp-route-roleName="@userRole">Add @userRole Role</a>
+                    <a asp-action="AddRole" asp-area="Administration" asp-route-roleName="@userRole" asp-route-id="@Model.Id">Add @userRole Role</a>
                 </dd>
             }
             else
             {
                 <dd class="col-sm-10">
-                    <a asp-action="RemoveRole" asp-area="Administration" asp-route-roleName="@userRole">Remove @userRole Role</a>
+                    <a asp-action="RemoveRole" asp-area="Administration" asp-route-roleName="@userRole"  asp-route-id="@Model.Id">Remove @userRole Role</a>
                 </dd>
             }
         }

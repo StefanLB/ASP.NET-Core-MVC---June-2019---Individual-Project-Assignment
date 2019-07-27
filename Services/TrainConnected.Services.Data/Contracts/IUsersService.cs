@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+
     using TrainConnected.Web.ViewModels.Users;
 
     public interface IUsersService
@@ -11,6 +12,10 @@
         Task UnlockUserAsync(string id);
 
         Task LockUserAsync(string id);
+
+        Task AddRoleAsync(string roleName, string id);
+
+        Task RemoveRoleAsync(string roleName, string id);
 
         Task<UserDetailsViewModel> GetUserDetailsAsync(string id);
 

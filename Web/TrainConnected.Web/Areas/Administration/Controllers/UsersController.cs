@@ -54,5 +54,31 @@
 
             return this.View(userDetails);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AddRole(string roleName, string id)
+        {
+            if (roleName == null || id == null)
+            {
+                return this.NotFound();
+            }
+
+            await this.usersService.AddRoleAsync(roleName, id);
+
+            return this.RedirectToAction(nameof(this.All));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RemoveRole(string roleName, string id)
+        {
+            if (roleName == null || id == null)
+            {
+                return this.NotFound();
+            }
+
+            await this.usersService.RemoveRoleAsync(roleName, id);
+
+            return this.RedirectToAction(nameof(this.All));
+        }
     }
 }

@@ -57,8 +57,9 @@
 
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
 
+                var userToAssignRole = await this.userManager.FindByIdAsync(user.Id);
                 // All newly registered users are assigned the "TraineeUser" role.
-                await this.userManager.AddToRoleAsync(user, GlobalConstants.TraineeRoleName);
+                await this.userManager.AddToRoleAsync(userToAssignRole, GlobalConstants.TraineeRoleName);
 
                 if (result.Succeeded)
                 {

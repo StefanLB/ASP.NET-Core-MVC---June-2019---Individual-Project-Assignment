@@ -19,13 +19,15 @@
         private readonly IRepository<IdentityUserRole<string>> usersRolesRepository;
         private readonly IRepository<IdentityRole<string>> rolesRepository;
         private readonly RoleManager<ApplicationRole> roleManager;
+        private readonly UserManager<TrainConnectedUser> userManager;
 
-        public UsersService(IRepository<TrainConnectedUser> usersRepository, IRepository<IdentityUserRole<string>> usersRolesRepository, IRepository<IdentityRole<string>> rolesRepository, RoleManager<ApplicationRole> roleManager)
+        public UsersService(IRepository<TrainConnectedUser> usersRepository, IRepository<IdentityUserRole<string>> usersRolesRepository, IRepository<IdentityRole<string>> rolesRepository, RoleManager<ApplicationRole> roleManager, UserManager<TrainConnectedUser> userManager)
         {
             this.usersRepository = usersRepository;
             this.usersRolesRepository = usersRolesRepository;
             this.rolesRepository = rolesRepository;
             this.roleManager = roleManager;
+            this.userManager = userManager;
         }
 
         public async Task<IEnumerable<UsersAllViewModel>> GetAllAsync(string adminId)
@@ -112,6 +114,48 @@
                 .ToArrayAsync();
 
             return rolesNames;
+        }
+
+        public async Task AddRoleAsync(string roleName, string id)
+        {
+            var user = await this.usersRepository.All()
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var roleToAdd = await this.roleManager.FindByNameAsync(roleName);
+
+            if (roleToAdd == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            await this.userManager.AddToRoleAsync(user, roleToAdd.Name);
+        }
+
+        public async Task RemoveRoleAsync(string roleName, string id)
+        {
+            var user = await this.usersRepository.All()
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var roleToRemove = await this.roleManager.FindByNameAsync(roleName);
+
+            if (roleToRemove == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            await this.userManager.RemoveFromRoleAsync(user, roleToRemove.Name);
         }
     }
 }
