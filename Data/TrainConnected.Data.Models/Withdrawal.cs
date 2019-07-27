@@ -20,6 +20,6 @@
 
         public string ResolutionNotes { get; set; }
 
-        public DateTime FinalizedOn { get; set; }
+        public DateTime? CompletedOn { get; set; }
     }
 }

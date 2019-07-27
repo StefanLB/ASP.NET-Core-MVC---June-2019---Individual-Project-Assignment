@@ -1,0 +1,57 @@
+﻿@model TrainConnected.Web.InputModels.Withdrawals.WithdrawalProcessInputModel
+@using TrainConnected.Web.ViewModels.Withdrawals;
+
+@{
+    ViewData["Title"] = "Process";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var withdrawal = ViewData["withdrawal"] as WithdrawalsProcessingViewModel;
+}
+
+<h1>Process</h1>
+
+<h4>Withdrawal</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Process">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" value="@withdrawal.Amount" readonly />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdditionalInstructions" class="control-label"></label>
+                <input asp-for="AdditionalInstructions" class="form-control" value="@withdrawal.AdditionalInstructions" readonly />
+                <span asp-validation-for="AdditionalInstructions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrainConnectedUserId" class="control-label"></label>
+                <input asp-for="TrainConnectedUserId" class="form-control" value="@withdrawal.TrainConnectedUserId" readonly />
+                <span asp-validation-for="TrainConnectedUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label><br />
+                <input asp-for="Status" type="radio" value="true" /> Approved<br />
+                <input asp-for="Status" type="radio" value="false" /> Rejected<br />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResolutionNotes" class="control-label"></label>
+                <input asp-for="ResolutionNotes" class="form-control" />
+                <span asp-validation-for="ResolutionNotes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Complete" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="All">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

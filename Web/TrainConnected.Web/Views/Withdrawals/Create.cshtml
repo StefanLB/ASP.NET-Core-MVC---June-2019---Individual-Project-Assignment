@@ -4,21 +4,21 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var balance = this.ViewData["userBalance"];
+    var pending = this.ViewData["pendingWithdrawals"];
+    var withdrawableAmonut = (decimal)balance - (decimal)pending;
 
 }
 
 <h1>Create</h1>
 
-<h4>Withdrawal</h4>
+<h5>Your Balance: @balance BGN</h5>
+<h5>Your Pending Withdrawals: @pending BGN</h5>
+<h4>Withdrawable Amount: @withdrawableAmonut BGN</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CurrentBalance" class="control-label"></label>
-                <strong>@balance</strong>
-            </div>
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
                 <input asp-for="Amount" class="form-control" />

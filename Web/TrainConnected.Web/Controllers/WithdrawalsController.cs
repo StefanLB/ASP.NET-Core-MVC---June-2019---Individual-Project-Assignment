@@ -23,6 +23,7 @@
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var withdrawals = await this.withdrawalsService.GetAllAsync(userId);
             this.ViewData["userBalance"] = await this.withdrawalsService.GetUserBalanceAsync(userId);
+            this.ViewData["pendingWithdrawals"] = await this.withdrawalsService.GetUserPendingWithdrawalsBalance(userId);
 
             return this.View(withdrawals);
         }

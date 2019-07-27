@@ -19,6 +19,6 @@
 
         string ResolutionNotes { get; set; }
 
-        DateTime FinalizedOn { get; set; }
+        DateTime? CompletedOn { get; set; }
     }
 }

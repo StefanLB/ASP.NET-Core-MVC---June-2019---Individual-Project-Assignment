@@ -46,7 +46,6 @@
                     TrainConnectedUserId = user.Id,
                     TrainConnectedUser = user,
                     Status = StatusCode.Initiated,
-                    FinalizedOn = DateTime.MinValue,
                 };
 
                 await this.withdrawalsRepository.AddAsync(withdrawal);
@@ -63,6 +62,93 @@
                 .ToArrayAsync();
 
             return withdrawals;
+        }
+
+        public async Task<IEnumerable<WithdrawalsProcessingViewModel>> GetAllAdminAsync()
+        {
+            var withdrawals = await this.withdrawalsRepository.All()
+                .To<WithdrawalsProcessingViewModel>()
+                .OrderByDescending(x => x.CreatedOn)
+                .ToArrayAsync();
+
+            return withdrawals;
+        }
+
+        public async Task<WithdrawalsProcessingViewModel> GetForProcessingAsync(string id)
+        {
+            var withdrawal = await this.withdrawalsRepository.All()
+                .Where(x => x.Id == id)
+                .To<WithdrawalsProcessingViewModel>()
+                .FirstOrDefaultAsync();
+
+            if (withdrawal == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            if (withdrawal.Status == nameof(StatusCode.Initiated))
+            {
+                var withdrawalToUpdate = await this.withdrawalsRepository.All()
+                    .Where(x => x.Id == id)
+                    .FirstOrDefaultAsync();
+
+                withdrawalToUpdate.Status = StatusCode.InProcess;
+                this.withdrawalsRepository.Update(withdrawalToUpdate);
+                await this.withdrawalsRepository.SaveChangesAsync();
+            }
+
+            return withdrawal;
+        }
+
+        public async Task ProcessAsync(WithdrawalProcessInputModel withdrawalProcessInputModel, string processedByUserId)
+        {
+            var withdrawal = await this.withdrawalsRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == withdrawalProcessInputModel.Id);
+
+            if (withdrawal == null)
+            {
+                // TODO: catch exception and redirect appropriately
+                throw new NullReferenceException();
+            }
+
+            var user = await this.usersRepository.All()
+                .FirstOrDefaultAsync(u => u.Id == withdrawalProcessInputModel.TrainConnectedUserId);
+
+            if (user == null)
+            {
+                // TODO: catch exception and redirect appropriately
+                throw new NullReferenceException();
+            }
+
+            var processedByUser = await this.usersRepository.All()
+                .FirstOrDefaultAsync(u => u.Id == processedByUserId);
+
+            if (processedByUser == null)
+            {
+                // TODO: catch exception and redirect appropriately
+                throw new NullReferenceException();
+            }
+
+            if (withdrawalProcessInputModel.Status == true)
+            {
+                withdrawal.Status = StatusCode.Approved;
+                user.Balance -= withdrawalProcessInputModel.Amount;
+
+                this.usersRepository.Update(user);
+                await this.usersRepository.SaveChangesAsync();
+            }
+            else
+            {
+                withdrawal.Status = StatusCode.Rejected;
+            }
+
+            withdrawal.CompletedOn = DateTime.UtcNow;
+            withdrawal.ProcessedByUser = processedByUser;
+            withdrawal.ProcessedByUserId = processedByUser.Id;
+            withdrawal.ResolutionNotes = withdrawalProcessInputModel.ResolutionNotes;
+
+            this.withdrawalsRepository.Update(withdrawal);
+            await this.withdrawalsRepository.SaveChangesAsync();
         }
 
         public async Task<decimal> GetUserBalanceAsync(string userId)

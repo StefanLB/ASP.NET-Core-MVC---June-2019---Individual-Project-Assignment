@@ -6,7 +6,7 @@
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
-    public class WithdrawalsAllViewModel : IMapFrom<Withdrawal>
+    public class WithdrawalsProcessingViewModel : IMapFrom<Withdrawal>
     {
         [Display(Name = "Transaction Id")]
         public string Id { get; set; }
@@ -19,6 +19,11 @@
         [Display(Name = "Created On")]
         public DateTime CreatedOn { get; set; }
 
+        [Display(Name = "Created By")]
+        public string TrainConnectedUserUserName { get; set; }
+
+        public string TrainConnectedUserId { get; set; }
+
         public string Status { get; set; }
 
         [Display(Name ="Resolution Notes")]
@@ -26,5 +31,8 @@
 
         [Display(Name = "Completed On")]
         public DateTime CompletedOn { get; set; }
+
+        [Display(Name = "Completed By")]
+        public string ProcessedByUserUserName { get; set; }
     }
 }

@@ -1,23 +1,17 @@
-﻿@model IEnumerable<TrainConnected.Web.ViewModels.Withdrawals.WithdrawalsAllViewModel>
+﻿@model IEnumerable<TrainConnected.Web.ViewModels.Withdrawals.WithdrawalsProcessingViewModel>
 @using  TrainConnected.Data.Models.Enums
 
 @{
     ViewData["Title"] = "All";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var balance = this.ViewData["userBalance"];
-    var pending = this.ViewData["pendingWithdrawals"];
     var pendingWithdrawals = Model.Where(s => s.Status == nameof(StatusCode.Initiated) || s.Status == nameof(StatusCode.InProcess));
     var completedWithdrawals = Model.Where(s => s.Status == nameof(StatusCode.Approved) || s.Status == nameof(StatusCode.Rejected));
 }
 
-<h1>Withdrawal history</h1>
+<h1>Withdrawals Processing Panel</h1>
 
-<h4>Your Balance: @balance BGN</h4>
-<h4>Your Pending Withdrawals: @pending BGN</h4>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<h4>Your Pending Withdrawals</h4>
+<h4>Pending Withdrawals</h4>
 <table class="table">
     <thead>
         <tr>
@@ -34,8 +28,12 @@
                 @Html.DisplayNameFor(model => model.CreatedOn)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.TrainConnectedUserUserName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -55,13 +53,19 @@
                     @item.CreatedOn
                 </td>
                 <td>
+                    @item.TrainConnectedUserUserName
+                </td>
+                <td>
                     @item.Status
+                </td>
+                <td>
+                    <a asp-action="Process" asp-route-id="@item.Id">Process</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<h4>Your Completed Withdrawals</h4>
+<h4>Completed Withdrawals</h4>
 <table class="table">
     <thead>
         <tr>
@@ -78,10 +82,16 @@
                 @Html.DisplayNameFor(model => model.CreatedOn)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.TrainConnectedUserUserName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CompletedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProcessedByUserUserName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ResolutionNotes)
@@ -105,10 +115,16 @@
                     @item.CreatedOn
                 </td>
                 <td>
+                    @item.TrainConnectedUserUserName
+                </td>
+                <td>
                     @item.Status
                 </td>
                 <td>
                     @item.CompletedOn
+                </td>
+                <td>
+                    @item.ProcessedByUserUserName
                 </td>
                 <td>
                     @item.ResolutionNotes

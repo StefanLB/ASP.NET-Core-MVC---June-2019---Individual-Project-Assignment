@@ -1,6 +1,10 @@
 ﻿namespace TrainConnected.Web.Areas.Administration.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
     using TrainConnected.Services.Data.Contracts;
+    using TrainConnected.Web.InputModels.Withdrawals;
 
     public class WithdrawalsController : AdministrationController
     {
@@ -11,6 +15,48 @@
             this.withdrawalsService = withdrawalsService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> All()
+        {
+            var withdrawals = await this.withdrawalsService.GetAllAdminAsync();
+
+            return this.View(withdrawals);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Process(string id)
+        {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var withdrawal = await this.withdrawalsService.GetForProcessingAsync(id);
+            this.ViewData["withdrawal"] = withdrawal;
+
+            return this.View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Process(string id, WithdrawalProcessInputModel withdrawalProcessInputModel)
+        {
+            if (id != withdrawalProcessInputModel.Id)
+            {
+                return this.NotFound();
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                var processedByUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                await this.withdrawalsService.ProcessAsync(withdrawalProcessInputModel, processedByUserId);
+
+                return this.RedirectToAction(nameof(this.All));
+            }
+
+            return this.View(withdrawalProcessInputModel);
+        }
 
     }
 }

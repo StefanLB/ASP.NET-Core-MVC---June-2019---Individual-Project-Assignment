@@ -7,9 +7,15 @@
 
     public interface IWithdrawalsService
     {
+        Task<IEnumerable<WithdrawalsProcessingViewModel>> GetAllAdminAsync();
+
         Task<IEnumerable<WithdrawalsAllViewModel>> GetAllAsync(string userId);
 
         Task CreateAsync(WithdrawalCreateInputModel withdrawalCreateInputModel, string userId);
+
+        Task<WithdrawalsProcessingViewModel> GetForProcessingAsync(string id);
+
+        Task ProcessAsync(WithdrawalProcessInputModel withdrawalProcessInputModel, string processedByUserId);
 
         Task<decimal> GetUserBalanceAsync(string userId);
 
