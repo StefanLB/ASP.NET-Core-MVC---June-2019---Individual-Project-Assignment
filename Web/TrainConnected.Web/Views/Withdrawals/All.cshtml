@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<TrainConnected.Web.ViewModels.Withdrawals.WithdrawalsAllViewModel>
-@using  TrainConnected.Data.Models.Enums
+@using TrainConnected.Data.Models.Enums
 
 @{
     ViewData["Title"] = "All";
@@ -12,8 +12,8 @@
 
 <h1>Withdrawal history</h1>
 
-<h4>Your Balance: @balance BGN</h4>
-<h4>Your Pending Withdrawals: @pending BGN</h4>
+<h5>Balance: @balance BGN</h5>
+<h5>Pending Withdrawals: @pending BGN</h5>
 <p>
     <a asp-action="Create">Create New</a>
 </p>

@@ -2,7 +2,6 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using TrainConnected.Services.Data.Contracts;
-    using TrainConnected.Web.Areas.Administration.ViewModels.Dashboard;
 
     public class DashboardController : AdministrationController
     {
@@ -15,8 +14,7 @@
 
         public IActionResult Index()
         {
-            var viewModel = new IndexViewModel { SettingsCount = this.settingsService.GetCount(), };
-            return this.View(viewModel);
+            return this.View();
         }
     }
 }

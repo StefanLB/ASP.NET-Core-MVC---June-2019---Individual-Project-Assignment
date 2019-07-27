@@ -59,16 +59,7 @@
             @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Administration" asp-controller="WorkoutActivities" asp-action="All">Workout Activities</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Administration" asp-controller="PaymentMethods" asp-action="All">Payment Methods</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Administration" asp-controller="Withdrawals" asp-action="All">Withdrawals</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>
+                    <a class="nav-link text-dark" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Administration</a>
                 </li>
             }
             <li class="nav-item">
