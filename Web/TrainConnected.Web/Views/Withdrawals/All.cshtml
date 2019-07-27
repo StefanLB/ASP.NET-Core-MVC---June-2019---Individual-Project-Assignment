@@ -1,15 +1,21 @@
 ﻿@model IEnumerable<TrainConnected.Web.ViewModels.Withdrawals.WithdrawalsAllViewModel>
+@using  TrainConnected.Data.Models.Enums
 
 @{
     ViewData["Title"] = "All";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var balance = this.ViewData["userBalance"];
+    var pendingWithdrawals = Model.Where(s => s.Status == nameof(StatusCode.Initiated) || s.Status == nameof(StatusCode.InProcess));
+    var completedWithdrawals = Model.Where(s => s.Status == nameof(StatusCode.Approved) || s.Status == nameof(StatusCode.Rejected));
 }
 
 <h1>Withdrawal history</h1>
 
+<h4>Your Balance: @balance</h4>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<h4>Your Pending Withdrawals</h4>
 <table class="table">
     <thead>
         <tr>
@@ -20,23 +26,92 @@
                 @Html.DisplayNameFor(model => model.Amount)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.AdditionalInstructions)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
             </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in pendingWithdrawals)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Amount
+                </td>
+                <td>
+                    @item.AdditionalInstructions
+                </td>
+                <td>
+                    @item.CreatedOn
+                </td>
+                <td>
+                    @item.Status
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<h4>Your Completed Withdrawals</h4>
+<table class="table">
+    <thead>
         <tr>
-            <td>
-                @item.Id
-            </td>
-            <td>
-                @item.Amount
-            </td>
-            <td>
-                @item.CreatedOn
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdditionalInstructions)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinalizedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResolutionNotes)
+            </th>
         </tr>
-}
+    </thead>
+    <tbody>
+        @foreach (var item in completedWithdrawals)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Amount
+                </td>
+                <td>
+                    @item.AdditionalInstructions
+                </td>
+                <td>
+                    @item.CreatedOn
+                </td>
+                <td>
+                    @item.Status
+                </td>
+                <td>
+                    @item.FinalizedOn
+                </td>
+                <td>
+                    @item.ResolutionNotes
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

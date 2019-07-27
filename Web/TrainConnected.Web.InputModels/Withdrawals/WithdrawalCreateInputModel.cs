@@ -16,5 +16,7 @@
         [Display(Name = "Withdrawal Request Amount")]
         public decimal Amount { get; set; }
 
+        [Display(Name = "Additional Instructions")]
+        public string AdditionalInstructions { get; set; }
     }
 }

@@ -12,5 +12,7 @@
         Task CreateAsync(WithdrawalCreateInputModel withdrawalCreateInputModel, string userId);
 
         Task<decimal> GetUserBalanceAsync(string userId);
+
+        Task<decimal> GetUserPendingWithdrawalsBalance(string userId);
     }
 }

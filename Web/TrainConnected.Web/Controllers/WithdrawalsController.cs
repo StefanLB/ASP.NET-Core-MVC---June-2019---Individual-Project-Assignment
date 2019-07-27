@@ -4,8 +4,6 @@
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using TrainConnected.Data.Models;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Withdrawals;
 
@@ -24,6 +22,8 @@
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var withdrawals = await this.withdrawalsService.GetAllAsync(userId);
+            this.ViewData["userBalance"] = await this.withdrawalsService.GetUserBalanceAsync(userId);
+
             return this.View(withdrawals);
         }
 
@@ -32,6 +32,7 @@
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             this.ViewData["userBalance"] = await this.withdrawalsService.GetUserBalanceAsync(userId);
+            this.ViewData["pendingWithdrawals"] = await this.withdrawalsService.GetUserPendingWithdrawalsBalance(userId);
 
             return this.View();
         }
@@ -40,16 +41,16 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(WithdrawalCreateInputModel withdrawalCreateInputModel)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-                await this.withdrawalsService.CreateAsync(withdrawalCreateInputModel, userId);
-
-                return this.RedirectToAction(nameof(All));
+                return this.View(withdrawalCreateInputModel);
             }
 
-            return this.View(withdrawalCreateInputModel);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            await this.withdrawalsService.CreateAsync(withdrawalCreateInputModel, userId);
+
+            return this.RedirectToAction(nameof(All));
         }
     }
 }

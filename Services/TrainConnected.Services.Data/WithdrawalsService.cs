@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using TrainConnected.Data.Common.Repositories;
     using TrainConnected.Data.Models;
+    using TrainConnected.Data.Models.Enums;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Services.Mapping;
     using TrainConnected.Web.InputModels.Withdrawals;
@@ -33,22 +34,23 @@
                 throw new NullReferenceException();
             }
 
-            if (user.Balance >= withdrawalCreateInputModel.Amount && withdrawalCreateInputModel.Amount > 0)
+            var pendingWithdrawals = await this.GetUserPendingWithdrawalsBalance(userId);
+            var withdrawableAmount = user.Balance - pendingWithdrawals;
+
+            if (withdrawableAmount >= withdrawalCreateInputModel.Amount && withdrawalCreateInputModel.Amount > 0)
             {
                 var withdrawal = new Withdrawal
                 {
                     Amount = withdrawalCreateInputModel.Amount,
+                    AdditionalInstructions = withdrawalCreateInputModel.AdditionalInstructions,
                     TrainConnectedUserId = user.Id,
                     TrainConnectedUser = user,
+                    Status = StatusCode.Initiated,
+                    FinalizedOn = DateTime.MinValue,
                 };
 
                 await this.withdrawalsRepository.AddAsync(withdrawal);
                 await this.withdrawalsRepository.SaveChangesAsync();
-
-                user.Balance -= withdrawalCreateInputModel.Amount;
-
-                this.usersRepository.Update(user);
-                await this.usersRepository.SaveChangesAsync();
             }
         }
 
@@ -76,6 +78,32 @@
             var balance = user.Balance;
 
             return balance;
+        }
+
+        public async Task<decimal> GetUserPendingWithdrawalsBalance(string userId)
+        {
+            var user = await this.usersRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == userId);
+
+            if (user == null)
+            {
+                throw new NullReferenceException();
+            }
+
+            var pendingUserWithdrawals = await this.withdrawalsRepository.All()
+                .Where(u => u.TrainConnectedUserId == userId)
+                .Where(s => s.Status == StatusCode.Initiated || s.Status == StatusCode.InProcess)
+                .Select(a => a.Amount)
+                .ToArrayAsync();
+
+            var pendingUserWithdrawalsAmount = 0.00m;
+
+            if (pendingUserWithdrawals.Count() > 0)
+            {
+                pendingUserWithdrawalsAmount = pendingUserWithdrawals.Sum();
+            }
+
+            return pendingUserWithdrawalsAmount;
         }
     }
 }
