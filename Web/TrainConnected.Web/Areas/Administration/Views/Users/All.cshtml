@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<TrainConnected.Web.ViewModels.Users.UsersAllViewModel>
+@using System;
 
 @{
     ViewData["Title"] = "Users";
@@ -11,35 +12,60 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Icon)
+                @Html.DisplayNameFor(model => model.UserName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LockoutEnd)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <img src="@Url.Content(item.Icon)" />
-            </td>
-            <td>
-                @item.Name
-            </td>
-            <td>
-                @item.Description
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.UserName
+                </td>
+                <td>
+                    @item.FirstName
+                </td>
+                <td>
+                    @item.LastName
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @item.PhoneNumber
+                </td>
+                <td>
+                    @item.LockoutEnd?.UtcDateTime
+                </td>
+                <td>
+                    <a asp-action="Details" asp-area="Administration" asp-route-id="@item.Id">Details</a> |
+                    @if (item.LockoutEnd != null)
+                    {
+                        <a asp-action="Unlock" asp-area="Administration" asp-route-id="@item.Id">Unlock</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Lock" asp-area="Administration" asp-route-id="@item.Id">Lock</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -132,6 +132,7 @@
             services.AddTransient<IBuddiesService, BuddiesService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IPaymentMethodsService, PaymentMethodsService>();
+            services.AddTransient<IUsersService, UsersService>();
 
         }
 

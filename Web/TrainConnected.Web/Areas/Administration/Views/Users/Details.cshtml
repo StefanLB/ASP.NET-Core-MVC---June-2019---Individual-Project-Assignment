@@ -1,0 +1,78 @@
+﻿@model TrainConnected.Web.ViewModels.Users.UserDetailsViewModel
+@using System.Globalization;
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userRoles = this.ViewData["Roles"] as IEnumerable<string>;
+}
+
+<div>
+    <h4>Details about user @Model.UserName</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.UserName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.FirstName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.LastName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Email
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.PhoneNumber
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RolesNames)
+        </dt>
+        <dd class="col-sm-10">
+            @String.Join(", ", Model.RolesNames)
+        </dd>
+    </dl>
+
+</div>
+<div>
+    <hr />
+    <dl class="row">
+        @foreach (string userRole in userRoles)
+        {
+            <dt class="col-sm-2">
+                @userRole
+            </dt>
+            @if (!Model.RolesNames.Contains(userRole))
+            {
+                <dd class="col-sm-10">
+                    <a asp-action="AddRole" asp-area="Administration" asp-route-roleName="@userRole">Add @userRole Role</a>
+                </dd>
+            }
+            else
+            {
+                <dd class="col-sm-10">
+                    <a asp-action="RemoveRole" asp-area="Administration" asp-route-roleName="@userRole">Remove @userRole Role</a>
+                </dd>
+            }
+        }
+    </dl>
+</div>
+<div>
+    <a asp-action="All">Back to List</a>
+</div>

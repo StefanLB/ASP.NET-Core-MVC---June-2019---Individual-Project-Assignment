@@ -1,15 +1,19 @@
 ﻿namespace TrainConnected.Web.ViewModels.Users
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
+    using System.ComponentModel.DataAnnotations.Schema;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
-    public class UsersAllViewModel : IMapFrom<TrainConnectedUser>
+    public class UserDetailsViewModel : IMapFrom<TrainConnectedUser>
     {
-        [Display(Name ="User Id")]
+        public UserDetailsViewModel()
+        {
+            this.RolesNames = new HashSet<string>();
+        }
+
+        [Display(Name = "User Id")]
         public string Id { get; set; }
 
         [Display(Name = "Username")]
@@ -23,10 +27,10 @@
 
         public string Email { get; set; }
 
-        [Display(Name ="Phone Number")]
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
-        [Display(Name ="Locked Until")]
-        public DateTimeOffset? LockoutEnd { get; set; }
+        [Display(Name ="Assigned Roles")]
+        public ICollection<string> RolesNames { get; set; }
     }
 }
