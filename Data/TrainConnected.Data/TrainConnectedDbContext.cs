@@ -149,6 +149,11 @@
                 .HasOne(wp => wp.Workout)
                 .WithMany(p => p.PaymentMethods)
                 .HasForeignKey(w => w.WorkoutId);
+
+            builder.Entity<Withdrawal>()
+                .HasOne(u => u.TrainConnectedUser)
+                .WithMany(w => w.Withdrawals)
+                .HasForeignKey(u => u.TrainConnectedUserId);
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)
