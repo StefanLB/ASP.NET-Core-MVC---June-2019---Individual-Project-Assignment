@@ -93,6 +93,7 @@
         {
             if (!this.ModelState.IsValid || AcceptedPaymentMethods.Count == 0)
             {
+                // TODO: Add Error Message for accepted payment methods
                 this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
                 this.ViewData["PaymentMethods"] = await this.GetAllPaymentMethodsNames();
 
