@@ -20,6 +20,8 @@
         [Display(Name = "Created On")]
         public DateTime CreatedOn { get; set; }
 
+        public string WorkoutActivityIcon { get; set; }
+
         [Display(Name = "Activity")]
         public string WorkoutActivityName { get; set; }
 
