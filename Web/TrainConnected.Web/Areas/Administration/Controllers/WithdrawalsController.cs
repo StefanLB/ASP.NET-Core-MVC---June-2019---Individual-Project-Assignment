@@ -46,16 +46,15 @@
                 return this.NotFound();
             }
 
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                var processedByUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-                await this.withdrawalsService.ProcessAsync(withdrawalProcessInputModel, processedByUserId);
-
-                return this.RedirectToAction(nameof(this.All));
+                return this.View(withdrawalProcessInputModel);
             }
 
-            return this.View(withdrawalProcessInputModel);
+            var processedByUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            await this.withdrawalsService.ProcessAsync(withdrawalProcessInputModel, processedByUserId);
+
+            return this.RedirectToAction(nameof(this.All));
         }
 
     }

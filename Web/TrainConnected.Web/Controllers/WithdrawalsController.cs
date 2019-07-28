@@ -42,16 +42,19 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(WithdrawalCreateInputModel withdrawalCreateInputModel)
         {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             if (!this.ModelState.IsValid)
             {
+                this.ViewData["userBalance"] = await this.withdrawalsService.GetUserBalanceAsync(userId);
+                this.ViewData["pendingWithdrawals"] = await this.withdrawalsService.GetUserPendingWithdrawalsBalance(userId);
+
                 return this.View(withdrawalCreateInputModel);
             }
 
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
             await this.withdrawalsService.CreateAsync(withdrawalCreateInputModel, userId);
 
-            return this.RedirectToAction(nameof(All));
+            return this.RedirectToAction(nameof(this.All));
         }
     }
 }

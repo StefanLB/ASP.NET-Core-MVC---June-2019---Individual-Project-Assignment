@@ -92,16 +92,21 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookingCreateInputModel bookingCreateInputModel)
         {
-            if (this.ModelState.IsValid)
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.ModelState.IsValid)
             {
-                var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                // TODO: workout Id may be tampered, to be checked before passed to Service or catch the exception here
+                var workout = await this.workoutsService.GetDetailsAsync(bookingCreateInputModel.WorkoutId, userId);
 
-                var result = await this.bookingsService.CreateAsync(bookingCreateInputModel, userId);
+                this.ViewData["Workout"] = workout;
 
-                return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
+                return this.View(bookingCreateInputModel);
             }
 
-            return this.View(bookingCreateInputModel);
+            var result = await this.bookingsService.CreateAsync(bookingCreateInputModel, userId);
+
+            return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
         }
 
         [HttpGet]
@@ -132,6 +137,11 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CancelConfirmed(string id)
         {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
             await this.bookingsService.CancelAsync(id);
 
             return this.RedirectToAction(nameof(this.All));

@@ -17,7 +17,6 @@
         }
 
         // TODO: Add pending buddy request and buddies will be connected after the buddy request is accepted by the other user
-
         [HttpGet]
         public async Task<IActionResult> All()
         {
@@ -58,8 +57,6 @@
                 return this.NotFound();
             }
 
-
-
             var coachDetails = await this.buddiesService.GetCoachDetailsAsync(coachUserName);
 
             return this.View(coachDetails);
@@ -74,7 +71,6 @@
             }
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
             await this.buddiesService.AddAsync(id, userId);
 
             return this.RedirectToAction(nameof(this.All));
@@ -98,8 +94,12 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveConfirmed(string id)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (id == null)
+            {
+                return this.NotFound();
+            }
 
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             await this.buddiesService.RemoveAsync(id, userId);
 
             return this.RedirectToAction(nameof(this.All));

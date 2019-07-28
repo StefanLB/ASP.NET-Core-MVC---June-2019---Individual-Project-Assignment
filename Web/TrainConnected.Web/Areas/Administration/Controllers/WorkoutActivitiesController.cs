@@ -42,34 +42,34 @@
                 return this.NotFound();
             }
 
-            return View(activity);
+            return this.View(activity);
         }
 
         [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(WorkoutActivityCreateInputModel workoutActivityCreateInputModel)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                string pictureUrl = await this.cloudinaryService.UploadPictureAsync(
-                    workoutActivityCreateInputModel.Icon,
-                    workoutActivityCreateInputModel.Name);
-
-                var workoutActivityServiceModel = AutoMapper.Mapper.Map<WorkoutActivityServiceModel>(workoutActivityCreateInputModel);
-                workoutActivityServiceModel.Icon = pictureUrl;
-
-                var result = await this.workoutActivitiesService.CreateAsync(workoutActivityServiceModel);
-
-                return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
+                return this.View(workoutActivityCreateInputModel);
             }
 
-            return this.View(workoutActivityCreateInputModel);
+            string pictureUrl = await this.cloudinaryService.UploadPictureAsync(
+                workoutActivityCreateInputModel.Icon,
+                workoutActivityCreateInputModel.Name);
+
+            var workoutActivityServiceModel = AutoMapper.Mapper.Map<WorkoutActivityServiceModel>(workoutActivityCreateInputModel);
+            workoutActivityServiceModel.Icon = pictureUrl;
+
+            var result = await this.workoutActivitiesService.CreateAsync(workoutActivityServiceModel);
+
+            return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
         }
 
         [HttpGet]
@@ -77,39 +77,38 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var workoutActivity = await this.workoutActivitiesService.GetEditDetailsAsync(id);
 
             if (workoutActivity == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(workoutActivity);
+            return this.View(workoutActivity);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(WorkoutActivityEditInputModel workoutActivityEditInputModel)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                try
-                {
-                    await this.workoutActivitiesService.UpdateAsync(workoutActivityEditInputModel);
-
-                    return this.RedirectToAction(nameof(All));
-                }
-                catch (InvalidOperationException)
-                {
-                    return View(workoutActivityEditInputModel);
-                }
-
+                return this.View(workoutActivityEditInputModel);
             }
 
-            return View(workoutActivityEditInputModel);
+            try
+            {
+                await this.workoutActivitiesService.UpdateAsync(workoutActivityEditInputModel);
+
+                return this.RedirectToAction(nameof(this.All));
+            }
+            catch (InvalidOperationException)
+            {
+                return this.View(workoutActivityEditInputModel);
+            }
         }
 
         [HttpGet]
@@ -117,17 +116,17 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var workoutActivity = await this.workoutActivitiesService.GetDetailsAsync(id);
 
             if (workoutActivity == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(workoutActivity);
+            return this.View(workoutActivity);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -136,7 +135,7 @@
         {
             await this.workoutActivitiesService.DeleteAsync(id);
 
-            return this.RedirectToAction(nameof(All));
+            return this.RedirectToAction(nameof(this.All));
         }
     }
 }

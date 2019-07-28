@@ -28,6 +28,11 @@
         [HttpGet]
         public async Task<IActionResult> Unlock(string id)
         {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
             await this.usersService.UnlockUserAsync(id);
 
             return this.RedirectToAction(nameof(this.All));
@@ -36,6 +41,11 @@
         [HttpGet]
         public async Task<IActionResult> Lock(string id)
         {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
             await this.usersService.LockUserAsync(id);
 
             return this.RedirectToAction(nameof(this.All));

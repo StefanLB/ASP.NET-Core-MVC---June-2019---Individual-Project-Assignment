@@ -51,14 +51,13 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(PaymentMethodCreateInputModel paymentMethodCreateInputModel)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                var paymentMethod = await this.paymentMethodsService.CreateAsync(paymentMethodCreateInputModel);
-
-                return this.RedirectToAction(nameof(this.Details), new { id = paymentMethod.Id });
+                return this.View(paymentMethodCreateInputModel);
             }
+            var paymentMethod = await this.paymentMethodsService.CreateAsync(paymentMethodCreateInputModel);
 
-            return this.View(paymentMethodCreateInputModel);
+            return this.RedirectToAction(nameof(this.Details), new { id = paymentMethod.Id });
         }
 
         [HttpGet]
@@ -83,6 +82,11 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
             await this.paymentMethodsService.DeleteAsync(id);
 
             return this.RedirectToAction(nameof(All));

@@ -56,13 +56,9 @@
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            // TODO: failing validation does not bring back the dropdown menu
             // TODO: validation for expires on to be after issued on
             // TODO: validation for issued on to be in the past
-
-            var activities = await this.workoutActivitiesService.GetAllAsync();
-            var activitiesSelectList = await this.GetAllWorkoutActivitiesAsSelectListItems(activities);
-            this.ViewData["Activities"] = activitiesSelectList;
+            this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
 
             return this.View();
         }
@@ -71,19 +67,18 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(CertificateCreateInputModel certificateCreateInputModel)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                var username = this.User.Identity.Name;
+                this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
 
-                var result = await this.certificatesService.CreateAsync(certificateCreateInputModel, username);
-
-                return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
+                return this.View(certificateCreateInputModel);
             }
 
-            return this.View(certificateCreateInputModel);
+            var username = this.User.Identity.Name;
+            var result = await this.certificatesService.CreateAsync(certificateCreateInputModel, username);
+
+            return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
         }
-
-
 
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
@@ -93,10 +88,7 @@
                 return this.NotFound();
             }
 
-            var activities = await this.workoutActivitiesService.GetAllAsync();
-            var activitiesSelectList = await this.GetAllWorkoutActivitiesAsSelectListItems(activities);
-            this.ViewData["Activities"] = activitiesSelectList;
-
+            this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
             var certificate = await this.certificatesService.GetEditDetailsAsync(id);
 
             if (certificate == null)
@@ -116,14 +108,16 @@
                 return this.NotFound();
             }
 
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                await this.certificatesService.UpdateAsync(certificateEditInputModel);
+                this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
 
-                return this.RedirectToAction(nameof(this.All));
+                return this.View(certificateEditInputModel);
             }
 
-            return this.View(certificateEditInputModel);
+            await this.certificatesService.UpdateAsync(certificateEditInputModel);
+
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [HttpGet]
@@ -148,14 +142,21 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
             await this.certificatesService.DeleteAsync(id);
 
             return this.RedirectToAction(nameof(this.All));
         }
 
         [NonAction]
-        private async Task<IEnumerable<SelectListItem>> GetAllWorkoutActivitiesAsSelectListItems(IEnumerable<WorkoutActivitiesAllViewModel> activities)
+        private async Task<IEnumerable<SelectListItem>> GetAllWorkoutActivitiesAsSelectListItems()
         {
+            var activities = await this.workoutActivitiesService.GetAllAsync();
+
             var selectList = new List<SelectListItem>();
 
             foreach (var element in activities)
@@ -163,7 +164,7 @@
                 selectList.Add(new SelectListItem
                 {
                     Value = element.Name,
-                    Text = element.Name
+                    Text = element.Name,
                 });
             }
 

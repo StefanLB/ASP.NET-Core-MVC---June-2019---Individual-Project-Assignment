@@ -80,14 +80,8 @@
         [Authorize(Roles = GlobalConstants.CoachRoleName)]
         public async Task<IActionResult> Create()
         {
-            var activities = await this.workoutActivitiesService.GetAllAsync();
-            var activitiesSelectList = await this.GetAllWorkoutActivitiesAsSelectListItems(activities);
-            this.ViewData["Activities"] = activitiesSelectList;
-
-            var paymentMethods = await this.paymentMethodsService.GetAllAsync();
-            var paymentMethodsNames = paymentMethods.Select(x => x.Name).ToList();
-
-            this.ViewData["PaymentMethods"] = paymentMethodsNames;
+            this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
+            this.ViewData["PaymentMethods"] = await this.GetAllPaymentMethodsNames();
 
             return this.View();
         }
@@ -97,18 +91,19 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(WorkoutCreateInputModel workoutCreateInputModel, List<string> AcceptedPaymentMethods)
         {
-            if (this.ModelState.IsValid && AcceptedPaymentMethods.Count > 0)
+            if (!this.ModelState.IsValid || AcceptedPaymentMethods.Count == 0)
             {
-                workoutCreateInputModel.PaymentMethods = AcceptedPaymentMethods;
+                this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
+                this.ViewData["PaymentMethods"] = await this.GetAllPaymentMethodsNames();
 
-                var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-                var result = await this.workoutsService.CreateAsync(workoutCreateInputModel, userId);
-
-                return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
+                return this.View(workoutCreateInputModel);
             }
 
-            return this.View(workoutCreateInputModel);
+            workoutCreateInputModel.PaymentMethods = AcceptedPaymentMethods;
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var result = await this.workoutsService.CreateAsync(workoutCreateInputModel, userId);
+
+            return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
         }
 
         [HttpGet]
@@ -136,14 +131,21 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CancelConfirmed(string id)
         {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
             await this.workoutsService.CancelAsync(id);
 
             return this.RedirectToAction(nameof(this.Find));
         }
 
         [NonAction]
-        private async Task<IEnumerable<SelectListItem>> GetAllWorkoutActivitiesAsSelectListItems(IEnumerable<WorkoutActivitiesAllViewModel> activities)
+        private async Task<IEnumerable<SelectListItem>> GetAllWorkoutActivitiesAsSelectListItems()
         {
+            var activities = await this.workoutActivitiesService.GetAllAsync();
+
             var selectList = new List<SelectListItem>();
 
             foreach (var element in activities)
@@ -156,6 +158,15 @@
             }
 
             return selectList;
+        }
+
+        [NonAction]
+        private async Task<List<string>> GetAllPaymentMethodsNames()
+        {
+            var paymentMethods = await this.paymentMethodsService.GetAllAsync();
+            var paymentMethodsNames = paymentMethods.Select(x => x.Name).ToList();
+
+            return paymentMethodsNames;
         }
     }
 }
