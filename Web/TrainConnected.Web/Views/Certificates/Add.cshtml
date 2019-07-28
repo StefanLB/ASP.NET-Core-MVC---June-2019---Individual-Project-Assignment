@@ -27,12 +27,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="IssuedOn" class="control-label"></label>
-                <input asp-for="IssuedOn" class="form-control" />
+                <input asp-for="IssuedOn" class="form-control" id="issuedOn" type="text" />
                 <span asp-validation-for="IssuedOn" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ExpiresOn" class="control-label"></label>
-                <input asp-for="ExpiresOn" class="form-control" />
+                <input asp-for="ExpiresOn" class="form-control" id="expiresOn" type="text" />
                 <span asp-validation-for="ExpiresOn" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -50,6 +50,21 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script>
+    window.onload = () => {
+        $('#issuedOn').datetimepicker({
+            timepicker: false,
+            format: 'm/d/Y',
+            maxDate: '0'
+        });
+        $('#expiresOn').datetimepicker({
+            timepicker: false,
+            format: 'm/d/Y',
+            minDate: '0'
+        });
+    };
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
