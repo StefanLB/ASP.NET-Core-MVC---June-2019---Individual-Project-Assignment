@@ -1,4 +1,4 @@
-﻿namespace TrainConnected.Data.Models
+﻿namespace TrainConnected.Data.Models.Contracts
 {
     using System;
     using System.Collections.Generic;

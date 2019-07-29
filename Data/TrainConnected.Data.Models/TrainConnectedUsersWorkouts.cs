@@ -1,4 +1,6 @@
-﻿namespace TrainConnected.Data.Models
+﻿using TrainConnected.Data.Models.Contracts;
+
+namespace TrainConnected.Data.Models
 {
     public class TrainConnectedUsersWorkouts : ITrainConnectedUsersWorkouts
     {

@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using TrainConnected.Data.Common.Models;
+    using TrainConnected.Data.Models.Contracts;
 
     public class Achievement : BaseDeletableModel<string>, IAchievement
     {

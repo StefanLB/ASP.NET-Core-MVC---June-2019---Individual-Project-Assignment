@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using TrainConnected.Data.Common.Models;
+    using TrainConnected.Data.Models.Contracts;
 
     public class Certificate : BaseDeletableModel<string>, ICertificate
     {

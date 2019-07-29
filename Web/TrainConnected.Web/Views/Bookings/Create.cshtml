@@ -22,12 +22,12 @@
                 <label asp-for="PaymentMethod"></label><br />
                 @foreach (var paymentInAdvance in paymentsInAdvance)
                 {
-                    <input type="radio" asp-for="PaymentMethod" value="@paymentInAdvance" name="paymentType" id="pia" /> @paymentInAdvance<br />
+                    <input asp-for="PaymentMethod" type="radio" value="@paymentInAdvance" id="pia" /> @paymentInAdvance<br />
                 }
                 <div class="piaText" style="display:none; color:#2ECC71;" id="piaText"><strong>Note:</strong> If you wish to cancel a prepaid workout, please contact us at bookings@@TrainConnected.com.</div>
                 @foreach (var paymentOnSite in paymentsOnSite)
                 {
-                    <input type="radio" asp-for="PaymentMethod" value="@paymentOnSite" name="paymentType" id="pos" /> @paymentOnSite<br />
+                    <input asp-for="PaymentMethod" type="radio" value="@paymentOnSite" id="pos" /> @paymentOnSite<br />
                 }
                 <div class="posText" style="display:none; color:#2ECC71;" id="posText"><strong>Note:</strong> The selected form of payment is expected on site, prior to beginning of the workout.</div>
                 <span asp-validation-for="PaymentMethod" class="text-danger"></span>

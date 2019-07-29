@@ -7,6 +7,7 @@ namespace TrainConnected.Data.Models
 
     using Microsoft.AspNetCore.Identity;
     using TrainConnected.Data.Common.Models;
+    using TrainConnected.Data.Models.Contracts;
 
     [Table("AspNetUsers")]
     public class TrainConnectedUser : IdentityUser, IAuditInfo, IDeletableEntity, ITrainConnectedUser

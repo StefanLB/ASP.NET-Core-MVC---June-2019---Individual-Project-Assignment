@@ -1,7 +1,7 @@
 ﻿namespace TrainConnected.Data.Models
 {
-    using Microsoft.AspNetCore.Http;
     using TrainConnected.Data.Common.Models;
+    using TrainConnected.Data.Models.Contracts;
 
     public class WorkoutActivity : BaseDeletableModel<string>, IWorkoutActivity
     {

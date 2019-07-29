@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using TrainConnected.Data.Common.Models;
+    using TrainConnected.Data.Models.Contracts;
 
     public class Workout : BaseDeletableModel<string>, IWorkout
     {

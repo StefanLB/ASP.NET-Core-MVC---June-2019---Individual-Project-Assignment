@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TrainConnected.Data.Models.Contracts;
 
 namespace TrainConnected.Data.Models
 {

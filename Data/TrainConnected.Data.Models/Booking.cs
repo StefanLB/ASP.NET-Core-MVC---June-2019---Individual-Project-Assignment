@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations.Schema;
     using TrainConnected.Data.Common.Models;
+    using TrainConnected.Data.Models.Contracts;
 
     public class Booking : BaseDeletableModel<string>, IBooking
     {

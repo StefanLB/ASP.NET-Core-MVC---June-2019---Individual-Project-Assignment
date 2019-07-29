@@ -2,6 +2,7 @@
 {
     using System;
     using TrainConnected.Data.Common.Models;
+    using TrainConnected.Data.Models.Contracts;
     using TrainConnected.Data.Models.Enums;
 
     public class Withdrawal : BaseDeletableModel<string>, IWithdrawal

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace TrainConnected.Data.Models
+﻿namespace TrainConnected.Data.Models.Contracts
 {
     public interface IWorkoutActivity
     {
