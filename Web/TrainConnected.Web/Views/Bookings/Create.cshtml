@@ -1,12 +1,13 @@
 ﻿@model TrainConnected.Web.InputModels.Bookings.BookingCreateInputModel
-@using  TrainConnected.Web.ViewModels.Workouts;
-@using  System.Globalization;
+@using TrainConnected.Web.ViewModels.Workouts;
+@using System.Globalization;
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var workout = ViewData["Workout"] as WorkoutDetailsViewModel;
-    var acceptedPaymentMethods = workout.AcceptedPaymentMethods;
+    var workout = ViewData["workout"] as WorkoutDetailsViewModel;
+    IEnumerable<string> paymentsInAdvance = this.ViewData["paymentMethodsInAdvance"] as IEnumerable<string>;
+    IEnumerable<string> paymentsOnSite = this.ViewData["paymentMethodsOnSite"] as IEnumerable<string>;
 }
 
 <h1>Create</h1>
@@ -18,11 +19,17 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group form-check">
-                <label asp-for="PaymentMethod"></label><br/>
-                @foreach (var acceptedPaymentMethod in acceptedPaymentMethods)
+                <label asp-for="PaymentMethod"></label><br />
+                @foreach (var paymentInAdvance in paymentsInAdvance)
                 {
-                    <input asp-for="PaymentMethod" type="radio" value="@acceptedPaymentMethod" /> @acceptedPaymentMethod<br/>
+                    <input type="radio" asp-for="PaymentMethod" value="@paymentInAdvance" name="paymentType" id="pia" /> @paymentInAdvance<br />
                 }
+                <div class="piaText" style="display:none; color:#2ECC71;" id="piaText"><strong>Note:</strong> If you wish to cancel a prepaid workout, please contact us at bookings@@TrainConnected.com.</div>
+                @foreach (var paymentOnSite in paymentsOnSite)
+                {
+                    <input type="radio" asp-for="PaymentMethod" value="@paymentOnSite" name="paymentType" id="pos" /> @paymentOnSite<br />
+                }
+                <div class="posText" style="display:none; color:#2ECC71;" id="posText"><strong>Note:</strong> The selected form of payment is expected on site, prior to beginning of the workout.</div>
                 <span asp-validation-for="PaymentMethod" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -104,6 +111,21 @@
 <div>
     <a asp-action="All">Back to List</a>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("input[type='radio']").click(function () {
+            if ($(this).attr("id") == "pia") {
+                $("#piaText").show();
+                $("#posText").hide();
+            }
+            else {
+                $("#piaText").hide();
+                $("#posText").show();
+            }
+        });
+    });
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

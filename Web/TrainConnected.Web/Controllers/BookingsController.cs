@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -17,11 +18,13 @@
     {
         private readonly IBookingsService bookingsService;
         private readonly IWorkoutsService workoutsService;
+        private readonly IPaymentMethodsService paymentMethodsService;
 
-        public BookingsController(IBookingsService bookingsService, IWorkoutsService workoutsService)
+        public BookingsController(IBookingsService bookingsService, IWorkoutsService workoutsService, IPaymentMethodsService paymentMethodsService)
         {
             this.bookingsService = bookingsService;
             this.workoutsService = workoutsService;
+            this.paymentMethodsService = paymentMethodsService;
         }
 
         [HttpGet]
@@ -82,8 +85,21 @@
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var workout = await this.workoutsService.GetDetailsAsync(id, userId);
+            var paymentMethods = await this.paymentMethodsService.GetAllAsync();
 
-            this.ViewData["Workout"] = workout;
+            var paymentMethodsInAdvance = paymentMethods
+                .Where(pia => pia.PaymentInAdvance == true && workout.AcceptedPaymentMethods.Contains(pia.Name))
+                .Select(n => n.Name)
+                .ToArray();
+
+            var paymentMethodsOnSite = paymentMethods
+                .Where(pia => pia.PaymentInAdvance == false && workout.AcceptedPaymentMethods.Contains(pia.Name))
+                .Select(n => n.Name)
+                .ToArray();
+
+            this.ViewData["workout"] = workout;
+            this.ViewData["paymentMethodsInAdvance"] = paymentMethodsInAdvance;
+            this.ViewData["paymentMethodsOnSite"] = paymentMethodsOnSite;
 
             return this.View();
         }
@@ -98,10 +114,21 @@
             {
                 // TODO: workout Id may be tampered, to be checked before passed to Service or catch the exception here
                 var workout = await this.workoutsService.GetDetailsAsync(bookingCreateInputModel.WorkoutId, userId);
+                var paymentMethods = await this.paymentMethodsService.GetAllAsync();
 
-                this.ViewData["Workout"] = workout;
+                var paymentMethodsInAdvance = paymentMethods
+                    .Where(pia => pia.PaymentInAdvance == true && workout.AcceptedPaymentMethods.Contains(pia.Name))
+                    .Select(n => n.Name)
+                    .ToArray();
 
-                return this.View(bookingCreateInputModel);
+                var paymentMethodsOnSite = paymentMethods
+                    .Where(pia => pia.PaymentInAdvance == false && workout.AcceptedPaymentMethods.Contains(pia.Name))
+                    .Select(n => n.Name)
+                    .ToArray();
+
+                this.ViewData["workout"] = workout;
+                this.ViewData["paymentMethodsInAdvance"] = paymentMethodsInAdvance;
+                this.ViewData["paymentMethodsOnSite"] = paymentMethodsOnSite;
             }
 
             var result = await this.bookingsService.CreateAsync(bookingCreateInputModel, userId);
