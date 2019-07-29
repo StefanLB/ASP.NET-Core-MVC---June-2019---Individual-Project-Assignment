@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\TrainConnected.Common\TrainConnected.Common.csproj" />
     <ProjectReference Include="..\TrainConnected.Data.Common\TrainConnected.Data.Common.csproj" />
   </ItemGroup>
   

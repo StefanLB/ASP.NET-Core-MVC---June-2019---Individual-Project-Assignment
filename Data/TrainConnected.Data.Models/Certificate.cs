@@ -2,19 +2,19 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-
+    using TrainConnected.Common.Attributes;
     using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models.Contracts;
 
     public class Certificate : BaseDeletableModel<string>, ICertificate
     {
+        [Required]
         public string ActivityId { get; set; }
 
-        [Required]
-        public virtual WorkoutActivity Activity { get; set; }
+        public WorkoutActivity Activity { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Field cannot contain more than 100 characters")]
+        [StringLength(ModelConstants.Certificate.IssuedByMaxLength, MinimumLength = ModelConstants.Certificate.IsuedByMinLength, ErrorMessage = ModelConstants.Certificate.IssuedByLengthError)]
         public string IssuedBy { get; set; }
 
         [Required]
@@ -25,9 +25,10 @@
         public DateTime? ExpiresOn { get; set; }
 
         [Required]
-        [StringLength(200, ErrorMessage = "Field cannot contain more than 200 characters")]
+        [StringLength(ModelConstants.Certificate.DescriptionMaxLength, MinimumLength = ModelConstants.Certificate.DescriptionMinLength, ErrorMessage = ModelConstants.DescriptionLengthError)]
         public string Description { get; set; }
 
+        [Required]
         public string TrainConnectedUserId { get; set; }
         public virtual TrainConnectedUser TrainConnectedUser { get; set; }
     }

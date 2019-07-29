@@ -2,7 +2,10 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
 
+    using TrainConnected.Common.Attributes;
+    using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
@@ -17,13 +20,18 @@
 
         [Required]
         [DataType(DataType.Date)]
+        [LessThanOrEqual(nameof(DateTimeUtc), ErrorMessage = ModelConstants.Certificate.IssuedOnError)]
         public DateTime IssuedOn { get; set; }
 
         [DataType(DataType.Date)]
+        [GreaterThanOrEqualNullableDateAttribute(nameof(DateTimeUtc), ErrorMessage = ModelConstants.Certificate.ExpiresOnError)]
         public DateTime? ExpiresOn { get; set; }
 
         [Required]
-        [StringLength(200, ErrorMessage = "Field cannot contain more than 200 characters")]
+        [StringLength(ModelConstants.Certificate.DescriptionMaxLength, MinimumLength = ModelConstants.Certificate.DescriptionMinLength, ErrorMessage = ModelConstants.DescriptionLengthError)]
         public string Description { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime DateTimeUtc { get { return DateTime.UtcNow.Date; } }
     }
 }
