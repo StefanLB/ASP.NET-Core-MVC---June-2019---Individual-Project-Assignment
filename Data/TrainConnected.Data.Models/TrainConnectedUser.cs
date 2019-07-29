@@ -3,6 +3,7 @@ namespace TrainConnected.Data.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using Microsoft.AspNetCore.Identity;
@@ -43,12 +44,18 @@ namespace TrainConnected.Data.Models
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
         // Application properties
+        [Required]
         public string Password { get; set; }
 
+        [Required]
+        [RegularExpression(ModelConstants.NameRegex, ErrorMessage = ModelConstants.NameRegexError)]
         public string FirstName { get; set; }
 
+        [Required]
+        [RegularExpression(ModelConstants.NameRegex, ErrorMessage = ModelConstants.NameRegexError)]
         public string LastName { get; set; }
 
+        [Required]
         public decimal Balance { get; set; }
 
         public ICollection<TrainConnectedUsersWorkouts> Workouts { get; set; }

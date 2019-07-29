@@ -14,6 +14,7 @@
 
         [Required]
         public string PaymentMethodId { get; set; }
+
         public PaymentMethod PaymentMethod { get; set; }
 
         [Required]
