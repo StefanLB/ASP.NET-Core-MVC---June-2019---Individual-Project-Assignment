@@ -6,7 +6,8 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var activities = this.ViewData["Activities"] as IEnumerable<SelectListItem>;
-    var paymentMethods = this.ViewData["PaymentMethods"] as List<string>;
+    IEnumerable<string> paymentsInAdvance = this.ViewData["paymentMethodsInAdvance"] as IEnumerable<string>;
+    IEnumerable<string> paymentsOnSite = this.ViewData["paymentMethodsOnSite"] as IEnumerable<string>;
 }
 
 <h1>Create</h1>
@@ -46,10 +47,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="PaymentMethods" class="control-label"></label><br />
-                @foreach (var paymentMethod in paymentMethods)
+                @foreach (var paymentInAdvance in paymentsInAdvance)
                 {
-                        <input name="AcceptedPaymentMethods" type="checkbox" value="@paymentMethod" /> @paymentMethod<br />
+                    <input name="AcceptedPaymentMethods" type="checkbox" value="@paymentInAdvance" id="pia" /> @paymentInAdvance<br />
                 }
+                @foreach (var paymentOnSite in paymentsOnSite)
+                {
+                    <input name="AcceptedPaymentMethods" type="checkbox" value="@paymentOnSite" id="pos" /> @paymentOnSite<br />
+                }
+                <div class="noText" style="display:normal;" id="noText"><br /><br /></div> 
+                <div class="piaText" style="display:none; color:#2ECC71;" id="piaText"><strong>Note:</strong> For prepaid workouts, your balance will be credited as soon as customer payment is received.</div>
+                <div class="posText" style="display:none; color:#2ECC71;" id="posText"><strong>Note:</strong> For payments on site, your balance in TrainConnected will remain unchanged.</div>
                 <span asp-validation-for="PaymentMethods" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -80,6 +88,30 @@
             lang: 'en'
         });
     };
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("input[type='checkbox']").mouseenter(function () {
+            if ($(this).attr("id") == "pia") {
+                $("#piaText").show();
+                $("#posText").hide();
+                $("#noText").hide();
+            }
+            else {
+                $("#piaText").hide();
+                $("#posText").show();
+                $("#noText").hide();
+            }
+        });
+    });
+    $(document).ready(function () {
+        $("input[type='checkbox']").mouseleave(function () {
+                $("#piaText").hide();
+                $("#posText").hide();
+                $("#noText").show();
+        });
+    });
 </script>
 
 @section Scripts {

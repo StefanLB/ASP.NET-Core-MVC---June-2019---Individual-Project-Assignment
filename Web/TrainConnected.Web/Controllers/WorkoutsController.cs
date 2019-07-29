@@ -81,7 +81,11 @@
         public async Task<IActionResult> Create()
         {
             this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
-            this.ViewData["PaymentMethods"] = await this.GetAllPaymentMethodsNames();
+
+            var paymentMethodsByType = await this.GetAllPaymentMethodsByTypeAsync();
+
+            this.ViewData["paymentMethodsInAdvance"] = paymentMethodsByType["paymentMethodsInAdvance"];
+            this.ViewData["paymentMethodsOnSite"] = paymentMethodsByType["paymentMethodsOnSite"];
 
             return this.View();
         }
@@ -89,18 +93,22 @@
         [HttpPost]
         [Authorize(Roles = GlobalConstants.CoachRoleName)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(WorkoutCreateInputModel workoutCreateInputModel, List<string> AcceptedPaymentMethods)
+        public async Task<IActionResult> Create(WorkoutCreateInputModel workoutCreateInputModel, List<string> acceptedPaymentMethods)
         {
-            if (!this.ModelState.IsValid || AcceptedPaymentMethods.Count == 0)
+            if (!this.ModelState.IsValid || acceptedPaymentMethods.Count == 0)
             {
                 // TODO: Add Error Message for accepted payment methods
                 this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
-                this.ViewData["PaymentMethods"] = await this.GetAllPaymentMethodsNames();
+
+                var paymentMethodsByType = await this.GetAllPaymentMethodsByTypeAsync();
+
+                this.ViewData["paymentMethodsInAdvance"] = paymentMethodsByType["paymentMethodsInAdvance"];
+                this.ViewData["paymentMethodsOnSite"] = paymentMethodsByType["paymentMethodsOnSite"];
 
                 return this.View(workoutCreateInputModel);
             }
 
-            workoutCreateInputModel.PaymentMethods = AcceptedPaymentMethods;
+            workoutCreateInputModel.PaymentMethods = acceptedPaymentMethods;
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var result = await this.workoutsService.CreateAsync(workoutCreateInputModel, userId);
 
@@ -162,12 +170,27 @@
         }
 
         [NonAction]
-        private async Task<List<string>> GetAllPaymentMethodsNames()
+        private async Task<Dictionary<string, List<string>>> GetAllPaymentMethodsByTypeAsync()
         {
             var paymentMethods = await this.paymentMethodsService.GetAllAsync();
-            var paymentMethodsNames = paymentMethods.Select(x => x.Name).ToList();
 
-            return paymentMethodsNames;
+            var paymentMethodsInAdvance = paymentMethods
+                .Where(pia => pia.PaymentInAdvance == true)
+                .Select(n => n.Name)
+                .ToList();
+
+            var paymentMethodsOnSite = paymentMethods
+                .Where(pia => pia.PaymentInAdvance == false)
+                .Select(n => n.Name)
+                .ToList();
+
+            var paymentMethodsByType = new Dictionary<string, List<string>>()
+            {
+                { "paymentMethodsInAdvance", paymentMethodsInAdvance },
+                { "paymentMethodsOnSite", paymentMethodsOnSite },
+            };
+
+            return paymentMethodsByType;
         }
     }
 }

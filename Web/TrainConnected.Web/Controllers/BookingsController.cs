@@ -12,6 +12,7 @@
     using Microsoft.EntityFrameworkCore;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Bookings;
+    using TrainConnected.Web.ViewModels.Workouts;
 
     [Authorize]
     public class BookingsController : BaseController
@@ -84,25 +85,17 @@
         public async Task<IActionResult> Create(string id)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             var workout = await this.workoutsService.GetDetailsAsync(id, userId);
-            var paymentMethods = await this.paymentMethodsService.GetAllAsync();
-
-            var paymentMethodsInAdvance = paymentMethods
-                .Where(pia => pia.PaymentInAdvance == true && workout.AcceptedPaymentMethods.Contains(pia.Name))
-                .Select(n => n.Name)
-                .ToArray();
-
-            var paymentMethodsOnSite = paymentMethods
-                .Where(pia => pia.PaymentInAdvance == false && workout.AcceptedPaymentMethods.Contains(pia.Name))
-                .Select(n => n.Name)
-                .ToArray();
+            var paymentMethodsByType = await this.GetApplicablePaymentMethodsByTypeAsync(workout);
 
             this.ViewData["workout"] = workout;
-            this.ViewData["paymentMethodsInAdvance"] = paymentMethodsInAdvance;
-            this.ViewData["paymentMethodsOnSite"] = paymentMethodsOnSite;
+            this.ViewData["paymentMethodsInAdvance"] = paymentMethodsByType["paymentMethodsInAdvance"];
+            this.ViewData["paymentMethodsOnSite"] = paymentMethodsByType["paymentMethodsOnSite"];
 
             return this.View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -114,21 +107,13 @@
             {
                 // TODO: workout Id may be tampered, to be checked before passed to Service or catch the exception here
                 var workout = await this.workoutsService.GetDetailsAsync(bookingCreateInputModel.WorkoutId, userId);
-                var paymentMethods = await this.paymentMethodsService.GetAllAsync();
-
-                var paymentMethodsInAdvance = paymentMethods
-                    .Where(pia => pia.PaymentInAdvance == true && workout.AcceptedPaymentMethods.Contains(pia.Name))
-                    .Select(n => n.Name)
-                    .ToArray();
-
-                var paymentMethodsOnSite = paymentMethods
-                    .Where(pia => pia.PaymentInAdvance == false && workout.AcceptedPaymentMethods.Contains(pia.Name))
-                    .Select(n => n.Name)
-                    .ToArray();
+                var paymentMethodsByType = await this.GetApplicablePaymentMethodsByTypeAsync(workout);
 
                 this.ViewData["workout"] = workout;
-                this.ViewData["paymentMethodsInAdvance"] = paymentMethodsInAdvance;
-                this.ViewData["paymentMethodsOnSite"] = paymentMethodsOnSite;
+                this.ViewData["paymentMethodsInAdvance"] = paymentMethodsByType["paymentMethodsInAdvance"];
+                this.ViewData["paymentMethodsOnSite"] = paymentMethodsByType["paymentMethodsOnSite"];
+
+                return this.View(bookingCreateInputModel);
             }
 
             var result = await this.bookingsService.CreateAsync(bookingCreateInputModel, userId);
@@ -172,6 +157,30 @@
             await this.bookingsService.CancelAsync(id);
 
             return this.RedirectToAction(nameof(this.All));
+        }
+
+        [NonAction]
+        private async Task<Dictionary<string, List<string>>> GetApplicablePaymentMethodsByTypeAsync(WorkoutDetailsViewModel workout)
+        {
+            var paymentMethods = await this.paymentMethodsService.GetAllAsync();
+
+            var paymentMethodsInAdvance = paymentMethods
+                .Where(pia => pia.PaymentInAdvance == true && workout.AcceptedPaymentMethods.Contains(pia.Name))
+                .Select(n => n.Name)
+                .ToList();
+
+            var paymentMethodsOnSite = paymentMethods
+                .Where(pia => pia.PaymentInAdvance == false && workout.AcceptedPaymentMethods.Contains(pia.Name))
+                .Select(n => n.Name)
+                .ToList();
+
+            var paymentMethodsByType = new Dictionary<string, List<string>>()
+            {
+                { "paymentMethodsInAdvance", paymentMethodsInAdvance },
+                { "paymentMethodsOnSite", paymentMethodsOnSite },
+            };
+
+            return paymentMethodsByType;
         }
     }
 }
