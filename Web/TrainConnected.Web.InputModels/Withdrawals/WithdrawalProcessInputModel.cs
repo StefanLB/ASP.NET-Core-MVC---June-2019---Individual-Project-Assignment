@@ -1,29 +1,37 @@
 ﻿namespace TrainConnected.Web.InputModels.Withdrawals
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
+
+    using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
     public class WithdrawalProcessInputModel : IMapFrom<Withdrawal>
     {
-        [Display(Name = "Transaction Id")]
+        [Required]
+        [Display(Name = ModelConstants.Withdrawal.IdNameDisplay)]
         public string Id { get; set; }
 
+        [Required]
+        [Range(typeof(decimal), ModelConstants.PriceMin, ModelConstants.PriceMax, ErrorMessage = ModelConstants.PriceRangeError)]
+        [Display(Name = ModelConstants.Withdrawal.AmountNameDisplay)]
         public decimal Amount { get; set; }
-
-        [Display(Name = "Additional Instructions")]
+        
+        [Display(Name = ModelConstants.Withdrawal.AdditionalInstructionsNameDisplay)]
         public string AdditionalInstructions { get; set; }
 
-        [Display(Name ="User")]
+        [Required]
+        [Display(Name = ModelConstants.Withdrawal.UserNameDisplay)]
         public string TrainConnectedUserUserName { get; set; }
 
-        [Display(Name = "User Id")]
+        [Required]
+        [Display(Name = ModelConstants.Withdrawal.UserIdNameDisplay)]
         public string TrainConnectedUserId { get; set; }
 
+        [Required]
         public bool Status { get; set; }
 
-        [Display(Name = "Resolution Notes")]
+        [Display(Name = ModelConstants.Withdrawal.ResolutionNotesNameDisplay)]
         public string ResolutionNotes { get; set; }
     }
 }

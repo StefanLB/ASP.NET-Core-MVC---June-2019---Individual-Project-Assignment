@@ -15,7 +15,7 @@
         public string Activity { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Field cannot contain more than 100 characters")]
+        [StringLength(ModelConstants.Certificate.IssuedByMaxLength, MinimumLength = ModelConstants.Certificate.IsuedByMinLength, ErrorMessage = ModelConstants.Certificate.IssuedByLengthError)]
         public string IssuedBy { get; set; }
 
         [Required]
@@ -32,6 +32,9 @@
         public string Description { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime DateTimeUtc { get { return DateTime.UtcNow.Date; } }
+        public DateTime DateTimeUtc
+        {
+            get { return DateTime.UtcNow.Date; }
+        }
     }
 }

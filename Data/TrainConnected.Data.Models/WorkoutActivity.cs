@@ -1,6 +1,7 @@
 ﻿namespace TrainConnected.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
+
     using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models.Contracts;
 

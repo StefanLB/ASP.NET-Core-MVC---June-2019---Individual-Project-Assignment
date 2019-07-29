@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
     using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models.Contracts;
 
@@ -29,6 +30,7 @@
         public DateTime Time { get; set; }
 
         [Required]
+        [StringLength(ModelConstants.Workout.LocationNameMaxLength, MinimumLength = ModelConstants.Workout.LocationNameMinLength, ErrorMessage = ModelConstants.Workout.LocationRangeError)]
         public string Location { get; set; }
 
         [Required]
@@ -47,6 +49,7 @@
 
         public int CurrentlySignedUp { get => this.Bookings.Count; }
 
+        [Required]
         [Range(ModelConstants.Workout.ParticipantsMin, ModelConstants.Workout.ParticipantsMax, ErrorMessage = ModelConstants.Workout.ParticipantsRangeError)]
         public int MaxParticipants { get; set; }
 

@@ -3,9 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using TrainConnected.Common.Attributes;
+    using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
-    using TrainConnected.Web.InputModels.PaymentMethods;
 
     public class WorkoutCreateInputModel : IMapFrom<Workout>
     {
@@ -17,30 +18,35 @@
         [Required]
         public string Activity { get; set; }
 
-        // TODO: Add validation - time has to be in the future
         [Required]
+        [GreaterThanOrEqualAttribute(nameof(DateTimeUtc), ErrorMessage = ModelConstants.Workout.TimeError)]
         public DateTime Time { get; set; }
 
         [Required]
+        [StringLength(ModelConstants.Workout.LocationNameMaxLength, MinimumLength = ModelConstants.Workout.LocationNameMinLength, ErrorMessage = ModelConstants.Workout.LocationRangeError)]
         public string Location { get; set; }
 
-        // TODO: Add validation - cannot be a negative number
         [Required]
+        [Range(ModelConstants.Workout.DurationMin, ModelConstants.Workout.DurationMax, ErrorMessage = ModelConstants.Workout.DurationRangeError)]
         public int Duration { get; set; }
 
-        // TODO: Add validation - cannot be a negative number
         [Required]
+        [Range(typeof(decimal), ModelConstants.PriceMin, ModelConstants.PriceMax, ErrorMessage = ModelConstants.PriceRangeError)]
         public decimal Price { get; set; }
 
         [Required]
-        [Display(Name ="Accepted Payment Methods")]
+        [Display(Name = ModelConstants.Workout.PaymentMethodsNameDisplay)]
         public ICollection<string> PaymentMethods { get; set; }
 
-        [Required]
         public string Notes { get; set; }
 
-        // TODO: Add validation - cannot be a negative number
         [Required]
+        [Range(ModelConstants.Workout.ParticipantsMin, ModelConstants.Workout.ParticipantsMax, ErrorMessage = ModelConstants.Workout.ParticipantsRangeError)]
         public int MaxParticipants { get; set; }
+
+        public DateTime DateTimeUtc
+        {
+            get { return DateTime.UtcNow; }
+        }
     }
 }

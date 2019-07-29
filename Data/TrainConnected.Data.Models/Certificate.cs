@@ -2,7 +2,6 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using TrainConnected.Common.Attributes;
     using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models.Contracts;
 

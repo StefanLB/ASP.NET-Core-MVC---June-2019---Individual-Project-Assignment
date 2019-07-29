@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
@@ -9,11 +10,11 @@
     {
         // TODO: Add validation for the amount to be less than the user's current balance
         [Required]
-        [Range(0, int.MaxValue)]
-        [Display(Name = "Withdrawal Request Amount")]
+        [Range(typeof(decimal), ModelConstants.PriceMin, ModelConstants.PriceMax, ErrorMessage = ModelConstants.PriceRangeError)]
+        [Display(Name = ModelConstants.Withdrawal.AmountNameDisplay)]
         public decimal Amount { get; set; }
 
-        [Display(Name = "Additional Instructions")]
+        [Display(Name = ModelConstants.Withdrawal.AdditionalInstructionsNameDisplay)]
         public string AdditionalInstructions { get; set; }
     }
 }
