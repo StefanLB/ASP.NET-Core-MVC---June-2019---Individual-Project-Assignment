@@ -2,19 +2,17 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
     public class PaymentMethodDetailsViewModel : IMapFrom<PaymentMethod>
     {
-        [Required]
         public string Id { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "Field cannot contain more than 100 characters")]
         public string Name { get; set; }
 
-        [Required]
+        [Display(Name = ModelConstants.PaymentMethod.PaymentInAdvanceNameDisplay)]
         public bool PaymentInAdvance { get; set; }
     }
 }

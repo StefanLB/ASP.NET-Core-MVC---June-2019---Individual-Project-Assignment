@@ -1,6 +1,7 @@
 ﻿namespace TrainConnected.Web.ViewModels.Achievements
 {
     using System;
+
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 

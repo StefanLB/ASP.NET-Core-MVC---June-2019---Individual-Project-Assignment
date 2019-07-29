@@ -15,6 +15,10 @@
     <Compile Remove="Migrations\20190711110731_initial-create.Designer.cs" />
     <Compile Remove="Migrations\20190724081103_AddedPictureLinkToWorkoutActivities.cs" />
     <Compile Remove="Migrations\20190724081103_AddedPictureLinkToWorkoutActivities.Designer.cs" />
+    <Compile Remove="Migrations\20190729185112_validationAddedToEntityModels.cs" />
+    <Compile Remove="Migrations\20190729185112_validationAddedToEntityModels.Designer.cs" />
+    <Compile Remove="Migrations\20190729190031_secondMigrationAttempt.cs" />
+    <Compile Remove="Migrations\20190729190031_secondMigrationAttempt.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

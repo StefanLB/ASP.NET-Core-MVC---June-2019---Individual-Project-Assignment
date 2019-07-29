@@ -1,32 +1,32 @@
 ﻿namespace TrainConnected.Web.ViewModels.Users
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
     public class UsersAllViewModel : IMapFrom<TrainConnectedUser>
     {
-        [Display(Name ="User Id")]
+        [Display(Name = ModelConstants.User.UserIdNameDisplay)]
         public string Id { get; set; }
 
-        [Display(Name = "Username")]
+        [Display(Name = ModelConstants.User.UserNameDisplay)]
         public string UserName { get; set; }
 
-        [Display(Name = "First Name")]
+        [Display(Name = ModelConstants.User.FirstNameDisplay)]
         public string FirstName { get; set; }
 
-        [Display(Name = "Last Name")]
+        [Display(Name = ModelConstants.User.LastNameDisplay)]
         public string LastName { get; set; }
 
         public string Email { get; set; }
 
-        [Display(Name ="Phone Number")]
+        [Display(Name = ModelConstants.User.PhoneNumberNameDisplay)]
         public string PhoneNumber { get; set; }
 
-        [Display(Name ="Locked Until")]
+        [Display(Name = ModelConstants.User.LockedOutNameDisplay)]
         public DateTimeOffset? LockoutEnd { get; set; }
     }
 }

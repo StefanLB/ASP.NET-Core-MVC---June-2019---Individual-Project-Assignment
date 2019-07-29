@@ -2,7 +2,8 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+
+    using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
@@ -13,24 +14,24 @@
             this.RolesNames = new HashSet<string>();
         }
 
-        [Display(Name = "User Id")]
+        [Display(Name = ModelConstants.User.UserIdNameDisplay)]
         public string Id { get; set; }
 
-        [Display(Name = "Username")]
+        [Display(Name = ModelConstants.User.UserNameDisplay)]
         public string UserName { get; set; }
 
-        [Display(Name = "First Name")]
+        [Display(Name = ModelConstants.User.FirstNameDisplay)]
         public string FirstName { get; set; }
 
-        [Display(Name = "Last Name")]
+        [Display(Name = ModelConstants.User.LastNameDisplay)]
         public string LastName { get; set; }
 
         public string Email { get; set; }
 
-        [Display(Name = "Phone Number")]
+        [Display(Name = ModelConstants.User.PhoneNumberNameDisplay)]
         public string PhoneNumber { get; set; }
 
-        [Display(Name ="Assigned Roles")]
+        [Display(Name = ModelConstants.User.RolesNameDisplay)]
         public ICollection<string> RolesNames { get; set; }
     }
 }

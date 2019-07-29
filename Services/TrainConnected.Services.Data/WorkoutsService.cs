@@ -240,6 +240,19 @@
                 .To<WorkoutCancelViewModel>()
                 .FirstOrDefaultAsync();
 
+            // TODO: Extract method for GetDetails and GetCancelDetails for the payment methods
+            var paymentMethodsIds = await this.workoutsPaymentsMethodsRepository.All()
+                .Where(x => x.WorkoutId == id)
+                .Select(pm => pm.PaymentMethodId)
+                .ToArrayAsync();
+
+            var paymentMethodsNames = await this.paymentMethodsRepository.All()
+                .Where(pm => paymentMethodsIds.Contains(pm.Id))
+                .Select(n => n.Name)
+                .ToArrayAsync();
+
+            workout.AcceptedPaymentMethods = paymentMethodsNames;
+
             if (workout == null)
             {
                 throw new InvalidOperationException();

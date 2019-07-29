@@ -44,7 +44,6 @@ namespace TrainConnected.Data.Models
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
         // Application properties
-        [Required]
         public string Password { get; set; }
 
         [Required]

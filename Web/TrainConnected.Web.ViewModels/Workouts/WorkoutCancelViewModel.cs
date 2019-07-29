@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
+    using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Mapping;
 
@@ -10,13 +12,12 @@
     {
         public string Id { get; set; }
 
-        [Display(Name = "Activity")]
+        [Display(Name = ModelConstants.Workout.ActivityNameDisplay)]
         public string ActivityName { get; set; }
 
-        [Display(Name = "Icon")]
         public string ActivityIcon { get; set; }
 
-        [Display(Name = "Coach")]
+        [Display(Name = ModelConstants.Workout.CoachNameDisplay)]
         public string CoachUserName { get; set; }
 
         public DateTime Time { get; set; }
@@ -27,15 +28,18 @@
 
         public decimal Price { get; set; }
 
+        [Display(Name = ModelConstants.Workout.PaymentMethodsNameDisplay)]
+        public ICollection<string> AcceptedPaymentMethods { get; set; }
+
         public string Notes { get; set; }
 
-        [Display(Name = "Signed Up")]
+        [Display(Name = ModelConstants.Workout.BookingsCountNameDisplay)]
         public int BookingsCount { get; set; }
 
-        [Display(Name = "Max Participants")]
+        [Display(Name = ModelConstants.Workout.MaxParticipantsNameDisplay)]
         public int MaxParticipants { get; set; }
 
-        [Display(Name = "Created On")]
+        [Display(Name = ModelConstants.Workout.CreatedOnNameDisplay)]
         public DateTime CreatedOn { get; set; }
     }
 }

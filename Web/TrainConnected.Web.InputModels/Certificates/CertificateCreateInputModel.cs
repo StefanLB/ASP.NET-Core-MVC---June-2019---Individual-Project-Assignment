@@ -15,15 +15,18 @@
         public string Activity { get; set; }
 
         [Required]
+        [Display(Name = ModelConstants.Certificate.IssuedByNameDisplay)]
         [StringLength(ModelConstants.Certificate.IssuedByMaxLength, MinimumLength = ModelConstants.Certificate.IsuedByMinLength, ErrorMessage = ModelConstants.Certificate.IssuedByLengthError)]
         public string IssuedBy { get; set; }
 
         [Required]
+        [Display(Name = ModelConstants.Certificate.IssuedOnNameDisplay)]
         [DataType(DataType.Date)]
         [LessThanOrEqual(nameof(DateTimeUtc), ErrorMessage = ModelConstants.Certificate.IssuedOnError)]
         public DateTime IssuedOn { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name = ModelConstants.Certificate.ExpiresOnNameDisplay)]
         [GreaterThanOrEqualNullableDateAttribute(nameof(DateTimeUtc), ErrorMessage = ModelConstants.Certificate.ExpiresOnError)]
         public DateTime? ExpiresOn { get; set; }
 
