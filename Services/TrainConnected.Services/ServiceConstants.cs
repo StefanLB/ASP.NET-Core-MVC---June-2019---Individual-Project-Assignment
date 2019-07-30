@@ -55,6 +55,10 @@
         public class PaymentMethod
         {
             public const string NullReferencePaymentMethodName = "Payment method with name {0} not found.";
+            public const string NullReferencePaymentMethodId = "Payment method with id {0} not found.";
+
+            public const string PaymentMethodNameAlreadyExists = "Payment method with name {0} already exists.";
+
         }
 
         public class User

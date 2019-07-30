@@ -22,6 +22,30 @@
             this.paymentMethodsRepository = paymentMethodsRepository;
         }
 
+        public async Task<IEnumerable<PaymentMethodsAllViewModel>> GetAllAsync()
+        {
+            var paymentMethods = await this.paymentMethodsRepository.All()
+                .To<PaymentMethodsAllViewModel>()
+                .OrderBy(x => x.Name)
+                .ToArrayAsync();
+
+            return paymentMethods;
+        }
+
+        public async Task<PaymentMethodDetailsViewModel> GetDetailsAsync(string id)
+        {
+            var paymentMethod = await this.paymentMethodsRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (paymentMethod == null)
+            {
+                throw new NullReferenceException(string.Format(ServiceConstants.PaymentMethod.NullReferencePaymentMethodId, id));
+            }
+
+            var paymentMethodDetailsViewModel = AutoMapper.Mapper.Map<PaymentMethodDetailsViewModel>(paymentMethod);
+            return paymentMethodDetailsViewModel;
+        }
+
         public async Task<PaymentMethodDetailsViewModel> CreateAsync(PaymentMethodCreateInputModel paymentMethodCreateInputModel)
         {
             var checkPaymentMethodExists = this.paymentMethodsRepository.All()
@@ -29,7 +53,7 @@
 
             if (checkPaymentMethodExists != null)
             {
-                return AutoMapper.Mapper.Map<PaymentMethodDetailsViewModel>(checkPaymentMethodExists);
+                throw new InvalidOperationException(string.Format(ServiceConstants.PaymentMethod.PaymentMethodNameAlreadyExists, paymentMethodCreateInputModel.Name));
             }
 
             var paymentMethod = new PaymentMethod
@@ -52,32 +76,12 @@
 
             if (paymentMethod == null)
             {
-                // TODO: catch exception and redirect appropriately
-                throw new NullReferenceException();
+                throw new NullReferenceException(string.Format(ServiceConstants.PaymentMethod.NullReferencePaymentMethodId, id));
             }
 
             paymentMethod.IsDeleted = true;
             this.paymentMethodsRepository.Update(paymentMethod);
             await this.paymentMethodsRepository.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<PaymentMethodsAllViewModel>> GetAllAsync()
-        {
-            var paymentMethods = await this.paymentMethodsRepository.All()
-                .To<PaymentMethodsAllViewModel>()
-                .OrderBy(x => x.Name)
-                .ToArrayAsync();
-
-            return paymentMethods;
-        }
-
-        public async Task<PaymentMethodDetailsViewModel> GetDetailsAsync(string id)
-        {
-            var paymentMethod = await this.paymentMethodsRepository.All()
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            var paymentMethodDetailsViewModel = AutoMapper.Mapper.Map<PaymentMethodDetailsViewModel>(paymentMethod);
-            return paymentMethodDetailsViewModel;
         }
     }
 }

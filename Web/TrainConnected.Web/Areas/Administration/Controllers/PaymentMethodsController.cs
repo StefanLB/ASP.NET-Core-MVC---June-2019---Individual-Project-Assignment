@@ -1,5 +1,6 @@
 ﻿namespace TrainConnected.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
@@ -31,14 +32,15 @@
                 return this.NotFound();
             }
 
-            var paymentMethod = await this.paymentMethodsService.GetDetailsAsync(id);
-
-            if (paymentMethod == null)
+            try
+            {
+                var paymentMethod = await this.paymentMethodsService.GetDetailsAsync(id);
+                return this.View(paymentMethod);
+            }
+            catch (NullReferenceException)
             {
                 return this.NotFound();
             }
-
-            return this.View(paymentMethod);
         }
 
         [HttpGet]
@@ -55,9 +57,17 @@
             {
                 return this.View(paymentMethodCreateInputModel);
             }
-            var paymentMethod = await this.paymentMethodsService.CreateAsync(paymentMethodCreateInputModel);
 
-            return this.RedirectToAction(nameof(this.Details), new { id = paymentMethod.Id });
+            try
+            {
+                var paymentMethod = await this.paymentMethodsService.CreateAsync(paymentMethodCreateInputModel);
+                return this.RedirectToAction(nameof(this.Details), new { id = paymentMethod.Id });
+            }
+            catch (InvalidOperationException)
+            {
+                return this.BadRequest();
+            }
+
         }
 
         [HttpGet]
@@ -68,14 +78,15 @@
                 return this.NotFound();
             }
 
-            var paymentMethod = await this.paymentMethodsService.GetDetailsAsync(id);
-
-            if (paymentMethod == null)
+            try
+            {
+                var paymentMethod = await this.paymentMethodsService.GetDetailsAsync(id);
+                return this.View(paymentMethod);
+            }
+            catch (NullReferenceException)
             {
                 return this.NotFound();
             }
-
-            return this.View(paymentMethod);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -87,9 +98,15 @@
                 return this.NotFound();
             }
 
-            await this.paymentMethodsService.DeleteAsync(id);
-
-            return this.RedirectToAction(nameof(All));
+            try
+            {
+                await this.paymentMethodsService.DeleteAsync(id);
+                return this.RedirectToAction(nameof(this.All));
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
         }
     }
 }
