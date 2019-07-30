@@ -196,6 +196,10 @@
             {
                 return this.Unauthorized();
             }
+            catch (InvalidOperationException)
+            {
+                return this.BadRequest();
+            }
         }
 
         [NonAction]

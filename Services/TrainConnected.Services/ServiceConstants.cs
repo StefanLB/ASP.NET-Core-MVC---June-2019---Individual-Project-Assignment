@@ -62,11 +62,11 @@
 
         public class User
         {
+            public const string ArgumentUserBuddyMismatch = "UserId {0} is not in userId {1}'s buddy list.";
+
             public const string NullReferenceUserId = "User with id {0} not found.";
             public const string NullReferenceCoachName = "Coach with Username {0} not found.";
             public const string NullReferenceRoleName = "Role with name {0} does not exist.";
-
-            public const string ArgumentUserBuddyMismatch = "UserId {0} is not in userId {1}'s buddy list.";
 
             public const string BefriendingCriteriaNotMet = "User - Buddy connection request is invalid.";
         }
@@ -80,7 +80,13 @@
 
         public class Workout
         {
+            public const string ArgumentUserIdMismatch = "Workout not created by userId {0}.";
+
             public const string NullReferenceWorkoutId = "Workout with id {0} not found.";
+            public const string NullReferenceActivityName = "Workout Activity with name {0} not found.";
+            public const string NullReferencePaymentMethodName = "No payment methods with the specified names found.";
+
+            public const string WorkoutCancelCriteriaNotMet = "Workout cannot be canceled as bookings have already been made.";
         }
 
         public class WorkoutActivity

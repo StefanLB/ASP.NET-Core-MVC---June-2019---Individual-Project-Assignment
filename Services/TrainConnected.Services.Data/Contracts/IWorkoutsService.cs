@@ -12,7 +12,7 @@
 
         Task<WorkoutDetailsViewModel> GetDetailsAsync(string id, string userId);
 
-        Task<WorkoutCancelViewModel> GetCancelDetailsAsync(string id);
+        Task<WorkoutCancelViewModel> GetCancelDetailsAsync(string id, string userId);
 
         Task<IEnumerable<WorkoutsAllViewModel>> GetAllUpcomingAsync(string userId);
 
@@ -22,6 +22,6 @@
 
         Task<IEnumerable<WorkoutsAllViewModel>> GetMyCreatedAsync(string userId);
 
-        Task CancelAsync(string id);
+        Task CancelAsync(string id, string userId);
     }
 }

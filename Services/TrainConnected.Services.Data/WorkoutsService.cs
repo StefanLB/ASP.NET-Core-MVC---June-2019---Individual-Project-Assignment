@@ -32,83 +32,16 @@
             this.workoutsPaymentsMethodsRepository = workoutsPaymentsMethodsRepository;
         }
 
-        public async Task<WorkoutDetailsViewModel> CreateAsync(WorkoutCreateInputModel workoutCreateInputModel, string userId)
+        public async Task<IEnumerable<WorkoutsHomeViewModel>> GetAllUpcomingHomeAsync()
         {
-            var workoutActivity = this.workoutActivityRepository.All()
-                .FirstOrDefault(x => x.Name == workoutCreateInputModel.Activity);
+            var workouts = await this.workoutsRepository.All()
+                .Where(t => t.Time > DateTime.UtcNow)
+                .To<WorkoutsHomeViewModel>()
+                .OrderBy(x => x.Time)
+                .ThenBy(x => x.ActivityName)
+                .ToArrayAsync();
 
-            if (workoutActivity == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            var user = this.usersRepository.All()
-                .FirstOrDefault(x => x.Id == userId);
-
-            if (user == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            var paymentMethods = this.paymentMethodsRepository.All()
-                .Where(n => workoutCreateInputModel.PaymentMethods.Contains(n.Name))
-                .ToArray();
-
-            if (paymentMethods == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            var workout = new Workout
-            {
-                ActivityId = workoutActivity.Id,
-                Activity = workoutActivity,
-                Coach = user,
-                CoachId = user.Id,
-                Time = workoutCreateInputModel.Time,
-                Location = workoutCreateInputModel.Location,
-                Duration = workoutCreateInputModel.Duration,
-                Price = workoutCreateInputModel.Price,
-                Notes = workoutCreateInputModel.Notes,
-                MaxParticipants = workoutCreateInputModel.MaxParticipants,
-            };
-
-            await this.workoutsRepository.AddAsync(workout);
-            await this.workoutsRepository.SaveChangesAsync();
-
-            foreach (var paymentMethod in paymentMethods)
-            {
-                await this.workoutsPaymentsMethodsRepository.AddAsync(new WorkoutsPaymentMethods
-                {
-                    WorkoutId = workout.Id,
-                    PaymentMethodId = paymentMethod.Id,
-                });
-            }
-
-            await this.workoutsPaymentsMethodsRepository.SaveChangesAsync();
-
-            var workoutDetailsViewModel = AutoMapper.Mapper.Map<WorkoutDetailsViewModel>(workout);
-            return workoutDetailsViewModel;
-        }
-
-        public async Task CancelAsync(string id)
-        {
-            var workout = await this.workoutsRepository.All()
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            if (workout == null)
-            {
-                // TODO: catch exception and redirect appropriately
-                throw new NullReferenceException();
-            }
-
-            if (workout.CurrentlySignedUp == 0)
-            {
-                // TODO: Return warning in case workout cannot be deleted
-                workout.IsDeleted = true;
-                this.workoutsRepository.Update(workout);
-                await this.workoutsRepository.SaveChangesAsync();
-            }
+            return workouts;
         }
 
         public async Task<IEnumerable<WorkoutsAllViewModel>> GetAllUpcomingAsync(string userId)
@@ -126,18 +59,6 @@
                 .OrderBy(x => x.Time)
                 .ThenBy(x => x.ActivityName)
                 .ThenByDescending(x => x.CreatedOn)
-                .ToArrayAsync();
-
-            return workouts;
-        }
-
-        public async Task<IEnumerable<WorkoutsHomeViewModel>> GetAllUpcomingHomeAsync()
-        {
-            var workouts = await this.workoutsRepository.All()
-                .Where(t => t.Time > DateTime.UtcNow)
-                .To<WorkoutsHomeViewModel>()
-                .OrderBy(x => x.Time)
-                .ThenBy(x => x.ActivityName)
                 .ToArrayAsync();
 
             return workouts;
@@ -172,6 +93,60 @@
                 .ToArrayAsync();
 
             return workouts;
+        }
+
+        public async Task<WorkoutDetailsViewModel> CreateAsync(WorkoutCreateInputModel workoutCreateInputModel, string userId)
+        {
+            var workoutActivity = this.workoutActivityRepository.All()
+                .FirstOrDefault(x => x.Name == workoutCreateInputModel.Activity);
+
+            if (workoutActivity == null)
+            {
+                throw new NullReferenceException(string.Format(ServiceConstants.Workout.NullReferenceActivityName, workoutCreateInputModel.Activity));
+            }
+
+            var user = this.usersRepository.All()
+                .FirstOrDefault(x => x.Id == userId);
+
+            var paymentMethods = this.paymentMethodsRepository.All()
+                .Where(n => workoutCreateInputModel.PaymentMethods.Contains(n.Name))
+                .ToArray();
+
+            if (paymentMethods == null)
+            {
+                throw new NullReferenceException(string.Format(ServiceConstants.Workout.NullReferencePaymentMethodName));
+            }
+
+            var workout = new Workout
+            {
+                ActivityId = workoutActivity.Id,
+                Activity = workoutActivity,
+                Coach = user,
+                CoachId = user.Id,
+                Time = workoutCreateInputModel.Time,
+                Location = workoutCreateInputModel.Location,
+                Duration = workoutCreateInputModel.Duration,
+                Price = workoutCreateInputModel.Price,
+                Notes = workoutCreateInputModel.Notes,
+                MaxParticipants = workoutCreateInputModel.MaxParticipants,
+            };
+
+            await this.workoutsRepository.AddAsync(workout);
+            await this.workoutsRepository.SaveChangesAsync();
+
+            foreach (var paymentMethod in paymentMethods)
+            {
+                await this.workoutsPaymentsMethodsRepository.AddAsync(new WorkoutsPaymentMethods
+                {
+                    WorkoutId = workout.Id,
+                    PaymentMethodId = paymentMethod.Id,
+                });
+            }
+
+            await this.workoutsPaymentsMethodsRepository.SaveChangesAsync();
+
+            var workoutDetailsViewModel = AutoMapper.Mapper.Map<WorkoutDetailsViewModel>(workout);
+            return workoutDetailsViewModel;
         }
 
         public async Task<WorkoutDetailsViewModel> GetDetailsAsync(string id, string userId)
@@ -233,12 +208,27 @@
             return workoutDetailsViewModel;
         }
 
-        public async Task<WorkoutCancelViewModel> GetCancelDetailsAsync(string id)
+        public async Task<WorkoutCancelViewModel> GetCancelDetailsAsync(string id, string userId)
         {
             var workout = await this.workoutsRepository.All()
                 .Where(x => x.Id == id)
                 .To<WorkoutCancelViewModel>()
                 .FirstOrDefaultAsync();
+
+            if (workout == null)
+            {
+                throw new NullReferenceException(string.Format(ServiceConstants.Workout.NullReferenceWorkoutId, id));
+            }
+
+            var createdByUserId = await this.workoutsRepository.All()
+                .Where(x => x.Id == id)
+                .Select(c => c.CoachId)
+                .FirstOrDefaultAsync();
+
+            if (createdByUserId != userId)
+            {
+                throw new ArgumentException(string.Format(ServiceConstants.Workout.ArgumentUserIdMismatch, userId));
+            }
 
             // TODO: Extract method for GetDetails and GetCancelDetails for the payment methods
             var paymentMethodsIds = await this.workoutsPaymentsMethodsRepository.All()
@@ -252,13 +242,35 @@
                 .ToArrayAsync();
 
             workout.AcceptedPaymentMethods = paymentMethodsNames;
+            return workout;
+        }
+
+        public async Task CancelAsync(string id, string userId)
+        {
+            var workout = await this.workoutsRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (workout == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.Workout.NullReferenceWorkoutId, id));
             }
 
-            return workout;
+            if (workout.CoachId != userId)
+            {
+                throw new ArgumentException(string.Format(ServiceConstants.Workout.ArgumentUserIdMismatch, userId));
+            }
+
+            if (workout.CurrentlySignedUp == 0)
+            {
+                workout.IsDeleted = true;
+                this.workoutsRepository.Update(workout);
+                await this.workoutsRepository.SaveChangesAsync();
+            }
+            else
+            {
+                // If this code block is reached, user tried to bypass front end validation
+                throw new InvalidOperationException(string.Format(ServiceConstants.Workout.WorkoutCancelCriteriaNotMet));
+            }
         }
     }
 }
