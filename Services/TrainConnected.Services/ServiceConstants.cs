@@ -74,12 +74,20 @@
         public class Withdrawal
         {
             public const string NullReferenceWithdrawalId = "Withdrawal with id {0} does not exist.";
+
+            public const string RequestedAmountGreaterThanWithdrawable = "Withdrawal request amount is greater than withdrawable amount.";
         }
 
         public class Workout
         {
             public const string NullReferenceWorkoutId = "Workout with id {0} not found.";
+        }
 
+        public class WorkoutActivity
+        {
+            public const string NullReferenceActivityId = "Workout Activity with id {0} not found.";
+
+            public const string SameNameActivityExists = "Activity with the same name already exists.";
         }
     }
 }

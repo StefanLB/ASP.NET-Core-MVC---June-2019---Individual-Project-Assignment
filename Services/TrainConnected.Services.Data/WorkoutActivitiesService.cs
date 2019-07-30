@@ -22,9 +22,32 @@
             this.workoutActivitiesRepository = workoutActivitiesRepository;
         }
 
+        public async Task<IEnumerable<WorkoutActivitiesAllViewModel>> GetAllAsync()
+        {
+            var activities = await this.workoutActivitiesRepository.All()
+                .To<WorkoutActivitiesAllViewModel>()
+                .OrderBy(x => x.Name)
+                .ToArrayAsync();
+
+            return activities;
+        }
+
+        public async Task<WorkoutActivityDetailsViewModel> GetDetailsAsync(string id)
+        {
+            var workoutActivity = await this.workoutActivitiesRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (workoutActivity == null)
+            {
+                throw new NullReferenceException(string.Format(ServiceConstants.WorkoutActivity.NullReferenceActivityId, id));
+            }
+
+            var workoutActivityDetailsViewModel = AutoMapper.Mapper.Map<WorkoutActivityDetailsViewModel>(workoutActivity);
+            return workoutActivityDetailsViewModel;
+        }
+
         public async Task<WorkoutActivityDetailsViewModel> CreateAsync(WorkoutActivityServiceModel workoutActivityServiceModel)
         {
-            // TODO: create additional method, to be used in Edit as well
             var checkActivityExists = this.workoutActivitiesRepository.All()
                 .FirstOrDefault(x => x.Name == workoutActivityServiceModel.Name);
 
@@ -47,45 +70,15 @@
             return workoutActivityDetailsViewModel;
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task<WorkoutActivityEditInputModel> GetEditDetailsAsync(string id)
         {
             var workoutActivity = await this.workoutActivitiesRepository.All()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (workoutActivity == null)
             {
-                // TODO: catch exception and redirect appropriately
-                throw new NullReferenceException();
+                throw new NullReferenceException(string.Format(ServiceConstants.WorkoutActivity.NullReferenceActivityId, id));
             }
-
-            workoutActivity.IsDeleted = true;
-            this.workoutActivitiesRepository.Update(workoutActivity);
-            await this.workoutActivitiesRepository.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<WorkoutActivitiesAllViewModel>> GetAllAsync()
-        {
-            var activities = await this.workoutActivitiesRepository.All()
-                .To<WorkoutActivitiesAllViewModel>()
-                .OrderBy(x => x.Name)
-                .ToArrayAsync();
-
-            return activities;
-        }
-
-        public async Task<WorkoutActivityDetailsViewModel> GetDetailsAsync(string id)
-        {
-            var workoutActivity = await this.workoutActivitiesRepository.All()
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            var workoutActivityDetailsViewModel = AutoMapper.Mapper.Map<WorkoutActivityDetailsViewModel>(workoutActivity);
-            return workoutActivityDetailsViewModel;
-        }
-
-        public async Task<WorkoutActivityEditInputModel> GetEditDetailsAsync(string id)
-        {
-            var workoutActivity = await this.workoutActivitiesRepository.All()
-                .FirstOrDefaultAsync(x => x.Id == id);
 
             var workoutActivityEditInputModel = AutoMapper.Mapper.Map<WorkoutActivityEditInputModel>(workoutActivity);
             return workoutActivityEditInputModel;
@@ -98,8 +91,7 @@
 
             if (workoutActivity == null)
             {
-                // TODO: catch exception and redirect appropriately
-                throw new NullReferenceException();
+                throw new NullReferenceException(string.Format(ServiceConstants.WorkoutActivity.NullReferenceActivityId, workoutActivityEditInputModel.Id));
             }
 
             var existingActivityWithSameName = await this.workoutActivitiesRepository.All()
@@ -109,14 +101,28 @@
             {
                 if (existingActivityWithSameName.Id != workoutActivity.Id)
                 {
-                    // TODO: catch exception and redirect appropriately
-                    throw new InvalidOperationException("Activity with same name is already registered!");
+                    throw new InvalidOperationException(string.Format(ServiceConstants.WorkoutActivity.SameNameActivityExists));
                 }
             }
 
             workoutActivity.Name = workoutActivityEditInputModel.Name;
             workoutActivity.Description = workoutActivityEditInputModel.Description;
 
+            this.workoutActivitiesRepository.Update(workoutActivity);
+            await this.workoutActivitiesRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(string id)
+        {
+            var workoutActivity = await this.workoutActivitiesRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (workoutActivity == null)
+            {
+                throw new NullReferenceException(string.Format(ServiceConstants.WorkoutActivity.NullReferenceActivityId, id));
+            }
+
+            workoutActivity.IsDeleted = true;
             this.workoutActivitiesRepository.Update(workoutActivity);
             await this.workoutActivitiesRepository.SaveChangesAsync();
         }

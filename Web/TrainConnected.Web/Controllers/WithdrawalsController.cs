@@ -1,5 +1,6 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
+    using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -54,9 +55,15 @@
                 return this.View(withdrawalCreateInputModel);
             }
 
-            await this.withdrawalsService.CreateAsync(withdrawalCreateInputModel, userId);
-
-            return this.RedirectToAction(nameof(this.All));
+            try
+            {
+                await this.withdrawalsService.CreateAsync(withdrawalCreateInputModel, userId);
+                return this.RedirectToAction(nameof(this.All));
+            }
+            catch (InvalidOperationException)
+            {
+                return this.BadRequest();
+            }
         }
     }
 }

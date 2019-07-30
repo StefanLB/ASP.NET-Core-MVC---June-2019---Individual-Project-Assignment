@@ -137,6 +137,10 @@
                 await this.withdrawalsRepository.AddAsync(withdrawal);
                 await this.withdrawalsRepository.SaveChangesAsync();
             }
+            else
+            {
+                throw new InvalidOperationException(string.Format(ServiceConstants.Withdrawal.RequestedAmountGreaterThanWithdrawable));
+            }
         }
 
         public async Task<decimal> GetUserBalanceAsync(string userId)
