@@ -65,6 +65,10 @@
             public const int NameMinLength = 3;
             public const int NameMaxLength = 30;
 
+            public const int PasswordMinLength = 6;
+            public const int PasswordMaxLength = 30;
+            public const string PasswordLengthError = "Password must be between {2} and {1} symbols";
+
             public const string PhoneNumberRegex = "^[\\+]?[\\d ]{3,}$";
             public const string PhoneNumberRegexError = "Phone number can only contain digits and spaces and may start with a digit or \"+\"";
 

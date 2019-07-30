@@ -6,11 +6,10 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using TrainConnected.Data.Common.Models;
-    using TrainConnected.Data.Models;
-
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using TrainConnected.Data.Common.Models;
+    using TrainConnected.Data.Models;
 
     public class TrainConnectedDbContext : IdentityDbContext<TrainConnectedUser, ApplicationRole, string>
     {

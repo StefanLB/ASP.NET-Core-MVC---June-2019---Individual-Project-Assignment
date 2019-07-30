@@ -10,6 +10,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
+    using TrainConnected.Data;
+    using TrainConnected.Data.Common.Repositories;
 
 #pragma warning disable SA1649 // File name should match first type name
     public class DeletePersonalDataModel : PageModel
@@ -18,15 +20,18 @@
         private readonly UserManager<TrainConnectedUser> userManager;
         private readonly SignInManager<TrainConnectedUser> signInManager;
         private readonly ILogger<DeletePersonalDataModel> logger;
+        private readonly IRepository<TrainConnectedUser> userRepository;
 
         public DeletePersonalDataModel(
             UserManager<TrainConnectedUser> userManager,
             SignInManager<TrainConnectedUser> signInManager,
-            ILogger<DeletePersonalDataModel> logger)
+            ILogger<DeletePersonalDataModel> logger,
+            IRepository<TrainConnectedUser> userRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
+            this.userRepository = userRepository;
         }
 
         [BindProperty]
@@ -64,13 +69,11 @@
                 }
             }
 
-            var result = await this.userManager.DeleteAsync(user);
             var userId = await this.userManager.GetUserIdAsync(user);
-            if (!result.Succeeded)
-            {
-                throw new InvalidOperationException($"Unexpected error occurred deleting user with ID '{userId}'.");
-            }
+            user.IsDeleted = true;
+            user.DeletedOn = DateTime.UtcNow;
 
+            await this.userRepository.SaveChangesAsync();
             await this.signInManager.SignOutAsync();
 
             this.logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);

@@ -96,7 +96,6 @@
         public class InputModel
         {
             [Required]
-            [RegularExpression(ModelConstants.NameRegex, ErrorMessage = ModelConstants.NameRegexError)]
             [StringLength(ModelConstants.User.NameMaxLength, MinimumLength = ModelConstants.User.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
             [Display(Name = ModelConstants.User.UserNameDisplay)]
             public string UserName { get; set; }
@@ -124,12 +123,14 @@
 
             [Required]
             [DataType(DataType.Password)]
+            [StringLength(ModelConstants.User.PasswordMaxLength, MinimumLength = ModelConstants.User.PasswordMinLength, ErrorMessage = ModelConstants.User.PasswordLengthError)]
             public string Password { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [StringLength(ModelConstants.User.PasswordMaxLength, MinimumLength = ModelConstants.User.PasswordMinLength, ErrorMessage = ModelConstants.User.PasswordLengthError)]
             public string ConfirmPassword { get; set; }
         }
     }
