@@ -49,7 +49,7 @@
 
             if (user == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceUserId, id));
             }
 
             user.LockoutEnd = null;
@@ -66,7 +66,7 @@
 
             if (user == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceUserId, id));
             }
 
             user.LockoutEnd = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
@@ -84,7 +84,7 @@
 
             if (user == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceUserId, id));
             }
 
             var userRolesIds = await this.usersRolesRepository.All()
@@ -124,14 +124,14 @@
 
             if (user == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceUserId, id));
             }
 
             var roleToAdd = await this.roleManager.FindByNameAsync(roleName);
 
             if (roleToAdd == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceRoleName, roleName));
             }
 
             await this.userManager.AddToRoleAsync(user, roleToAdd.Name);
@@ -145,14 +145,14 @@
 
             if (user == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceUserId, id));
             }
 
             var roleToRemove = await this.roleManager.FindByNameAsync(roleName);
 
             if (roleToRemove == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceRoleName, roleName));
             }
 
             await this.userManager.RemoveFromRoleAsync(user, roleToRemove.Name);

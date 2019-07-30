@@ -65,6 +65,7 @@
         {
             public const string NullReferenceUserId = "User with id {0} not found.";
             public const string NullReferenceCoachName = "Coach with Username {0} not found.";
+            public const string NullReferenceRoleName = "Role with name {0} does not exist.";
 
             public const string ArgumentUserBuddyMismatch = "UserId {0} is not in userId {1}'s buddy list.";
 

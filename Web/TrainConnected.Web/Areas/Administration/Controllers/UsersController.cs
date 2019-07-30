@@ -1,10 +1,10 @@
 ﻿namespace TrainConnected.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Identity;
+
     using Microsoft.AspNetCore.Mvc;
-    using TrainConnected.Data.Models;
     using TrainConnected.Services.Data.Contracts;
 
     public class UsersController : AdministrationController
@@ -33,9 +33,15 @@
                 return this.NotFound();
             }
 
-            await this.usersService.UnlockUserAsync(id);
-
-            return this.RedirectToAction(nameof(this.All));
+            try
+            {
+                await this.usersService.UnlockUserAsync(id);
+                return this.RedirectToAction(nameof(this.All));
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
         }
 
         [HttpGet]
@@ -46,9 +52,15 @@
                 return this.NotFound();
             }
 
-            await this.usersService.LockUserAsync(id);
-
-            return this.RedirectToAction(nameof(this.All));
+            try
+            {
+                await this.usersService.LockUserAsync(id);
+                return this.RedirectToAction(nameof(this.All));
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
         }
 
         [HttpGet]
@@ -59,10 +71,16 @@
                 return this.NotFound();
             }
 
-            var userDetails = await this.usersService.GetUserDetailsAsync(id);
-            this.ViewData["Roles"] = await this.usersService.GetAllRolesAsync();
-
-            return this.View(userDetails);
+            try
+            {
+                var userDetails = await this.usersService.GetUserDetailsAsync(id);
+                this.ViewData["Roles"] = await this.usersService.GetAllRolesAsync();
+                return this.View(userDetails);
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
         }
 
         [HttpGet]
@@ -73,9 +91,15 @@
                 return this.NotFound();
             }
 
-            await this.usersService.AddRoleAsync(roleName, id);
-
-            return this.RedirectToAction(nameof(this.All));
+            try
+            {
+                await this.usersService.AddRoleAsync(roleName, id);
+                return this.RedirectToAction(nameof(this.All));
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
         }
 
         [HttpGet]
@@ -86,9 +110,15 @@
                 return this.NotFound();
             }
 
-            await this.usersService.RemoveRoleAsync(roleName, id);
-
-            return this.RedirectToAction(nameof(this.All));
+            try
+            {
+                await this.usersService.RemoveRoleAsync(roleName, id);
+                return this.RedirectToAction(nameof(this.All));
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
         }
     }
 }
