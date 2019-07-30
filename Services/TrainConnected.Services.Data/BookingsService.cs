@@ -33,6 +33,73 @@
             this.paymentMethodsRepository = paymentMethodsRepository;
         }
 
+        public async Task<IEnumerable<BookingsAllViewModel>> GetAllAsync(string userId)
+        {
+            var bookings = await this.bookingsRepository.All()
+                .Where(x => x.TrainConnectedUserId == userId)
+                .Where(t => t.Workout.Time > DateTime.UtcNow)
+                .To<BookingsAllViewModel>()
+                .OrderBy(x => x.WorkoutTime)
+                .ThenByDescending(x => x.CreatedOn)
+                .ToArrayAsync();
+
+            return bookings;
+        }
+
+        public async Task<IEnumerable<BookingsAllViewModel>> GetAllHistoryAsync(string userId)
+        {
+            var bookings = await this.bookingsRepository.All()
+                .Where(x => x.TrainConnectedUserId == userId)
+                .Where(t => t.Workout.Time <= DateTime.UtcNow)
+                .To<BookingsAllViewModel>()
+                .OrderByDescending(x => x.WorkoutTime)
+                .ThenByDescending(x => x.CreatedOn)
+                .ToArrayAsync();
+
+            return bookings;
+        }
+
+        public async Task<BookingDetailsViewModel> GetDetailsAsync(string id, string userId)
+        {
+            var booking = await this.bookingsRepository.All()
+                .Where(x => x.Id == id)
+                .To<BookingDetailsViewModel>()
+                .FirstOrDefaultAsync();
+
+            if (booking == null)
+            {
+                throw new NullReferenceException(string.Format(ServiceConstants.Booking.NullReferenceBookingId, id));
+            }
+
+            var bookedByUserId = await this.bookingsRepository.All()
+                .Where(x => x.Id == id)
+                .Select(x => x.TrainConnectedUserId)
+                .FirstOrDefaultAsync();
+
+            if (bookedByUserId != userId)
+            {
+                throw new ArgumentException(string.Format(ServiceConstants.Booking.ArgumentUserIdMismatch, userId));
+            }
+
+            return booking;
+        }
+
+        public async Task<BookingDetailsViewModel> GetDetailsByWorkoutIdAsync(string id, string userId)
+        {
+            var booking = await this.bookingsRepository.All()
+                .Where(x => x.WorkoutId == id)
+                .Where(x => x.TrainConnectedUserId == userId)
+                .To<BookingDetailsViewModel>()
+                .FirstOrDefaultAsync();
+
+            if (booking == null)
+            {
+                throw new NullReferenceException(string.Format(ServiceConstants.Booking.NullReferenceWorkoutId, id, userId));
+            }
+
+            return booking;
+        }
+
         public async Task<BookingDetailsViewModel> CreateAsync(BookingCreateInputModel bookingCreateInputModel, string userId)
         {
             var workout = await this.workoutsRepository.All()
@@ -40,7 +107,7 @@
 
             if (workout == null)
             {
-                throw new NullReferenceException();
+                throw new NullReferenceException(string.Format(ServiceConstants.Workout.NullReferenceWorkoutId, bookingCreateInputModel.WorkoutId));
             }
 
             var workoutBookings = await this.workoutsRepository.All()
@@ -52,17 +119,12 @@
             var user = await this.usersRepository.All()
                 .FirstOrDefaultAsync(x => x.Id == userId);
 
-            if (user == null)
-            {
-                throw new NullReferenceException();
-            }
-
             var paymentMethod = await this.paymentMethodsRepository.All()
                 .FirstOrDefaultAsync(pm => pm.Name == bookingCreateInputModel.PaymentMethod);
 
             if (paymentMethod == null)
             {
-                throw new NullReferenceException();
+                throw new NullReferenceException(string.Format(ServiceConstants.PaymentMethod.NullReferencePaymentMethodName, bookingCreateInputModel.PaymentMethod));
             }
 
             /*
@@ -77,7 +139,7 @@
                 workoutBookings >= workout.MaxParticipants ||
                 user.Bookings.Any(x => x.WorkoutId == workout.Id))
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(string.Format(ServiceConstants.Booking.BookingCriteriaNotMet));
             }
 
             var booking = new Booking
@@ -121,8 +183,7 @@
 
             if (booking == null)
             {
-                // TODO: catch exception and redirect appropriately
-                throw new NullReferenceException();
+                throw new NullReferenceException(string.Format(ServiceConstants.Booking.NullReferenceBookingId, id));
             }
 
             var workout = await this.workoutsRepository.All()
@@ -152,63 +213,6 @@
                 this.trainConnectedUsersWorkoutsRepository.Delete(userWorkoutConnection);
                 await this.trainConnectedUsersWorkoutsRepository.SaveChangesAsync();
             }
-        }
-
-        public async Task<IEnumerable<BookingsAllViewModel>> GetAllAsync(string userId)
-        {
-            var bookings = await this.bookingsRepository.All()
-                .Where(x => x.TrainConnectedUserId == userId)
-                .Where(t => t.Workout.Time > DateTime.UtcNow)
-                .To<BookingsAllViewModel>()
-                .OrderBy(x => x.WorkoutTime)
-                .ThenByDescending(x => x.CreatedOn)
-                .ToArrayAsync();
-
-            return bookings;
-        }
-
-        public async Task<IEnumerable<BookingsAllViewModel>> GetAllHistoryAsync(string userId)
-        {
-            var bookings = await this.bookingsRepository.All()
-                .Where(x => x.TrainConnectedUserId == userId)
-                .Where(t => t.Workout.Time <= DateTime.UtcNow)
-                .To<BookingsAllViewModel>()
-                .OrderByDescending(x => x.WorkoutTime)
-                .ThenByDescending(x => x.CreatedOn)
-                .ToArrayAsync();
-
-            return bookings;
-        }
-
-        public async Task<BookingDetailsViewModel> GetDetailsAsync(string id)
-        {
-            var booking = await this.bookingsRepository.All()
-                .Where(x => x.Id == id)
-                .To<BookingDetailsViewModel>()
-                .FirstOrDefaultAsync();
-
-            if (booking == null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            return booking;
-        }
-
-        public async Task<BookingDetailsViewModel> GetDetailsByWorkoutIdAsync(string id, string userId)
-        {
-            var booking = await this.bookingsRepository.All()
-                .Where(x => x.WorkoutId == id)
-                .Where(x => x.TrainConnectedUserId == userId)
-                .To<BookingDetailsViewModel>()
-                .FirstOrDefaultAsync();
-
-            if (booking == null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            return booking;
         }
     }
 }

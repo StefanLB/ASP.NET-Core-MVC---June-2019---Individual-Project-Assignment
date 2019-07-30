@@ -8,16 +8,16 @@
 
     public interface ICertificatesService
     {
-        Task<CertificateDetailsViewModel> GetDetailsAsync(string id);
+        Task<CertificateDetailsViewModel> GetDetailsAsync(string id, string userId);
 
-        Task<CertificateEditInputModel> GetEditDetailsAsync(string id);
+        Task<CertificateEditInputModel> GetEditDetailsAsync(string id, string userId);
 
-        Task<IEnumerable<CertificatesAllViewModel>> GetAllAsync(string username);
+        Task<IEnumerable<CertificatesAllViewModel>> GetAllAsync(string userId);
 
-        Task<CertificateDetailsViewModel> CreateAsync(CertificateCreateInputModel certificatesCreateInputModel, string username);
+        Task<CertificateDetailsViewModel> CreateAsync(CertificateCreateInputModel certificatesCreateInputModel, string userId);
 
-        Task UpdateAsync(CertificateEditInputModel certificateEditInputModel);
+        Task UpdateAsync(CertificateEditInputModel certificateEditInputModel, string userId);
 
-        Task DeleteAsync(string id);
+        Task DeleteAsync(string id, string userId);
     }
 }

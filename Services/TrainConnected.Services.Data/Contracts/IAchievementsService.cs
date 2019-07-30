@@ -10,7 +10,7 @@
     {
         Task<IEnumerable<AchievementsAllViewModel>> GetAllAsync(string userId);
 
-        Task<AchievementDetailsViewModel> GetDetailsAsync(string id);
+        Task<AchievementDetailsViewModel> GetDetailsAsync(string id, string userId);
 
         Task CheckForAchievementsAsync(string userId);
 

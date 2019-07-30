@@ -2,7 +2,7 @@
 {
     public class ServiceConstants
     {
-        public class Achievements
+        public class Achievement
         {
             public const string FirstWorkoutAchievementName = "First Workout";
             public const string GettingStartedAchievementName = "Getting Started";
@@ -29,6 +29,38 @@
             public const string MedicAchievementDescription = "Attend four workouts in one day!";
             public const string EarlyBirdAchievementDescription = "Attend a workout before 08:00 a.m.!";
             public const string NightOwlAchievementDescription = "Attend a workout after 08:00 p.m.!";
+
+            public const string NullReferenceAchievementId = "Achievement with id {0} not found.";
+            public const string ArgumentUserIdMismatch = "Achievement does not belong to userId {0}.";
+        }
+
+        public class Booking
+        {
+            public const string ArgumentUserIdMismatch = "Booking does not belong to userId {0}.";
+
+            public const string NullReferenceBookingId = "Booking with id {0} not found.";
+            public const string NullReferenceWorkoutId = "No Booking found based on provided Workout {0} and UserId {1} parameters.";
+
+            public const string BookingCriteriaNotMet = "User does not meet the booking requirements.";
+        }
+
+        public class Certificate
+        {
+            public const string ArgumentUserIdMismatch = "Certificate does not belong to userId {0}.";
+
+            public const string NullReferenceCertificateId = "Certificate with id {0} not found.";
+            public const string NullReferenceWorkoutActivityName = "Workout Activity with name {0} does not exist.";
+        }
+
+        public class PaymentMethod
+        {
+            public const string NullReferencePaymentMethodName = "Payment method with name {0} not found.";
+        }
+
+        public class Workout
+        {
+            public const string NullReferenceWorkoutId = "Workout with id {0} not found.";
+
         }
     }
 }

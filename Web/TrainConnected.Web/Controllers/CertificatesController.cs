@@ -1,5 +1,6 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -31,7 +32,6 @@
             return this.View(certificates);
         }
 
-        // TODO: If a user tries to view details of a different user, redirect to All?
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
@@ -40,21 +40,26 @@
                 return this.NotFound();
             }
 
-            var certificate = await this.certificatesService.GetDetailsAsync(id);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (certificate == null)
+            try
+            {
+                var certificate = await this.certificatesService.GetDetailsAsync(id, userId);
+                return this.View(certificate);
+            }
+            catch (NullReferenceException)
             {
                 return this.NotFound();
             }
-
-            return this.View(certificate);
+            catch (ArgumentException)
+            {
+                return this.Unauthorized();
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            // TODO: validation for expires on to be after issued on
-            // TODO: validation for issued on to be in the past
             this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
 
             return this.View();
@@ -71,10 +76,17 @@
                 return this.View(certificateCreateInputModel);
             }
 
-            var username = this.User.Identity.Name;
-            var result = await this.certificatesService.CreateAsync(certificateCreateInputModel, username);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
+            try
+            {
+                var result = await this.certificatesService.CreateAsync(certificateCreateInputModel, userId);
+                return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
         }
 
         [HttpGet]
@@ -85,15 +97,22 @@
                 return this.NotFound();
             }
 
-            this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
-            var certificate = await this.certificatesService.GetEditDetailsAsync(id);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (certificate == null)
+            try
+            {
+                this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
+                var certificate = await this.certificatesService.GetEditDetailsAsync(id, userId);
+                return this.View(certificate);
+            }
+            catch (NullReferenceException)
             {
                 return this.NotFound();
             }
-
-            return this.View(certificate);
+            catch (ArgumentException)
+            {
+                return this.Unauthorized();
+            }
         }
 
         [HttpPost]
@@ -108,13 +127,24 @@
             if (!this.ModelState.IsValid)
             {
                 this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
-
                 return this.View(certificateEditInputModel);
             }
 
-            await this.certificatesService.UpdateAsync(certificateEditInputModel);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            return this.RedirectToAction(nameof(this.All));
+            try
+            {
+                await this.certificatesService.UpdateAsync(certificateEditInputModel, userId);
+                return this.RedirectToAction(nameof(this.All));
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
+            catch (ArgumentException)
+            {
+                return this.Unauthorized();
+            }
         }
 
         [HttpGet]
@@ -125,14 +155,21 @@
                 return this.NotFound();
             }
 
-            var certificate = await this.certificatesService.GetDetailsAsync(id);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (certificate == null)
+            try
+            {
+                var certificate = await this.certificatesService.GetDetailsAsync(id, userId);
+                return this.View(certificate);
+            }
+            catch (NullReferenceException)
             {
                 return this.NotFound();
             }
-
-            return this.View(certificate);
+            catch (ArgumentException)
+            {
+                return this.Unauthorized();
+            }
         }
 
         [HttpPost, ActionName("Delete")]
@@ -144,9 +181,21 @@
                 return this.NotFound();
             }
 
-            await this.certificatesService.DeleteAsync(id);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            return this.RedirectToAction(nameof(this.All));
+            try
+            {
+                await this.certificatesService.DeleteAsync(id, userId);
+                return this.RedirectToAction(nameof(this.All));
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
+            catch (ArgumentException)
+            {
+                return this.Unauthorized();
+            }
         }
 
         [NonAction]

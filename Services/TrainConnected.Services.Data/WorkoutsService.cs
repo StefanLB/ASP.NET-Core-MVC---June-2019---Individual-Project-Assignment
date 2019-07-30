@@ -183,7 +183,7 @@
 
             if (workoutDetailsViewModel == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.Workout.NullReferenceWorkoutId, id));
             }
 
             var paymentMethodsIds = await this.workoutsPaymentsMethodsRepository.All()

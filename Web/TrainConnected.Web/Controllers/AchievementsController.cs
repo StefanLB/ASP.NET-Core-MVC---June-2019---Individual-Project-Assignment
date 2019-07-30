@@ -1,5 +1,6 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
+    using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -32,14 +33,21 @@
                 return this.NotFound();
             }
 
-            var achievement = await this.achievementsService.GetDetailsAsync(id);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (achievement == null)
+            try
+            {
+                var achievement = await this.achievementsService.GetDetailsAsync(id, userId);
+                return this.View(achievement);
+            }
+            catch (NullReferenceException)
             {
                 return this.NotFound();
             }
-
-            return this.View(achievement);
+            catch (ArgumentException)
+            {
+                return this.Unauthorized();
+            }
         }
     }
 }

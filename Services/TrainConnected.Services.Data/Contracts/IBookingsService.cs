@@ -11,7 +11,7 @@
     {
         Task<BookingDetailsViewModel> CreateAsync(BookingCreateInputModel bookingCreateInputModel, string userId);
 
-        Task<BookingDetailsViewModel> GetDetailsAsync(string id);
+        Task<BookingDetailsViewModel> GetDetailsAsync(string id, string userId);
 
         Task<BookingDetailsViewModel> GetDetailsByWorkoutIdAsync(string id, string userId);
 

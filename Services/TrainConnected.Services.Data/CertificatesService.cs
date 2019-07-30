@@ -26,54 +26,55 @@
             this.workoutActivityRepository = workoutActivityRepository;
         }
 
-        public async Task UpdateAsync(CertificateEditInputModel certificateEditInputModel)
+        public async Task<IEnumerable<CertificatesAllViewModel>> GetAllAsync(string userId)
+        {
+            var certificates = await this.certificatesRepository.All()
+                .Where(x => x.TrainConnectedUserId == userId)
+                .To<CertificatesAllViewModel>()
+                .OrderBy(x => x.ActivityName)
+                .ThenByDescending(x => x.IssuedOn)
+                .ToArrayAsync();
+
+            return certificates;
+        }
+
+        public async Task<CertificateDetailsViewModel> GetDetailsAsync(string id, string userId)
         {
             var certificate = await this.certificatesRepository.All()
-                .FirstOrDefaultAsync(x => x.Id == certificateEditInputModel.Id);
+                .Where(x => x.Id == id)
+                .To<CertificateDetailsViewModel>()
+                .FirstOrDefaultAsync();
 
             if (certificate == null)
             {
-                // TODO: catch exception and redirect appropriately
-                throw new NullReferenceException();
+                throw new NullReferenceException(string.Format(ServiceConstants.Certificate.NullReferenceCertificateId, id));
             }
 
-            var workoutActivity = await this.workoutActivityRepository.All()
-                .FirstOrDefaultAsync(x => x.Name == certificateEditInputModel.ActivityName);
+            var issuedToUserId = await this.certificatesRepository.All()
+                .Where(x => x.Id == id)
+                .Select(x => x.TrainConnectedUserId)
+                .FirstOrDefaultAsync();
 
-            if (workoutActivity == null)
+            if (issuedToUserId != userId)
             {
-                // TODO: catch exception and redirect appropriately
-                throw new NullReferenceException();
+                throw new ArgumentException(string.Format(ServiceConstants.Certificate.ArgumentUserIdMismatch, userId));
             }
 
-            certificate.ActivityId = workoutActivity.Id;
-            certificate.Activity = workoutActivity;
-            certificate.IssuedBy = certificateEditInputModel.IssuedBy;
-            certificate.IssuedOn = certificateEditInputModel.IssuedOn;
-            certificate.ExpiresOn = certificateEditInputModel.ExpiresOn;
-            certificate.Description = certificateEditInputModel.Description;
-
-            this.certificatesRepository.Update(certificate);
-            await this.certificatesRepository.SaveChangesAsync();
+            return certificate;
         }
 
-        public async Task<CertificateDetailsViewModel> CreateAsync(CertificateCreateInputModel certificatesCreateInputModel, string username)
+        public async Task<CertificateDetailsViewModel> CreateAsync(CertificateCreateInputModel certificatesCreateInputModel, string userId)
         {
             var workoutActivity = this.workoutActivityRepository.All()
                 .FirstOrDefault(x => x.Name == certificatesCreateInputModel.Activity);
 
             if (workoutActivity == null)
             {
-                throw new NullReferenceException();
+                throw new NullReferenceException(string.Format(ServiceConstants.Certificate.NullReferenceWorkoutActivityName, certificatesCreateInputModel.Activity));
             }
 
             var user = this.usersRepository.All()
-                .FirstOrDefault(x => x.UserName == username);
-
-            if (user == null)
-            {
-                throw new NullReferenceException();
-            }
+                .FirstOrDefault(x => x.Id == userId);
 
             var certificate = new Certificate
             {
@@ -93,50 +94,7 @@
             return certificateDetailsViewModel;
         }
 
-        public async Task DeleteAsync(string id)
-        {
-            var certificate = await this.certificatesRepository.All()
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            if (certificate == null)
-            {
-                // TODO: catch exception and redirect appropriately
-                throw new NullReferenceException();
-            }
-
-            certificate.IsDeleted = true;
-            this.certificatesRepository.Update(certificate);
-            await this.certificatesRepository.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<CertificatesAllViewModel>> GetAllAsync(string userId)
-        {
-            var certificates = await this.certificatesRepository.All()
-                .Where(x => x.TrainConnectedUserId == userId)
-                .To<CertificatesAllViewModel>()
-                .OrderBy(x => x.ActivityName)
-                .ThenByDescending(x => x.IssuedOn)
-                .ToArrayAsync();
-
-            return certificates;
-        }
-
-        public async Task<CertificateDetailsViewModel> GetDetailsAsync(string id)
-        {
-            var certificate = await this.certificatesRepository.All()
-                .Where(x => x.Id == id)
-                .To<CertificateDetailsViewModel>()
-                .FirstOrDefaultAsync();
-
-            if (certificate == null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            return certificate;
-        }
-
-        public async Task<CertificateEditInputModel> GetEditDetailsAsync(string id)
+        public async Task<CertificateEditInputModel> GetEditDetailsAsync(string id, string userId)
         {
             var certificate = await this.certificatesRepository.All()
                 .Where(x => x.Id == id)
@@ -145,10 +103,84 @@
 
             if (certificate == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.Certificate.NullReferenceCertificateId, id));
+            }
+
+            var issuedToUserId = await this.certificatesRepository.All()
+                .Where(x => x.Id == id)
+                .Select(x => x.TrainConnectedUserId)
+                .FirstOrDefaultAsync();
+
+            if (issuedToUserId != userId)
+            {
+                throw new ArgumentException(string.Format(ServiceConstants.Certificate.ArgumentUserIdMismatch, userId));
             }
 
             return certificate;
+        }
+
+        public async Task UpdateAsync(CertificateEditInputModel certificateEditInputModel, string userId)
+        {
+            var certificate = await this.certificatesRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == certificateEditInputModel.Id);
+
+            if (certificate == null)
+            {
+                throw new NullReferenceException(string.Format(ServiceConstants.Certificate.NullReferenceCertificateId, certificateEditInputModel.Id));
+            }
+
+            var issuedToUserId = await this.certificatesRepository.All()
+                .Where(x => x.Id == userId)
+                .Select(x => x.TrainConnectedUserId)
+                .FirstOrDefaultAsync();
+
+            if (issuedToUserId != userId)
+            {
+                throw new ArgumentException(string.Format(ServiceConstants.Certificate.ArgumentUserIdMismatch, userId));
+            }
+
+            var workoutActivity = await this.workoutActivityRepository.All()
+                .FirstOrDefaultAsync(x => x.Name == certificateEditInputModel.ActivityName);
+
+            if (workoutActivity == null)
+            {
+                throw new NullReferenceException(string.Format(ServiceConstants.Certificate.NullReferenceWorkoutActivityName, certificateEditInputModel.ActivityName));
+            }
+
+            certificate.ActivityId = workoutActivity.Id;
+            certificate.Activity = workoutActivity;
+            certificate.IssuedBy = certificateEditInputModel.IssuedBy;
+            certificate.IssuedOn = certificateEditInputModel.IssuedOn;
+            certificate.ExpiresOn = certificateEditInputModel.ExpiresOn;
+            certificate.Description = certificateEditInputModel.Description;
+
+            this.certificatesRepository.Update(certificate);
+            await this.certificatesRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(string id, string userId)
+        {
+            var certificate = await this.certificatesRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (certificate == null)
+            {
+                throw new NullReferenceException(string.Format(ServiceConstants.Certificate.NullReferenceCertificateId, id));
+            }
+
+            var issuedToUserId = await this.certificatesRepository.All()
+                .Where(x => x.Id == userId)
+                .Select(x => x.TrainConnectedUserId)
+                .FirstOrDefaultAsync();
+
+            if (issuedToUserId != userId)
+            {
+                throw new ArgumentException(string.Format(ServiceConstants.Certificate.ArgumentUserIdMismatch, userId));
+            }
+
+            certificate.IsDeleted = true;
+            this.certificatesRepository.Update(certificate);
+            await this.certificatesRepository.SaveChangesAsync();
         }
     }
 }

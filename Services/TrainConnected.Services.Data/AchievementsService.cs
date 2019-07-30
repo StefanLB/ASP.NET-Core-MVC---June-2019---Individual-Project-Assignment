@@ -8,6 +8,7 @@
     using Microsoft.EntityFrameworkCore;
     using TrainConnected.Data.Common.Repositories;
     using TrainConnected.Data.Models;
+    using TrainConnected.Services;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Services.Mapping;
     using TrainConnected.Web.ViewModels.Achievements;
@@ -15,15 +16,13 @@
     public class AchievementsService : IAchievementsService
     {
         private readonly IRepository<Achievement> achievementsRepository;
-        private readonly IRepository<TrainConnectedUser> usersRepository;
         private readonly IRepository<Workout> workoutsRepository;
         private readonly IRepository<Booking> bookingsRepository;
         private readonly IRepository<WorkoutActivity> workoutActivitiesRepository;
 
-        public AchievementsService(IRepository<Achievement> achievementsRepository, IRepository<TrainConnectedUser> usersRepository, IRepository<Workout> workoutsRepository, IRepository<Booking> bookingsRepository, IRepository<WorkoutActivity> workoutActivitiesRepository)
+        public AchievementsService(IRepository<Achievement> achievementsRepository, IRepository<Workout> workoutsRepository, IRepository<Booking> bookingsRepository, IRepository<WorkoutActivity> workoutActivitiesRepository)
         {
             this.achievementsRepository = achievementsRepository;
-            this.usersRepository = usersRepository;
             this.workoutsRepository = workoutsRepository;
             this.bookingsRepository = bookingsRepository;
             this.workoutActivitiesRepository = workoutActivitiesRepository;
@@ -40,7 +39,7 @@
             return achievements;
         }
 
-        public async Task<AchievementDetailsViewModel> GetDetailsAsync(string id)
+        public async Task<AchievementDetailsViewModel> GetDetailsAsync(string id, string userId)
         {
             var achievement = await this.achievementsRepository.All()
                 .Where(x => x.Id == id)
@@ -49,12 +48,23 @@
 
             if (achievement == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.Achievement.NullReferenceAchievementId, id));
+            }
+
+            var achievedByUserId = await this.achievementsRepository.All()
+                .Where(x => x.Id == id)
+                .Select(x => x.TrainConnectedUserId)
+                .FirstOrDefaultAsync();
+
+            if (achievedByUserId != userId)
+            {
+                throw new ArgumentException(string.Format(ServiceConstants.Achievement.ArgumentUserIdMismatch, userId));
             }
 
             return achievement;
         }
 
+        // TODO: Use Reflection
         public async Task CheckForAchievementsAsync(string userId)
         {
             var achievements = await this.achievementsRepository.All()
@@ -66,45 +76,43 @@
                 .Where(x => x.Time < DateTime.UtcNow)
                 .ToArrayAsync();
 
-            // TODO: extract constants, use Reflection !!!
-            // TODO: add icons for each achievement
-            if (!achievements.Any(x => x.Name == "First Workout"))
+            if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.FirstWorkoutAchievementName))
             {
                 if (userWorkouts.Any())
                 {
-                    var achievementName = "First Workout";
-                    var description = "Your first ever workout in TrainConnected!";
+                    var achievementName = ServiceConstants.Achievement.FirstWorkoutAchievementName;
+                    var description = ServiceConstants.Achievement.FirstWorkoutAchievementDescription;
                     var achievedOn = userWorkouts.OrderBy(x => x.Time).First().Time;
 
                     await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
                 }
             }
 
-            if (!achievements.Any(x => x.Name == "Getting Started"))
+            if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.GettingStartedAchievementName))
             {
                 if (userWorkouts.Count() >= 10)
                 {
-                    var achievementName = "Getting Started";
-                    var description = "Attend 10 workouts, regardless of activity type!";
+                    var achievementName = ServiceConstants.Achievement.GettingStartedAchievementName;
+                    var description = ServiceConstants.Achievement.GettingStartedAchievementDescription;
                     var achievedOn = userWorkouts.OrderBy(x => x.Time).Skip(9).First().Time;
 
                     await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
                 }
             }
 
-            if (!achievements.Any(x => x.Name == "Veteran"))
+            if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.VeteranAchievementName))
             {
                 if (userWorkouts.Count() >= 100)
                 {
-                    var achievementName = "Veteran";
-                    var description = "Attend 100 workouts, regardless of activity type!";
+                    var achievementName = ServiceConstants.Achievement.VeteranAchievementName;
+                    var description = ServiceConstants.Achievement.VeteranAchievementDescription;
                     var achievedOn = userWorkouts.OrderBy(x => x.Time).Skip(99).First().Time;
 
                     await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
                 }
             }
 
-            if (!achievements.Any(x => x.Name == "First Responder"))
+            if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.FirstResponderAchievementName))
             {
                 var firstToSignUpCounter = 0;
 
@@ -122,8 +130,8 @@
 
                         if (firstToSignUpCounter >= 10)
                         {
-                            var achievementName = "First Responder";
-                            var description = "Be the first person to sign up for 10 different workouts!";
+                            var achievementName = ServiceConstants.Achievement.FirstResponderAchievementName;
+                            var description = ServiceConstants.Achievement.FirstResponderAchievementDescription;
                             var achievedOn = workout.Time;
 
                             await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
@@ -134,7 +142,7 @@
                 }
             }
 
-            if (!achievements.Any(x => x.Name == "Cutting it Close"))
+            if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.CuttingItCloseAchievementName))
             {
                 var lastToSignUpCounter = 0;
 
@@ -154,8 +162,8 @@
 
                             if (lastToSignUpCounter >= 10)
                             {
-                                var achievementName = "Cutting it Close";
-                                var description = "Sign up for the last spot for 10 different workouts!";
+                                var achievementName = ServiceConstants.Achievement.CuttingItCloseAchievementName;
+                                var description = ServiceConstants.Achievement.CuttingItCloseAchievementDescription;
                                 var achievedOn = workout.Time;
 
                                 await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
@@ -167,12 +175,12 @@
                 }
             }
 
-            if (!achievements.Any(x => x.Name == "Big Spender"))
+            if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.BigSpenderAchievementName))
             {
                 if (userWorkouts.Sum(x => x.Price) >= 1000)
                 {
-                    var achievementName = "Big Spender";
-                    var description = "Spend over BGN 1000.00 on workouts!";
+                    var achievementName = ServiceConstants.Achievement.BigSpenderAchievementName;
+                    var description = ServiceConstants.Achievement.BigSpenderAchievementDescription;
                     var achievedOn = DateTime.MinValue;
 
                     decimal totalSpent = 0.00m;
@@ -193,7 +201,7 @@
                 }
             }
 
-            if (!achievements.Any(x => x.Name == "Adventurer"))
+            if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.AdventurerAchievementName))
             {
                 var differentActivitiesCounter = 0;
                 var differentActivitiesList = new List<string>();
@@ -215,8 +223,8 @@
 
                             if (differentActivitiesCounter >= 10)
                             {
-                                var achievementName = "Adventurer";
-                                var description = "Sign up for 10 different types of workouts!";
+                                var achievementName = ServiceConstants.Achievement.AdventurerAchievementName;
+                                var description = ServiceConstants.Achievement.AdventurerAchievementDescription;
                                 var achievedOn = workout.Time;
 
                                 await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
@@ -228,7 +236,7 @@
                 }
             }
 
-            if (!achievements.Any(x => x.Name == "Double Trouble"))
+            if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.DoubleTroubleAchievementName))
             {
                 if (userWorkouts.Count() > 1)
                 {
@@ -244,8 +252,8 @@
 
                         if (sameDayCounter >= 2)
                         {
-                            var achievementName = "Double Trouble";
-                            var description = "Attend two workouts in one day!";
+                            var achievementName = ServiceConstants.Achievement.DoubleTroubleAchievementName;
+                            var description = ServiceConstants.Achievement.DoubleTroubleAchievementDescription;
                             var achievedOn = userWorkouts[i].Time;
 
                             await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
@@ -256,7 +264,7 @@
                 }
             }
 
-            if (!achievements.Any(x => x.Name == "Can't Get Enough"))
+            if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.CantGetEnoughAchievementName))
             {
                 if (userWorkouts.Count() > 2)
                 {
@@ -272,8 +280,8 @@
 
                         if (sameDayCounter >= 3)
                         {
-                            var achievementName = "Can't Get Enough";
-                            var description = "Attend three workouts in one day!";
+                            var achievementName = ServiceConstants.Achievement.CantGetEnoughAchievementName;
+                            var description = ServiceConstants.Achievement.CantGetEnoughAchievementDescription;
                             var achievedOn = userWorkouts[i].Time;
 
                             await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
@@ -284,7 +292,7 @@
                 }
             }
 
-            if (!achievements.Any(x => x.Name == "MEDIC!!!"))
+            if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.MedicAchievementName))
             {
                 if (userWorkouts.Count() > 3)
                 {
@@ -300,8 +308,8 @@
 
                         if (sameDayCounter >= 4)
                         {
-                            var achievementName = "MEDIC!!!";
-                            var description = "Attend four workouts in one day!";
+                            var achievementName = ServiceConstants.Achievement.MedicAchievementName;
+                            var description = ServiceConstants.Achievement.MedicAchievementDescription;
                             var achievedOn = userWorkouts[i].Time;
 
                             await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
@@ -312,24 +320,24 @@
                 }
             }
 
-            if (!achievements.Any(x => x.Name == "Early Bird"))
+            if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.EarlyBirdAchievementName))
             {
                 if (userWorkouts.Any(x => x.Time.Hour < 8))
                 {
-                    var achievementName = "Early Bird";
-                    var description = "Attend a workout before 08:00 a.m.!";
+                    var achievementName = ServiceConstants.Achievement.EarlyBirdAchievementName;
+                    var description = ServiceConstants.Achievement.EarlyBirdAchievementDescription;
                     var achievedOn = userWorkouts.Where(x => x.Time.Hour < 8).OrderBy(x => x.Time).First().Time;
 
                     await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
                 }
             }
 
-            if (!achievements.Any(x => x.Name == "Night Owl"))
+            if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.NightOwlAchievementName))
             {
                 if (userWorkouts.Any(x => x.Time.Hour >= 20))
                 {
-                    var achievementName = "Night Owl";
-                    var description = "Attend a workout after 08:00 p.m.!";
+                    var achievementName = ServiceConstants.Achievement.NightOwlAchievementName;
+                    var description = ServiceConstants.Achievement.NightOwlAchievementDescription;
                     var achievedOn = userWorkouts.Where(x => x.Time.Hour >= 20).OrderBy(x => x.Time).First().Time;
 
                     await this.CreateAchievementAsync(achievementName, userId, description, achievedOn);
