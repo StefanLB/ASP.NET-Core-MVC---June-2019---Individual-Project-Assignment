@@ -1,8 +1,10 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
+    using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc;
     using TrainConnected.Services.Data.Contracts;
 
     public class BuddiesController : BaseController
@@ -42,9 +44,20 @@
             }
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var buddyDetails = await this.buddiesService.GetDetailsAsync(id, userId);
 
-            return this.View(buddyDetails);
+            try
+            {
+                var buddyDetails = await this.buddiesService.GetDetailsAsync(id, userId);
+                return this.View(buddyDetails);
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
+            catch (ArgumentException)
+            {
+                return this.Unauthorized();
+            }
         }
 
         [HttpGet]
@@ -55,9 +68,15 @@
                 return this.NotFound();
             }
 
-            var coachDetails = await this.buddiesService.GetCoachDetailsAsync(coachUserName);
-
-            return this.View(coachDetails);
+            try
+            {
+                var coachDetails = await this.buddiesService.GetCoachDetailsAsync(coachUserName);
+                return this.View(coachDetails);
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
         }
 
         [HttpGet]
@@ -69,9 +88,20 @@
             }
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            await this.buddiesService.AddAsync(id, userId);
 
-            return this.RedirectToAction(nameof(this.All));
+            try
+            {
+                await this.buddiesService.AddAsync(id, userId);
+                return this.RedirectToAction(nameof(this.Find));
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
+            catch (InvalidOperationException)
+            {
+                return this.BadRequest();
+            }
         }
 
         [HttpGet]
@@ -83,9 +113,20 @@
             }
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var buddyDetails = await this.buddiesService.GetDetailsAsync(id, userId);
 
-            return this.View(buddyDetails);
+            try
+            {
+                var buddyDetails = await this.buddiesService.GetDetailsAsync(id, userId);
+                return this.View(buddyDetails);
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
+            catch (ArgumentException)
+            {
+                return this.Unauthorized();
+            }
         }
 
         [HttpPost, ActionName("Remove")]
@@ -98,10 +139,20 @@
             }
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            await this.buddiesService.RemoveAsync(id, userId);
 
-            return this.RedirectToAction(nameof(this.All));
+            try
+            {
+                await this.buddiesService.RemoveAsync(id, userId);
+                return this.RedirectToAction(nameof(this.All));
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
+            catch (ArgumentException)
+            {
+                return this.Unauthorized();
+            }
         }
-
     }
 }

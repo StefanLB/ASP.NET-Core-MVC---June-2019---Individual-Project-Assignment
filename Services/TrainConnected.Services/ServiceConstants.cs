@@ -57,6 +57,16 @@
             public const string NullReferencePaymentMethodName = "Payment method with name {0} not found.";
         }
 
+        public class User
+        {
+            public const string NullReferenceUserId = "User with id {0} not found.";
+            public const string NullReferenceCoachName = "Coach with Username {0} not found.";
+
+            public const string ArgumentUserBuddyMismatch = "UserId {0} is not in userId {1}'s buddy list.";
+
+            public const string BefriendingCriteriaNotMet = "User - Buddy connection request is invalid.";
+        }
+
         public class Workout
         {
             public const string NullReferenceWorkoutId = "Workout with id {0} not found.";

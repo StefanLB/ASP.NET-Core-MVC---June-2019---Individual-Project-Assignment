@@ -28,32 +28,16 @@
             this.workoutsRepository = workoutsRepository;
         }
 
-        public async Task AddAsync(string id, string userId)
+        public async Task<IEnumerable<BuddiesAllViewModel>> GetAllAsync(string userId)
         {
-            var user = await this.usersRepository.All()
-                .FirstOrDefaultAsync(x => x.Id == userId);
+            var buddies = await this.usersBuddiesRepository.All()
+                .Where(x => x.TrainConnectedUserId == userId)
+                .Select(b => b.TrainConnectedBuddy)
+                .To<BuddiesAllViewModel>()
+                .OrderBy(x => x.UserName)
+                .ToArrayAsync();
 
-            if (user == null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            var buddyToAdd = await this.usersRepository.All()
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            if (buddyToAdd == null || buddyToAdd.Id == user.Id)
-            {
-                throw new InvalidOperationException();
-            }
-
-            await this.usersBuddiesRepository.AddAsync(new TrainConnectedUsersBuddies
-            {
-                TrainConnectedUserId = user.Id,
-                TrainConnectedBuddyId = buddyToAdd.Id,
-                AddedOn = DateTime.UtcNow,
-            });
-
-            await this.usersBuddiesRepository.SaveChangesAsync();
+            return buddies;
         }
 
         public async Task<IEnumerable<BuddiesAllViewModel>> FindAllAsync(string userId)
@@ -72,18 +56,6 @@
             return nonBuddies;
         }
 
-        public async Task<IEnumerable<BuddiesAllViewModel>> GetAllAsync(string userId)
-        {
-            var buddies = await this.usersBuddiesRepository.All()
-                .Where(x => x.TrainConnectedUserId == userId)
-                .Select(b => b.TrainConnectedBuddy)
-                .To<BuddiesAllViewModel>()
-                .OrderBy(x => x.UserName)
-                .ToArrayAsync();
-
-            return buddies;
-        }
-
         public async Task<BuddyDetailsViewModel> GetDetailsAsync(string id, string userId)
         {
             var buddy = await this.usersRepository.All()
@@ -93,15 +65,17 @@
 
             if (buddy == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceUserId, id));
             }
 
-            var user = await this.usersRepository.All()
-                .FirstOrDefaultAsync(x => x.Id == userId);
+            var userBuddyConnection = await this.usersBuddiesRepository.All()
+                .Where(u => u.TrainConnectedUserId == userId)
+                .Where(b => b.TrainConnectedBuddyId == id)
+                .FirstOrDefaultAsync();
 
-            if (user == null)
+            if (userBuddyConnection == null)
             {
-                throw new InvalidOperationException();
+                throw new ArgumentException(string.Format(ServiceConstants.User.ArgumentUserBuddyMismatch, id, userId));
             }
 
             buddy.AddedOn = await this.usersBuddiesRepository.All()
@@ -122,7 +96,7 @@
 
             if (coachDetailsViewModel == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceCoachName, coachUserName));
             }
 
             coachDetailsViewModel.Certificates = await this.certificatesRepository.All()
@@ -138,28 +112,63 @@
             return coachDetailsViewModel;
         }
 
-        public async Task RemoveAsync(string id, string userId)
+        public async Task AddAsync(string id, string userId)
         {
             var user = await this.usersRepository.All()
                 .FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceUserId, userId));
             }
 
-            var buddyToRemove = await this.usersRepository.All()
+            var buddyToAdd = await this.usersRepository.All()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (buddyToRemove == null)
+            if (buddyToAdd == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceUserId, id));
             }
 
             var userBuddyConnection = await this.usersBuddiesRepository.All()
                 .Where(u => u.TrainConnectedUserId == userId)
                 .Where(b => b.TrainConnectedBuddyId == id)
                 .FirstOrDefaultAsync();
+
+            if (userBuddyConnection != null || buddyToAdd.Id == user.Id)
+            {
+                throw new InvalidOperationException(string.Format(ServiceConstants.User.BefriendingCriteriaNotMet));
+            }
+
+            await this.usersBuddiesRepository.AddAsync(new TrainConnectedUsersBuddies
+            {
+                TrainConnectedUserId = user.Id,
+                TrainConnectedBuddyId = buddyToAdd.Id,
+                AddedOn = DateTime.UtcNow,
+            });
+
+            await this.usersBuddiesRepository.SaveChangesAsync();
+        }
+
+        public async Task RemoveAsync(string id, string userId)
+        {
+            var buddyToRemove = await this.usersRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (buddyToRemove == null)
+            {
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceUserId, id));
+            }
+
+            var userBuddyConnection = await this.usersBuddiesRepository.All()
+                .Where(u => u.TrainConnectedUserId == userId)
+                .Where(b => b.TrainConnectedBuddyId == id)
+                .FirstOrDefaultAsync();
+
+            if (userBuddyConnection == null)
+            {
+                throw new ArgumentException(string.Format(ServiceConstants.User.ArgumentUserBuddyMismatch, id, userId));
+            }
 
             this.usersBuddiesRepository.Delete(userBuddyConnection);
             await this.usersBuddiesRepository.SaveChangesAsync();
