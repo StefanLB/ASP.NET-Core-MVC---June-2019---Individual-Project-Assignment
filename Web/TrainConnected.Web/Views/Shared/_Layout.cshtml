@@ -37,41 +37,25 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                    </ul>
+                    <ul class="navbar-nav flex-grow-1"></ul>
                 </div>
             </div>
         </nav>
     </header>
-    
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-            @this.RenderBody()
-        </main>
+
+    <div class="container-fluid">
+        <div class="container">
+            <partial name="_CookieConsentPartial" />
+            <main role="main" class="pb-3">
+                @this.RenderBody()
+            </main>
+        </div>
     </div>
-    
-    <footer class="footer">
-        <div class="verybottom">
-            <div class="container">
-                <div class="row">
-                    <div class="span6">
-                        <p>
-                            &copy; @DateTime.Now.Year - TrainConnected - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </p>
-                    </div>
-                    <div class="span5">
-                        <div class="credits">
-                            <!--
-                              All the links in the footer should remain intact.
-                              You can delete the links only if you purchased the pro version.
-                              Licensing information: https://bootstrapmade.com/license/
-                              Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Serenity
-                            -->
-                            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-                        </div>
-                    </div>
-                </div>
+
+    <footer>
+        <div class="bg-light rounded">
+            <div class="text-center p-3 font-weight-bold">
+                &copy; CopyRight TrainConnected @DateTime.Now.Year. Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
             </div>
         </div>
     </footer>
