@@ -9,6 +9,7 @@
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
+    using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
 
 #pragma warning disable SA1649 // File name should match first type name
@@ -174,23 +175,30 @@
         public class InputModel
         {
             [Required]
-            [Display(Name = "Username")]
+            [StringLength(ModelConstants.User.NameMaxLength, MinimumLength = ModelConstants.User.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
+            [Display(Name = ModelConstants.User.UserNameDisplay)]
             public string UserName { get; set; }
 
             [Required]
             [EmailAddress]
             public string Email { get; set; }
 
+            [Required]
             [Phone]
-            [Display(Name = "Phone Number")]
+            [RegularExpression(ModelConstants.User.PhoneNumberRegex, ErrorMessage = ModelConstants.User.PhoneNumberRegexError)]
+            [Display(Name = ModelConstants.User.PhoneNumberNameDisplay)]
             public string PhoneNumber { get; set; }
 
             [Required]
-            [Display(Name = "First Name")]
+            [RegularExpression(ModelConstants.NameRegex, ErrorMessage = ModelConstants.NameRegexError)]
+            [StringLength(ModelConstants.User.NameMaxLength, MinimumLength = ModelConstants.User.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
+            [Display(Name = ModelConstants.User.FirstNameDisplay)]
             public string FirstName { get; set; }
 
             [Required]
-            [Display(Name = "Last Name")]
+            [RegularExpression(ModelConstants.NameRegex, ErrorMessage = ModelConstants.NameRegexError)]
+            [StringLength(ModelConstants.User.NameMaxLength, MinimumLength = ModelConstants.User.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
+            [Display(Name = ModelConstants.User.LastNameDisplay)]
             public string LastName { get; set; }
         }
     }
