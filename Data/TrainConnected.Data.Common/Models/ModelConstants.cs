@@ -22,22 +22,6 @@
             public const int DescriptionMinLength = 10;
         }
 
-        public class User
-        {
-            public const string UserNameDisplay = "Username";
-            public const string UserIdNameDisplay = "User Id";
-            public const string FirstNameDisplay = "First Name";
-            public const string LastNameDisplay = "Last Name";
-            public const string WorkoutsCountNameDisplay = "Workouts";
-            public const string AchievementsNameDisplay = "Achievements";
-            public const string JoinedOnNameDisplay = "Joined On";
-            public const string AddedOnNameDisplay = "Buddies Since";
-            public const string WorkoutsCoachedNameDisplay = "Workouts Coached";
-            public const string PhoneNumberNameDisplay = "Phone Number";
-            public const string LockedOutNameDisplay = "Locked Until";
-            public const string RolesNameDisplay = "Assigned Roles";
-        }
-
         public class Booking
         {
             public const string PaymentMethodNameDisplay = "Payment Method";
@@ -74,6 +58,28 @@
             public const int NameMinLength = 3;
             public const int NameMaxLength = 50;
             public const string PaymentInAdvanceNameDisplay = "Payment In Advance";
+        }
+
+        public class User
+        {
+            public const int NameMinLength = 3;
+            public const int NameMaxLength = 30;
+
+            public const string PhoneNumberRegex = "^[\\+]?[\\d ]{3,}$";
+            public const string PhoneNumberRegexError = "Phone number can only contain digits and spaces and may start with a digit or \"+\"";
+
+            public const string UserNameDisplay = "Username";
+            public const string UserIdNameDisplay = "User Id";
+            public const string FirstNameDisplay = "First Name";
+            public const string LastNameDisplay = "Last Name";
+            public const string WorkoutsCountNameDisplay = "Workouts";
+            public const string AchievementsNameDisplay = "Achievements";
+            public const string JoinedOnNameDisplay = "Joined On";
+            public const string AddedOnNameDisplay = "Buddies Since";
+            public const string WorkoutsCoachedNameDisplay = "Workouts Coached";
+            public const string PhoneNumberNameDisplay = "Phone Number";
+            public const string LockedOutNameDisplay = "Locked Until";
+            public const string RolesNameDisplay = "Assigned Roles";
         }
 
         public class Withdrawal

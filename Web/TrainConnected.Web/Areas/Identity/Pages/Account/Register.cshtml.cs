@@ -11,6 +11,7 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
     using TrainConnected.Common;
+    using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
 
     [AllowAnonymous]
@@ -58,6 +59,7 @@
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
 
                 var userToAssignRole = await this.userManager.FindByIdAsync(user.Id);
+                
                 // All newly registered users are assigned the "TraineeUser" role.
                 await this.userManager.AddToRoleAsync(userToAssignRole, GlobalConstants.TraineeRoleName);
 
@@ -94,36 +96,37 @@
         public class InputModel
         {
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
-            [Display(Name = "Username")]
+            [RegularExpression(ModelConstants.NameRegex, ErrorMessage = ModelConstants.NameRegexError)]
+            [StringLength(ModelConstants.User.NameMaxLength, MinimumLength = ModelConstants.User.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
+            [Display(Name = ModelConstants.User.UserNameDisplay)]
             public string UserName { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
-            [Display(Name = "First Name")]
+            [RegularExpression(ModelConstants.NameRegex, ErrorMessage = ModelConstants.NameRegexError)]
+            [StringLength(ModelConstants.User.NameMaxLength, MinimumLength = ModelConstants.User.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
+            [Display(Name = ModelConstants.User.FirstNameDisplay)]
             public string FirstName { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
-            [Display(Name = "Last Name")]
+            [RegularExpression(ModelConstants.NameRegex, ErrorMessage = ModelConstants.NameRegexError)]
+            [StringLength(ModelConstants.User.NameMaxLength, MinimumLength = ModelConstants.User.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
+            [Display(Name = ModelConstants.User.LastNameDisplay)]
             public string LastName { get; set; }
 
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
-            [Display(Name = "Phone Number")]
+            [RegularExpression(ModelConstants.User.PhoneNumberRegex, ErrorMessage = ModelConstants.User.PhoneNumberRegexError)]
+            [Display(Name = ModelConstants.User.PhoneNumberNameDisplay)]
             public string PhoneNumber { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
             public string Password { get; set; }
 
+            [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
