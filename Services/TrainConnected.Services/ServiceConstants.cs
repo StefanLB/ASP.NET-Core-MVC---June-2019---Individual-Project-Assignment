@@ -58,7 +58,6 @@
             public const string NullReferencePaymentMethodId = "Payment method with id {0} not found.";
 
             public const string PaymentMethodNameAlreadyExists = "Payment method with name {0} already exists.";
-
         }
 
         public class User
@@ -70,6 +69,11 @@
             public const string ArgumentUserBuddyMismatch = "UserId {0} is not in userId {1}'s buddy list.";
 
             public const string BefriendingCriteriaNotMet = "User - Buddy connection request is invalid.";
+        }
+
+        public class Withdrawal
+        {
+            public const string NullReferenceWithdrawalId = "Withdrawal with id {0} does not exist.";
         }
 
         public class Workout

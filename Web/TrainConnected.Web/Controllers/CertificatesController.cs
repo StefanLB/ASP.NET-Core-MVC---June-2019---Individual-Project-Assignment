@@ -121,7 +121,7 @@
         {
             if (id != certificateEditInputModel.Id)
             {
-                return this.NotFound();
+                return this.BadRequest();
             }
 
             if (!this.ModelState.IsValid)

@@ -1,10 +1,11 @@
 ﻿namespace TrainConnected.Services.Data
 {
-    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
     using TrainConnected.Data.Common.Repositories;
     using TrainConnected.Data.Models;
     using TrainConnected.Data.Models.Enums;
@@ -22,46 +23,6 @@
         {
             this.withdrawalsRepository = withdrawalsRepository;
             this.usersRepository = usersRepository;
-        }
-
-        public async Task CreateAsync(WithdrawalCreateInputModel withdrawalCreateInputModel, string userId)
-        {
-            var user = this.usersRepository.All()
-                .FirstOrDefault(x => x.Id == userId);
-
-            if (user == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            var pendingWithdrawals = await this.GetUserPendingWithdrawalsBalance(userId);
-            var withdrawableAmount = user.Balance - pendingWithdrawals;
-
-            if (withdrawableAmount >= withdrawalCreateInputModel.Amount && withdrawalCreateInputModel.Amount > 0)
-            {
-                var withdrawal = new Withdrawal
-                {
-                    Amount = withdrawalCreateInputModel.Amount,
-                    AdditionalInstructions = withdrawalCreateInputModel.AdditionalInstructions,
-                    TrainConnectedUserId = user.Id,
-                    TrainConnectedUser = user,
-                    Status = StatusCode.Initiated,
-                };
-
-                await this.withdrawalsRepository.AddAsync(withdrawal);
-                await this.withdrawalsRepository.SaveChangesAsync();
-            }
-        }
-
-        public async Task<IEnumerable<WithdrawalsAllViewModel>> GetAllAsync(string userId)
-        {
-            var withdrawals = await this.withdrawalsRepository.All()
-                .Where(x => x.TrainConnectedUserId == userId)
-                .To<WithdrawalsAllViewModel>()
-                .OrderByDescending(x => x.CreatedOn)
-                .ToArrayAsync();
-
-            return withdrawals;
         }
 
         public async Task<IEnumerable<WithdrawalsProcessingViewModel>> GetAllAdminAsync()
@@ -83,7 +44,7 @@
 
             if (withdrawal == null)
             {
-                throw new InvalidOperationException();
+                throw new NullReferenceException(string.Format(ServiceConstants.Withdrawal.NullReferenceWithdrawalId, id));
             }
 
             if (withdrawal.Status == nameof(StatusCode.Initiated))
@@ -107,8 +68,7 @@
 
             if (withdrawal == null)
             {
-                // TODO: catch exception and redirect appropriately
-                throw new NullReferenceException();
+                throw new NullReferenceException(string.Format(ServiceConstants.Withdrawal.NullReferenceWithdrawalId, withdrawalProcessInputModel.Id));
             }
 
             var user = await this.usersRepository.All()
@@ -116,18 +76,11 @@
 
             if (user == null)
             {
-                // TODO: catch exception and redirect appropriately
-                throw new NullReferenceException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceUserId, withdrawalProcessInputModel.TrainConnectedUserId));
             }
 
             var processedByUser = await this.usersRepository.All()
                 .FirstOrDefaultAsync(u => u.Id == processedByUserId);
-
-            if (processedByUser == null)
-            {
-                // TODO: catch exception and redirect appropriately
-                throw new NullReferenceException();
-            }
 
             if (withdrawalProcessInputModel.Status == true)
             {
@@ -151,6 +104,41 @@
             await this.withdrawalsRepository.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<WithdrawalsAllViewModel>> GetAllAsync(string userId)
+        {
+            var withdrawals = await this.withdrawalsRepository.All()
+                .Where(x => x.TrainConnectedUserId == userId)
+                .To<WithdrawalsAllViewModel>()
+                .OrderByDescending(x => x.CreatedOn)
+                .ToArrayAsync();
+
+            return withdrawals;
+        }
+
+        public async Task CreateAsync(WithdrawalCreateInputModel withdrawalCreateInputModel, string userId)
+        {
+            var user = this.usersRepository.All()
+                .FirstOrDefault(x => x.Id == userId);
+
+            var pendingWithdrawals = await this.GetUserPendingWithdrawalsBalance(userId);
+            var withdrawableAmount = user.Balance - pendingWithdrawals;
+
+            if (withdrawableAmount >= withdrawalCreateInputModel.Amount && withdrawalCreateInputModel.Amount > 0)
+            {
+                var withdrawal = new Withdrawal
+                {
+                    Amount = withdrawalCreateInputModel.Amount,
+                    AdditionalInstructions = withdrawalCreateInputModel.AdditionalInstructions,
+                    TrainConnectedUserId = user.Id,
+                    TrainConnectedUser = user,
+                    Status = StatusCode.Initiated,
+                };
+
+                await this.withdrawalsRepository.AddAsync(withdrawal);
+                await this.withdrawalsRepository.SaveChangesAsync();
+            }
+        }
+
         public async Task<decimal> GetUserBalanceAsync(string userId)
         {
             var user = await this.usersRepository.All()
@@ -158,7 +146,7 @@
 
             if (user == null)
             {
-                throw new NullReferenceException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceUserId, userId));
             }
 
             var balance = user.Balance;
@@ -173,7 +161,7 @@
 
             if (user == null)
             {
-                throw new NullReferenceException();
+                throw new NullReferenceException(string.Format(ServiceConstants.User.NullReferenceUserId, userId));
             }
 
             var pendingUserWithdrawals = await this.withdrawalsRepository.All()

@@ -78,7 +78,7 @@
 
         public class Withdrawal
         {
-            public const int AdditionalInstructionsMaxLength = 500;
+            public const int AdditionalInstructionsMaxLength = 150;
             public const string AmountNameDisplay = "Withdrawal Request Amount";
             public const string AdditionalInstructionsNameDisplay = "Additional Instructions";
             public const string IdNameDisplay = "Transaction Id";
@@ -91,6 +91,8 @@
             public const string ProcessedByUserUserNameDisplay = "Completed By";
 
             public const string AdditionalInstructionsLengthError = "Additional instructions must be less than {1} symbols";
+            public const string AmountError = "Withdrawal request amount cannot be greater than withdrawable amount";
+
         }
 
         public class Workout

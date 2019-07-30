@@ -30,6 +30,9 @@
                 <span asp-validation-for="AdditionalInstructions" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input asp-for="WithdrawableAmount" class="form-control" value="@withdrawableAmonut" hidden />
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

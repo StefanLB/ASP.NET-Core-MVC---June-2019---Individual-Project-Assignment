@@ -1,8 +1,10 @@
 ﻿namespace TrainConnected.Web.Areas.Administration.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
+    using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Withdrawals;
 
@@ -31,10 +33,16 @@
                 return this.NotFound();
             }
 
-            var withdrawal = await this.withdrawalsService.GetForProcessingAsync(id);
-            this.ViewData["withdrawal"] = withdrawal;
-
-            return this.View();
+            try
+            {
+                var withdrawal = await this.withdrawalsService.GetForProcessingAsync(id);
+                this.ViewData["withdrawal"] = withdrawal;
+                return this.View();
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
         }
 
         [HttpPost]
@@ -43,7 +51,7 @@
         {
             if (id != withdrawalProcessInputModel.Id)
             {
-                return this.NotFound();
+                return this.BadRequest();
             }
 
             if (!this.ModelState.IsValid)
@@ -51,11 +59,16 @@
                 return this.View(withdrawalProcessInputModel);
             }
 
-            var processedByUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            await this.withdrawalsService.ProcessAsync(withdrawalProcessInputModel, processedByUserId);
-
-            return this.RedirectToAction(nameof(this.All));
+            try
+            {
+                var processedByUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                await this.withdrawalsService.ProcessAsync(withdrawalProcessInputModel, processedByUserId);
+                return this.RedirectToAction(nameof(this.All));
+            }
+            catch (NullReferenceException)
+            {
+                return this.NotFound();
+            }
         }
-
     }
 }
