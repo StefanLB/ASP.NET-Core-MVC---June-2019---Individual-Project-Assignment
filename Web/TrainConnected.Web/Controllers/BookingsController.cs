@@ -6,15 +6,11 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using Microsoft.EntityFrameworkCore;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Bookings;
     using TrainConnected.Web.ViewModels.Workouts;
 
-    [Authorize]
     public class BookingsController : BaseController
     {
         private readonly IBookingsService bookingsService;

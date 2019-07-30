@@ -1,8 +1,6 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -12,7 +10,6 @@
     using TrainConnected.Common;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Certificates;
-    using TrainConnected.Web.ViewModels.WorkoutActivities;
 
     [Authorize(Roles = GlobalConstants.CoachRoleName)]
     public class CertificatesController : BaseController

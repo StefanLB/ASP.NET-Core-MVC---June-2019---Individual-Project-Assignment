@@ -2,12 +2,14 @@
 {
     using System.Security.Claims;
     using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using TrainConnected.Common;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Withdrawals;
 
-    [Authorize]
+    [Authorize(Roles = GlobalConstants.CoachRoleName)]
     public class WithdrawalsController : BaseController
     {
         private readonly IWithdrawalsService withdrawalsService;

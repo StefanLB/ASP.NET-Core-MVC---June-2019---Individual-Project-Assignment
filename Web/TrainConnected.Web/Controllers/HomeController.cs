@@ -1,7 +1,8 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using TrainConnected.Services.Data.Contracts;
 
     public class HomeController : BaseController
@@ -13,6 +14,7 @@
             this.workoutsService = workoutsService;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var workouts = await this.workoutsService.GetAllUpcomingHomeAsync();
@@ -25,6 +27,7 @@
             return this.View();
         }
 
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() => this.View();
     }

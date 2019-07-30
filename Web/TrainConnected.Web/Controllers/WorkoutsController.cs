@@ -1,21 +1,16 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using Microsoft.EntityFrameworkCore;
     using TrainConnected.Common;
-    using TrainConnected.Data;
-    using TrainConnected.Data.Models;
     using TrainConnected.Services.Data.Contracts;
-    using TrainConnected.Web.InputModels.PaymentMethods;
     using TrainConnected.Web.InputModels.Workouts;
-    using TrainConnected.Web.ViewModels.WorkoutActivities;
 
     [Authorize]
     public class WorkoutsController : BaseController
@@ -135,8 +130,8 @@
 
         }
 
-        [Authorize(Roles = GlobalConstants.CoachRoleName)]
         [HttpPost, ActionName("Cancel")]
+        [Authorize(Roles = GlobalConstants.CoachRoleName)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CancelConfirmed(string id)
         {

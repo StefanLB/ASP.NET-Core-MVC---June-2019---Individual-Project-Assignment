@@ -1,12 +1,10 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using TrainConnected.Services.Data.Contracts;
 
-    [Authorize]
     public class BuddiesController : BaseController
     {
         private readonly IBuddiesService buddiesService;

@@ -1,17 +1,11 @@
 ﻿namespace TrainConnected.Web.Controllers
 {
-    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Authorization;
+
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using Microsoft.EntityFrameworkCore;
-    using TrainConnected.Data;
-    using TrainConnected.Data.Models;
     using TrainConnected.Services.Data.Contracts;
 
-    [Authorize]
     public class AchievementsController : BaseController
     {
         private readonly IAchievementsService achievementsService;
