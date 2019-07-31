@@ -27,38 +27,40 @@
     </environment>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="main-container">
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TrainConnected</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <partial name="_LoginPartial" />
+                        <ul class="navbar-nav flex-grow-1"></ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="container-fluid">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TrainConnected</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1"></ul>
+                <partial name="_CookieConsentPartial" />
+                <main role="main" class="pb-3">
+                    @this.RenderBody()
+                </main>
+            </div>
+        </div>
+
+        <footer>
+            <div class="bg-light rounded">
+                <div class="text-center p-3 font-weight-bold">
+                    &copy; CopyRight TrainConnected @DateTime.Now.Year. Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
                 </div>
             </div>
-        </nav>
-    </header>
-
-    <div class="container-fluid">
-        <div class="container">
-            <partial name="_CookieConsentPartial" />
-            <main role="main" class="pb-3">
-                @this.RenderBody()
-            </main>
-        </div>
+        </footer>
     </div>
-
-    <footer>
-        <div class="bg-light rounded">
-            <div class="text-center p-3 font-weight-bold">
-                &copy; CopyRight TrainConnected @DateTime.Now.Year. Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-            </div>
-        </div>
-    </footer>
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>

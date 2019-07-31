@@ -1487,11 +1487,6 @@ blockquote p {
 
 /* footer */
 
-footer {
-  padding-top: 30px;
-  color: #7e7e7e;
-}
-
 footer.footer {
   background: #3a3a3a;
 }
