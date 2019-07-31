@@ -62,6 +62,9 @@
 
         public class User
         {
+            public const int AddHoursToMatchLocalTime = 3;
+            public const int LockoutMinutesUponFailedLogin = 15;
+
             public const string ArgumentUserBuddyMismatch = "UserId {0} is not in userId {1}'s buddy list.";
 
             public const string NullReferenceUserId = "User with id {0} not found.";

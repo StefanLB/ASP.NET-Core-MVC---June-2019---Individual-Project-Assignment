@@ -1,12 +1,12 @@
 ﻿namespace TrainConnected.Services.Data
 {
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     using TrainConnected.Data.Common.Repositories;
     using TrainConnected.Data.Models;
     using TrainConnected.Services.Data.Contracts;
@@ -37,6 +37,18 @@
                 .To<UsersAllViewModel>()
                 .OrderBy(x => x.UserName)
                 .ToArrayAsync();
+
+            foreach (var user in users)
+            {
+                if (user.LockoutEnd == null || user.LockoutEnd < DateTime.Now)
+                {
+                    user.LockoutEndDateTime = null;
+                }
+                else
+                {
+                    user.LockoutEndDateTime = user.LockoutEnd.Value.UtcDateTime.AddHours(ServiceConstants.User.AddHoursToMatchLocalTime);
+                }
+            }
 
             return users;
         }
@@ -70,6 +82,7 @@
             }
 
             user.LockoutEnd = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
+            user.LockoutEnd = user.LockoutEnd.Value.AddMinutes(ServiceConstants.User.LockoutMinutesUponFailedLogin);
 
             this.usersRepository.Update(user);
             await this.usersRepository.SaveChangesAsync();

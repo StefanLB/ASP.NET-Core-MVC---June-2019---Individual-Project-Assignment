@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<TrainConnected.Web.ViewModels.Certificates.CertificatesAllViewModel>
-@using System.Globalization;
+@using System.Globalization
+@using TrainConnected.Common
 
 @{
     ViewData["Title"] = "Certificates";
@@ -43,10 +44,10 @@
                     @item.IssuedBy
                 </td>
                 <td>
-                    @item.IssuedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+                    @item.IssuedOn.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
-                    @(item.ExpiresOn == null ? "" : ((DateTime)item.ExpiresOn).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))
+                    @(item.ExpiresOn == null ? "" : ((DateTime)item.ExpiresOn).ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture))
                 </td>
                 <td>
                     @item.Description

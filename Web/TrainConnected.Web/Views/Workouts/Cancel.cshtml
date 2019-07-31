@@ -1,5 +1,6 @@
 ﻿@model TrainConnected.Web.ViewModels.Workouts.WorkoutCancelViewModel
-@using System.Globalization;
+@using System.Globalization
+@using TrainConnected.Common
 
 @{
     ViewData["Title"] = "Cancel";
@@ -30,7 +31,7 @@
             @Html.DisplayNameFor(model => model.Time)
         </dt>
         <dd class="col-sm-10">
-            @Model.Time.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+            @Model.Time.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Duration)

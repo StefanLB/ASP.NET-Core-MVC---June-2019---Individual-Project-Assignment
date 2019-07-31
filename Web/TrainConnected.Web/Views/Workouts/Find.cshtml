@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<TrainConnected.Web.ViewModels.Workouts.WorkoutsAllViewModel>
-@using  System.Globalization;
+@using System.Globalization
+@using TrainConnected.Common
 
 @{
     ViewData["Title"] = "Find";
@@ -46,14 +47,14 @@
         {
             <tr>
                 <td>
-                    <img src="@Url.Content(item.ActivityIcon)" /> | 
+                    <img src="@Url.Content(item.ActivityIcon)" /> |
                     @item.ActivityName
                 </td>
                 <td>
                     <a asp-controller="Buddies" asp-action="CoachDetails" asp-route-coachUserName="@item.CoachUserName">@item.CoachUserName</a>
                 </td>
                 <td>
-                    @item.Time.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+                    @item.Time.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     @item.Duration min

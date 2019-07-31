@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
     using TrainConnected.Common.Attributes;
     using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
@@ -38,6 +39,7 @@
         [Display(Name = ModelConstants.Workout.PaymentMethodsNameDisplay)]
         public ICollection<string> PaymentMethods { get; set; }
 
+        [StringLength(ModelConstants.Workout.NotesMaxLength, ErrorMessage = ModelConstants.Workout.NotesLengthError)]
         public string Notes { get; set; }
 
         [Required]

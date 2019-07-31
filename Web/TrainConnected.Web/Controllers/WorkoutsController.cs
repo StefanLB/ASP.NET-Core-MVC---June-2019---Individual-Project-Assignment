@@ -10,6 +10,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using TrainConnected.Common;
+    using TrainConnected.Data.Common.Models;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Workouts;
 
@@ -72,9 +73,13 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(WorkoutCreateInputModel workoutCreateInputModel, List<string> acceptedPaymentMethods)
         {
-            if (!this.ModelState.IsValid || acceptedPaymentMethods.Count == 0)
+            if (acceptedPaymentMethods.Count == 0)
             {
-                // TODO: Add Error Message for accepted payment methods
+                this.ModelState.AddModelError("PaymentMethods", ModelConstants.Workout.PaymentMethodsError);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
                 this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
 
                 var paymentMethodsByType = await this.GetAllPaymentMethodsByTypeAsync();

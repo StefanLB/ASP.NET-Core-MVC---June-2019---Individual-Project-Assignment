@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<TrainConnected.Web.ViewModels.Bookings.BookingsAllViewModel>
-@using System.Globalization;
+@using System.Globalization
+@using TrainConnected.Common
 
 @{
     ViewData["Title"] = "All";
@@ -39,37 +40,38 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.PaymentMethodName
-            </td>
-            <td>
-                @item.Price
-            </td>
-            <td>
-                @item.CreatedOn.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
-            </td>
-            <td>
-                <img src="@Url.Content(item.WorkoutActivityIcon)" /> |
-                @item.WorkoutActivityName
-            </td>
-            <td>
-                @item.WorkoutCoachUserName
-            </td>
-            <td>
-                @item.WorkoutTime.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
-            </td>
-            <td>
-                @item.WorkoutLocation
-            </td>
-            <td>
-                @item.WorkoutNotes
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.PaymentMethodName
+                </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                    @item.CreatedOn.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    <img src="@Url.Content(item.WorkoutActivityIcon)" /> |
+                    @item.WorkoutActivityName
+                </td>
+                <td>
+                    @item.WorkoutCoachUserName
+                </td>
+                <td>
+                    @item.WorkoutTime.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    @item.WorkoutLocation
+                </td>
+                <td>
+                    @item.WorkoutNotes
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

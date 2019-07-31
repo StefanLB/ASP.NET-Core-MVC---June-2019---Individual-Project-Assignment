@@ -130,7 +130,7 @@
             }
 
             var issuedToUserId = await this.certificatesRepository.All()
-                .Where(x => x.Id == userId)
+                .Where(cid => cid.Id == certificateEditInputModel.Id)
                 .Select(x => x.TrainConnectedUserId)
                 .FirstOrDefaultAsync();
 
@@ -169,7 +169,7 @@
             }
 
             var issuedToUserId = await this.certificatesRepository.All()
-                .Where(x => x.Id == userId)
+                .Where(cid => cid.Id == id)
                 .Select(x => x.TrainConnectedUserId)
                 .FirstOrDefaultAsync();
 

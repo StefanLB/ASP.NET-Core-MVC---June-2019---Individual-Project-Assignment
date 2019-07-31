@@ -1,5 +1,6 @@
 ﻿@model TrainConnected.Web.ViewModels.Achievements.AchievementDetailsViewModel
 @using System.Globalization;
+@using TrainConnected.Common;
 
 @{
     ViewData["Title"] = "Details";
@@ -22,7 +23,7 @@
             @Html.DisplayNameFor(model => model.AchievedOn)
         </dt>
         <dd class="col-sm-10">
-            @Model.AchievedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+            @Model.AchievedOn.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)

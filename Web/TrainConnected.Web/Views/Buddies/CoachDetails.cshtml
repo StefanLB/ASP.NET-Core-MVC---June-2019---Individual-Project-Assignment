@@ -1,5 +1,7 @@
 ﻿@model TrainConnected.Web.ViewModels.Buddies.CoachDetailsViewModel
-@using System.Globalization;
+@using System.Globalization
+@using TrainConnected.Common
+
 
 @{
     ViewData["Title"] = "Coach Details";
@@ -32,7 +34,7 @@
             @Html.DisplayNameFor(model => model.CreatedOn)
         </dt>
         <dd class="col-sm-10">
-            @Model.CreatedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+            @Model.CreatedOn.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.WorkoutsCoached)
@@ -42,7 +44,7 @@
         </dd>
     </dl>
 </div>
-@if(@Model.Certificates.Count()>0)
+@if (@Model.Certificates.Count() > 0)
 {
     <div>
         <h4>@Model.UserName's Certificates</h4>
@@ -68,25 +70,25 @@
             </thead>
             <tbody>
                 @foreach (var item in Model.Certificates)
-            {
-                <tr>
-                    <td>
-                        @item.ActivityName
-                    </td>
-                    <td>
-                        @item.IssuedBy
-                    </td>
-                    <td>
-                        @item.IssuedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
-                    </td>
-                    <td>
-                        @(item.ExpiresOn == null ? "" : ((DateTime)item.ExpiresOn).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))
-                    </td>
-                    <td>
-                        @item.Description
-                    </td>
-                </tr>
-            }
+                {
+                    <tr>
+                        <td>
+                            @item.ActivityName
+                        </td>
+                        <td>
+                            @item.IssuedBy
+                        </td>
+                        <td>
+                            @item.IssuedOn.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture)
+                        </td>
+                        <td>
+                            @(item.ExpiresOn == null ? "" : ((DateTime)item.ExpiresOn).ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture))
+                        </td>
+                        <td>
+                            @item.Description
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

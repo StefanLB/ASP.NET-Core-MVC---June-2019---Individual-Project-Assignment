@@ -1,5 +1,6 @@
 ﻿@model TrainConnected.Web.ViewModels.Bookings.BookingDetailsViewModel
-@using  System.Globalization;
+@using System.Globalization
+@using TrainConnected.Common
 
 @{
     ViewData["Title"] = "Details";
@@ -28,7 +29,7 @@
             @Html.DisplayNameFor(model => model.CreatedOn)
         </dt>
         <dd class="col-sm-10">
-            @Model.CreatedOn.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+            @Model.CreatedOn.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
@@ -60,7 +61,7 @@
             @Html.DisplayNameFor(model => model.WorkoutTime)
         </dt>
         <dd class="col-sm-10">
-            @Model.WorkoutTime.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+            @Model.WorkoutTime.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.WorkoutDuration)
@@ -90,9 +91,9 @@
 </div>
 <div>
     @if (Model.WorkoutTime > DateTime.UtcNow &&
-        Model.PaymentMethodPaymentInAdvance == false)
+       Model.PaymentMethodPaymentInAdvance == false)
     {
-    <a asp-action="Cancel" asp-route-id="@Model.Id">Cancel |</a>
+        <a asp-action="Cancel" asp-route-id="@Model.Id">Cancel |</a>
     }
     <a asp-action="All">Back to List</a>
 </div>

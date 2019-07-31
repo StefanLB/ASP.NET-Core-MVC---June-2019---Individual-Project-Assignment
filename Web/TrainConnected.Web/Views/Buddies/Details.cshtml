@@ -1,5 +1,7 @@
 ﻿@model TrainConnected.Web.ViewModels.Buddies.BuddyDetailsViewModel
-@using System.Globalization;
+@using System.Globalization
+@using TrainConnected.Common
+
 
 @{
     ViewData["Title"] = "Details";
@@ -32,7 +34,7 @@
             @Html.DisplayNameFor(model => model.CreatedOn)
         </dt>
         <dd class="col-sm-10">
-            @Model.CreatedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+            @Model.CreatedOn.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.WorkoutsCount)
@@ -50,7 +52,7 @@
             @Html.DisplayNameFor(model => model.AddedOn)
         </dt>
         <dd class="col-sm-10">
-            @Model.AddedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+            @Model.AddedOn.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture)
         </dd>
     </dl>
 </div>

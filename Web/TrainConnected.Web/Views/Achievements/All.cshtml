@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<TrainConnected.Web.ViewModels.Achievements.AchievementsAllViewModel>
 @using System.Globalization;
+@using TrainConnected.Common;
 
 @{
     ViewData["Title"] = "All";
@@ -27,13 +28,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @item.Name
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AchievedOn)
+                @item.AchievedOn.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @item.Description
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>

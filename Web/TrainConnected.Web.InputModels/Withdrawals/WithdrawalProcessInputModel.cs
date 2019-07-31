@@ -12,15 +12,12 @@
         [Display(Name = ModelConstants.Withdrawal.IdNameDisplay)]
         public string Id { get; set; }
 
-        [Required]
-        [Range(typeof(decimal), ModelConstants.PriceMin, ModelConstants.PriceMax, ErrorMessage = ModelConstants.PriceRangeError)]
         [Display(Name = ModelConstants.Withdrawal.AmountNameDisplay)]
         public decimal Amount { get; set; }
         
         [Display(Name = ModelConstants.Withdrawal.AdditionalInstructionsNameDisplay)]
         public string AdditionalInstructions { get; set; }
 
-        [Required]
         [Display(Name = ModelConstants.Withdrawal.UserNameDisplay)]
         public string TrainConnectedUserUserName { get; set; }
 
@@ -32,6 +29,7 @@
         public bool Status { get; set; }
 
         [Display(Name = ModelConstants.Withdrawal.ResolutionNotesNameDisplay)]
+        [StringLength(ModelConstants.Withdrawal.ResolutionNotesMaxLength, ErrorMessage = ModelConstants.Withdrawal.ResolutionNotesLengthError)]
         public string ResolutionNotes { get; set; }
     }
 }

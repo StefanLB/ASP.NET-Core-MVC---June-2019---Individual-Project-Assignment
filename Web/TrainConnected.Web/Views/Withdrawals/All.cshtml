@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<TrainConnected.Web.ViewModels.Withdrawals.WithdrawalsAllViewModel>
 @using TrainConnected.Data.Models.Enums
+@using System.Globalization;
+@using TrainConnected.Common
 
 @{
     ViewData["Title"] = "All";
@@ -52,7 +54,7 @@
                     @item.AdditionalInstructions
                 </td>
                 <td>
-                    @item.CreatedOn
+                    @item.CreatedOn.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     @item.Status
@@ -102,13 +104,13 @@
                     @item.AdditionalInstructions
                 </td>
                 <td>
-                    @item.CreatedOn
+                    @item.CreatedOn.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     @item.Status
                 </td>
                 <td>
-                    @item.CompletedOn
+                    @item.CompletedOn.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     @item.ResolutionNotes

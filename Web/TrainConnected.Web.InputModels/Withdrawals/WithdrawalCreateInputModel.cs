@@ -11,6 +11,7 @@
     {
         [Required]
         [Display(Name = ModelConstants.Withdrawal.AmountNameDisplay)]
+        [Range(typeof(decimal), ModelConstants.Withdrawal.AmountMin, ModelConstants.PriceMax, ErrorMessage = ModelConstants.Withdrawal.NegativeAmountError)]
         [LessThanOrEqual(nameof(WithdrawableAmount), ErrorMessage = ModelConstants.Withdrawal.AmountError)]
         public decimal Amount { get; set; }
 

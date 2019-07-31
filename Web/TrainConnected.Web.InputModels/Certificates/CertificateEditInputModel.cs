@@ -14,9 +14,6 @@
         public string Id { get; set; }
 
         [Required]
-        public string AcitvityId { get; set; }
-
-        [Required]
         [Display(Name = ModelConstants.Certificate.ActivityNameDisplay)]
         public string ActivityName { get; set; }
 

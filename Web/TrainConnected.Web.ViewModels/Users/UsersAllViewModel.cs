@@ -26,7 +26,9 @@
         [Display(Name = ModelConstants.User.PhoneNumberNameDisplay)]
         public string PhoneNumber { get; set; }
 
-        [Display(Name = ModelConstants.User.LockedOutNameDisplay)]
         public DateTimeOffset? LockoutEnd { get; set; }
+
+        [Display(Name = ModelConstants.User.LockedOutNameDisplay)]
+        public DateTime? LockoutEndDateTime { get; set; }
     }
 }

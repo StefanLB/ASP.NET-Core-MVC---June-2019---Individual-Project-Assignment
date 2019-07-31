@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<TrainConnected.Web.ViewModels.Workouts.WorkoutsAllViewModel>
-@using  System.Globalization;
+@using System.Globalization
+@using TrainConnected.Common
 
 @{
     ViewData["Title"] = "My";
@@ -42,41 +43,42 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <img src="@Url.Content(item.ActivityIcon)" /> | 
-                @item.ActivityName
-            </td>
-            <td>
-                @item.CoachUserName
-            </td>
-            <td>
-                @item.Time.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
-            </td>
-            <td>
-                @item.Duration min
-            </td>
-            <td>
-                @item.Location
-            </td>
-            <td>
-                @item.Price
-            </td>
-            <td>
-                @item.Notes
-            </td>
-            <td>
-                @item.BookingsCount / @item.MaxParticipants
-            </td>
-            <td>
-                @item.CreatedOn
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="DetailsByWorkoutId" asp-controller="Bookings" asp-route-id="@item.Id">To Booking</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@Url.Content(item.ActivityIcon)" /> |
+                    @item.ActivityName
+                </td>
+                <td>
+                    @item.CoachUserName
+                </td>
+                <td>
+                    @item.Time.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    @item.Duration min
+                </td>
+                <td>
+                    @item.Location
+                </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                    @item.Notes
+                </td>
+                <td>
+                    @item.BookingsCount / @item.MaxParticipants
+                </td>
+                <td>
+                    @item.CreatedOn
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="DetailsByWorkoutId" asp-controller="Bookings" asp-route-id="@item.Id">To Booking</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

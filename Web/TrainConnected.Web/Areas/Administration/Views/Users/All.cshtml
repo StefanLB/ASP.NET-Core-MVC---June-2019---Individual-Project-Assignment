@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<TrainConnected.Web.ViewModels.Users.UsersAllViewModel>
-@using System;
+@using System.Globalization
+@using TrainConnected.Common
 
 @{
     ViewData["Title"] = "Users";
@@ -27,7 +28,7 @@
                 @Html.DisplayNameFor(model => model.PhoneNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LockoutEnd)
+                @Html.DisplayNameFor(model => model.LockoutEndDateTime)
             </th>
             <th></th>
         </tr>
@@ -52,11 +53,11 @@
                     @item.PhoneNumber
                 </td>
                 <td>
-                    @item.LockoutEnd?.UtcDateTime
+                    @item.LockoutEndDateTime?.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     <a asp-action="Details" asp-area="Administration" asp-route-id="@item.Id">Details</a> |
-                    @if (item.LockoutEnd != null)
+                    @if (item.LockoutEndDateTime != null)
                     {
                         <a asp-action="Unlock" asp-area="Administration" asp-route-id="@item.Id">Unlock</a>
                     }

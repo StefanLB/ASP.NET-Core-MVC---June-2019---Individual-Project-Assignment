@@ -89,6 +89,8 @@
         public class Withdrawal
         {
             public const int AdditionalInstructionsMaxLength = 150;
+            public const int ResolutionNotesMaxLength = 150;
+            public const string AmountMin = "0.01";
             public const string AmountNameDisplay = "Withdrawal Request Amount";
             public const string AdditionalInstructionsNameDisplay = "Additional Instructions";
             public const string IdNameDisplay = "Transaction Id";
@@ -101,30 +103,34 @@
             public const string ProcessedByUserUserNameDisplay = "Completed By";
 
             public const string AdditionalInstructionsLengthError = "Additional instructions must be less than {1} symbols";
+            public const string ResolutionNotesLengthError = "Resolution notes must be less than {1} symbols";
             public const string AmountError = "Withdrawal request amount cannot be greater than withdrawable amount";
-
+            public const string NegativeAmountError = "Amount must be positive";
         }
 
         public class Workout
         {
             public const int DurationMin = 10;
             public const int DurationMax = 180;
-            public const int ParticipantsMin = 1;
-            public const int ParticipantsMax = 99;
             public const int LocationNameMinLength = 3;
             public const int LocationNameMaxLength = 100;
+            public const int NotesMaxLength = 150;
+            public const int ParticipantsMin = 1;
+            public const int ParticipantsMax = 99;
 
-            public const string PaymentMethodsNameDisplay = "Accepted Payment Methods";
             public const string ActivityNameDisplay = "Activity";
-            public const string CoachNameDisplay = "Coach";
             public const string BookingsCountNameDisplay = "Signed Up";
-            public const string MaxParticipantsNameDisplay = "Max Participants";
+            public const string CoachNameDisplay = "Coach";
             public const string CreatedOnNameDisplay = "Created On";
+            public const string MaxParticipantsNameDisplay = "Max Participants";
+            public const string PaymentMethodsNameDisplay = "Accepted Payment Methods";
 
             public const string DurationRangeError = "Workout duration must be between {1} and {2} minutes";
-            public const string ParticipantsRangeError = "Maximum number of participants must be between {2} and {1}";
-            public const string TimeError = "Beginning of workout must be a future point in time";
             public const string LocationRangeError = "Workout location must be between {2} and {1} symbols";
+            public const string NotesLengthError = "Notes cannot be longer than {1} symbols";
+            public const string ParticipantsRangeError = "Number of participants must be between {1} and {2}";
+            public const string PaymentMethodsError = "Please select at least one payment method";
+            public const string TimeError = "Beginning of workout must be a future point in time";
         }
 
         public class WorkoutActivity

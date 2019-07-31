@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<TrainConnected.Web.ViewModels.Workouts.WorkoutsHomeViewModel>
-@using System.Globalization;
+@using System.Globalization
+@using TrainConnected.Common
+
 
 @using TrainConnected.Data.Models
 @using Microsoft.AspNetCore.Identity
@@ -61,7 +63,7 @@
                     @item.CoachUserName
                 </td>
                 <td>
-                    @item.Time.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+                    @item.Time.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     @item.Duration min
