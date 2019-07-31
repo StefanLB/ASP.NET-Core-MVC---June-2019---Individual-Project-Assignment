@@ -139,6 +139,12 @@
             try
             {
                 var workout = await this.workoutsService.GetCancelDetailsAsync(id, userId);
+
+                if (DateTime.UtcNow.ToLocalTime() > workout.Time || workout.BookingsCount != 0)
+                {
+                    return this.BadRequest();
+                }
+
                 return this.View(workout);
             }
             catch (NullReferenceException)

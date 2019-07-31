@@ -111,7 +111,6 @@
             return this.View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookingCreateInputModel bookingCreateInputModel)
@@ -170,7 +169,7 @@
             {
                 var booking = await this.bookingsService.GetDetailsAsync(id, userId);
 
-                if (DateTime.UtcNow > booking.WorkoutTime || booking.PaymentMethodPaymentInAdvance == true)
+                if (DateTime.UtcNow.ToLocalTime() > booking.WorkoutTime || booking.PaymentMethodPaymentInAdvance == true)
                 {
                     return this.BadRequest();
                 }
@@ -204,6 +203,10 @@
             catch (NullReferenceException)
             {
                 return this.NotFound();
+            }
+            catch (InvalidOperationException)
+            {
+                return this.BadRequest();
             }
         }
 

@@ -73,7 +73,7 @@
             @Html.DisplayNameFor(model => model.CreatedOn)
         </dt>
         <dd class="col-sm-10">
-            @Model.CreatedOn.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+            @Model.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
         </dd>
     </dl>
 

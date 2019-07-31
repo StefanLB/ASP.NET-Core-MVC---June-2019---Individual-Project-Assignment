@@ -82,7 +82,7 @@
                             @item.IssuedOn.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture)
                         </td>
                         <td>
-                            @(item.ExpiresOn == null ? "" : ((DateTime)item.ExpiresOn).ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture))
+                            @item.ExpiresOn?.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture)
                         </td>
                         <td>
                             @item.Description

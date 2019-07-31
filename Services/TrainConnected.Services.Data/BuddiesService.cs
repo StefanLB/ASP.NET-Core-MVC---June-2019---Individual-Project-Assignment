@@ -101,7 +101,7 @@
 
             coachDetailsViewModel.Certificates = await this.certificatesRepository.All()
                 .Where(x => x.TrainConnectedUserId == coachDetailsViewModel.Id)
-                .Where(e => (!e.ExpiresOn.HasValue) || (e.ExpiresOn > DateTime.UtcNow))
+                .Where(e => (!e.ExpiresOn.HasValue) || (e.ExpiresOn >= DateTime.UtcNow.Date))
                 .To<CertificatesAllViewModel>()
                 .ToArrayAsync();
 

@@ -69,11 +69,11 @@
                     @item.BookingsCount / @item.MaxParticipants
                 </td>
                 <td>
-                    @item.CreatedOn
+                    @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Details </a>
-                    @if (item.Time > DateTime.UtcNow && item.BookingsCount == 0)
+                    @if (item.Time > DateTime.UtcNow.ToLocalTime() && item.BookingsCount == 0)
                     {
                         <a asp-action="Cancel" asp-route-id="@item.Id">| Cancel</a>
                     }

@@ -50,7 +50,7 @@
                     @item.Price
                 </td>
                 <td>
-                    @item.CreatedOn.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     <img src="@Url.Content(item.WorkoutActivityIcon)" /> |

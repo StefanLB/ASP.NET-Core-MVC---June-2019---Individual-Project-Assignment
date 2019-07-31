@@ -72,7 +72,7 @@
                     @item.BookingsCount / @item.MaxParticipants
                 </td>
                 <td>
-                    @item.CreatedOn.ToString("dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture)
+                    @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     @if (item.BookingsCount < item.MaxParticipants)

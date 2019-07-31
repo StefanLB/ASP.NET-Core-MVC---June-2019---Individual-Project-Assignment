@@ -73,7 +73,7 @@
 
             var userWorkouts = await this.workoutsRepository.All()
                 .Where(x => x.Users.Any(y => y.TrainConnectedUserId == userId))
-                .Where(x => x.Time < DateTime.UtcNow)
+                .Where(x => x.Time < DateTime.UtcNow.ToLocalTime())
                 .ToArrayAsync();
 
             if (!achievements.Any(x => x.Name == ServiceConstants.Achievement.FirstWorkoutAchievementName))

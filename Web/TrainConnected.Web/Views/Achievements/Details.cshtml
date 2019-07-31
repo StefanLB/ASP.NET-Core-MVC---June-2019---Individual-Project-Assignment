@@ -23,7 +23,7 @@
             @Html.DisplayNameFor(model => model.AchievedOn)
         </dt>
         <dd class="col-sm-10">
-            @Model.AchievedOn.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+            @Model.AchievedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)

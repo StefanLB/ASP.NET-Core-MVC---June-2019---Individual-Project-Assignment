@@ -35,7 +35,7 @@
         public async Task<IEnumerable<WorkoutsHomeViewModel>> GetAllUpcomingHomeAsync()
         {
             var workouts = await this.workoutsRepository.All()
-                .Where(t => t.Time > DateTime.UtcNow)
+                .Where(t => t.Time > DateTime.UtcNow.ToLocalTime())
                 .To<WorkoutsHomeViewModel>()
                 .OrderBy(x => x.Time)
                 .ThenBy(x => x.ActivityName)
@@ -52,7 +52,7 @@
                 .ToArrayAsync();
 
             var workouts = await this.workoutsRepository.All()
-                .Where(t => t.Time > DateTime.UtcNow)
+                .Where(t => t.Time > DateTime.UtcNow.ToLocalTime())
                 .Where(w => !userWorkoutsIds.Contains(w.Id))
                 .Where(c => c.CoachId != userId)
                 .To<WorkoutsAllViewModel>()
@@ -260,7 +260,7 @@
                 throw new ArgumentException(string.Format(ServiceConstants.Workout.ArgumentUserIdMismatch, userId));
             }
 
-            if (workout.CurrentlySignedUp == 0)
+            if (workout.CurrentlySignedUp == 0 && workout.Time > DateTime.UtcNow.ToLocalTime())
             {
                 workout.IsDeleted = true;
                 this.workoutsRepository.Update(workout);

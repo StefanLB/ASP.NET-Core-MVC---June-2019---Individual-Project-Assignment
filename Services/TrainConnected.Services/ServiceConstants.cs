@@ -42,6 +42,7 @@
             public const string NullReferenceWorkoutId = "No Booking found based on provided Workout {0} and UserId {1} parameters.";
 
             public const string BookingCriteriaNotMet = "User does not meet the booking requirements.";
+            public const string CancelBookingCriteriaNotMet = "Booking cannot be canceled. The workout has most likely already started.";
         }
 
         public class Certificate

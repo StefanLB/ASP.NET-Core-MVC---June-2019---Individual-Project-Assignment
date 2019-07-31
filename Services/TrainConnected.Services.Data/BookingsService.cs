@@ -37,7 +37,7 @@
         {
             var bookings = await this.bookingsRepository.All()
                 .Where(x => x.TrainConnectedUserId == userId)
-                .Where(t => t.Workout.Time > DateTime.UtcNow)
+                .Where(t => t.Workout.Time > DateTime.UtcNow.ToLocalTime())
                 .To<BookingsAllViewModel>()
                 .OrderBy(x => x.WorkoutTime)
                 .ThenByDescending(x => x.CreatedOn)
@@ -50,7 +50,7 @@
         {
             var bookings = await this.bookingsRepository.All()
                 .Where(x => x.TrainConnectedUserId == userId)
-                .Where(t => t.Workout.Time <= DateTime.UtcNow)
+                .Where(t => t.Workout.Time <= DateTime.UtcNow.ToLocalTime())
                 .To<BookingsAllViewModel>()
                 .OrderByDescending(x => x.WorkoutTime)
                 .ThenByDescending(x => x.CreatedOn)
@@ -195,7 +195,7 @@
             var paymentMethod = await this.paymentMethodsRepository.All()
                 .FirstOrDefaultAsync(x => x.Id == booking.PaymentMethodId);
 
-            if (workout.Time > DateTime.UtcNow && !paymentMethod.PaymentInAdvance)
+            if (workout.Time > DateTime.UtcNow.ToLocalTime() && !paymentMethod.PaymentInAdvance)
             {
                 booking.IsDeleted = true;
 
@@ -212,6 +212,10 @@
 
                 this.trainConnectedUsersWorkoutsRepository.Delete(userWorkoutConnection);
                 await this.trainConnectedUsersWorkoutsRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException(string.Format(ServiceConstants.Booking.CancelBookingCriteriaNotMet));
             }
         }
     }

@@ -54,7 +54,7 @@
                     @item.AdditionalInstructions
                 </td>
                 <td>
-                    @item.CreatedOn.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     @item.Status
@@ -104,13 +104,13 @@
                     @item.AdditionalInstructions
                 </td>
                 <td>
-                    @item.CreatedOn.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     @item.Status
                 </td>
                 <td>
-                    @item.CompletedOn.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    @item.CompletedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     @item.ResolutionNotes

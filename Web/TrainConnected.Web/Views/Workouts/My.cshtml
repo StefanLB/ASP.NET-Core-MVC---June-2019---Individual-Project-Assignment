@@ -72,7 +72,7 @@
                     @item.BookingsCount / @item.MaxParticipants
                 </td>
                 <td>
-                    @item.CreatedOn
+                    @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
