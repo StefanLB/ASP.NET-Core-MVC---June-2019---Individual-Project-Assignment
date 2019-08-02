@@ -18,16 +18,14 @@
     {
         private readonly IRepository<Workout> workoutsRepository;
         private readonly IRepository<TrainConnectedUser> usersRepository;
-        private readonly IWorkoutsService workoutsService;
         private readonly IRepository<Booking> bookingsRepository;
         private readonly IRepository<TrainConnectedUsersWorkouts> trainConnectedUsersWorkoutsRepository;
         private readonly IRepository<PaymentMethod> paymentMethodsRepository;
 
-        public BookingsService(IRepository<Workout> workoutsRepository, IRepository<TrainConnectedUser> usersRepository, IWorkoutsService workoutsService, IRepository<Booking> bookingsRepository, IRepository<TrainConnectedUsersWorkouts> trainConnectedUsersWorkoutsRepository, IRepository<PaymentMethod> paymentMethodsRepository)
+        public BookingsService(IRepository<Workout> workoutsRepository, IRepository<TrainConnectedUser> usersRepository, IRepository<Booking> bookingsRepository, IRepository<TrainConnectedUsersWorkouts> trainConnectedUsersWorkoutsRepository, IRepository<PaymentMethod> paymentMethodsRepository)
         {
             this.workoutsRepository = workoutsRepository;
             this.usersRepository = usersRepository;
-            this.workoutsService = workoutsService;
             this.bookingsRepository = bookingsRepository;
             this.trainConnectedUsersWorkoutsRepository = trainConnectedUsersWorkoutsRepository;
             this.paymentMethodsRepository = paymentMethodsRepository;
