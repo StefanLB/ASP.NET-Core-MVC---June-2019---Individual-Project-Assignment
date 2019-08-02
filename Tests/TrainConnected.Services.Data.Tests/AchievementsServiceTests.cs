@@ -190,6 +190,79 @@
             Assert.Empty(actualResult);
         }
 
+        [Fact]
+        public async Task TestCheckForAchievementsAsync_WithAllFullfilledConditions_ShouldCreateAllAchievements()
+        {
+            string testUserId = "TestUserId";
+
+            await this.FulfillAllAchievementRequirements(this.bookingsRepository, this.workoutActivitiesRepository, this.workoutsRepository, testUserId);
+
+            await this.achievementsService.CheckForAchievementsAsync(testUserId);
+
+            var actualResult = await this.achievementsRepository.All()
+                .ToArrayAsync();
+
+            var actualResultAchievementNames = actualResult.Select(n => n.Name).ToList();
+
+            var expectedAchievements = this.FillAllAchievements();
+
+            foreach (var expectedAchievement in expectedAchievements)
+            {
+                Assert.Contains(expectedAchievement.Key, actualResultAchievementNames);
+            }
+        }
+
+        private async Task FulfillAllAchievementRequirements(IRepository<Booking> bookingsRepository, IRepository<WorkoutActivity> workoutActivitiesRepository, IRepository<Workout> workoutsRepository, string testUserId)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                await this.workoutActivitiesRepository.AddAsync(new WorkoutActivity()
+                {
+                    Id = i.ToString(),
+                    Name = i.ToString(),
+                });
+            }
+
+            await this.workoutActivitiesRepository.SaveChangesAsync();
+
+            var workoutActivitiesArray = await this.workoutActivitiesRepository.All().ToArrayAsync();
+
+            for (int i = 0; i < 100; i++)
+            {
+                var userWorkout = new TrainConnectedUsersWorkouts()
+                {
+                    TrainConnectedUserId = testUserId,
+                    WorkoutId = i.ToString(),
+                };
+
+                await this.workoutsRepository.AddAsync(new Workout()
+                {
+                    Id = i.ToString(),
+                    Activity = workoutActivitiesArray[i],
+                    ActivityId = i.ToString(),
+                    Time = DateTime.Now.AddHours(-i),
+                    MaxParticipants = 1,
+                    Price = 100.00m,
+                    Users = new HashSet<TrainConnectedUsersWorkouts>() { userWorkout },
+                });
+            }
+
+            await this.workoutsRepository.SaveChangesAsync();
+
+            for (int i = 0; i < 100; i++)
+            {
+                await this.bookingsRepository.AddAsync(new Booking()
+                {
+                    Id = i.ToString(),
+                    Price = 100.00m,
+                    WorkoutId = i.ToString(),
+                    TrainConnectedUserId = testUserId,
+                });
+            }
+
+            await this.bookingsRepository.SaveChangesAsync();
+        }
+
         private Dictionary<string, string> FillAllAchievements()
         {
             var achievementsDictionary = new Dictionary<string, string>

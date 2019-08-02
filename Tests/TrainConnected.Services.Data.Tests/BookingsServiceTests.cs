@@ -585,5 +585,190 @@
 
             await Assert.ThrowsAsync<InvalidOperationException>(async () => await this.bookingsService.CreateAsync(testInput, testUserId));
         }
+
+        [Fact]
+        public async Task TestCancelAsync_WithCorrectData_ShouldCancelBooking()
+        {
+            var testUserId = "TrainConnectedUserId1";
+            var testCoachId = "TestCoachId1";
+            var testWorkoutId = "TestWorkoutId";
+            var testPrice = 15.00m;
+
+            await this.usersRepository.AddAsync(new TrainConnectedUser()
+            {
+                Id = testUserId,
+            });
+
+            await this.usersRepository.SaveChangesAsync();
+
+            await this.usersRepository.AddAsync(new TrainConnectedUser()
+            {
+                Id = testCoachId,
+            });
+
+            await this.usersRepository.SaveChangesAsync();
+
+            await this.workoutsRepository.AddAsync(new Workout
+            {
+                Id = testWorkoutId,
+                CoachId = testCoachId,
+                Time = DateTime.Now.AddDays(1),
+                MaxParticipants = 10,
+            });
+
+            await this.workoutsRepository.SaveChangesAsync();
+
+            await this.paymentMethodsRepository.AddAsync(new PaymentMethod
+            {
+                Name = "cash",
+                PaymentInAdvance = false,
+            });
+
+            await this.paymentMethodsRepository.SaveChangesAsync();
+
+            var testInput = new BookingCreateInputModel()
+            {
+                WorkoutId = testWorkoutId,
+                PaymentMethod = "cash",
+                Price = testPrice,
+            };
+
+            await this.bookingsService.CreateAsync(testInput, testUserId);
+
+            var bookingPopulateInDb = await this.bookingsRepository.All()
+                .Where(x => x.WorkoutId == testWorkoutId)
+                .Where(p => p.TrainConnectedUserId == testUserId)
+                .FirstOrDefaultAsync();
+
+            Assert.NotNull(bookingPopulateInDb);
+            Assert.Equal(testUserId, bookingPopulateInDb.TrainConnectedUserId);
+            Assert.Equal(testWorkoutId, bookingPopulateInDb.WorkoutId);
+
+            await this.bookingsService.CancelAsync(bookingPopulateInDb.Id);
+
+            Assert.Empty(await this.bookingsRepository.All().ToArrayAsync());
+        }
+
+        [Fact]
+        public async Task TestCancelAsync_WithIncorrectBooking_ShouldThrowNullRefEx()
+        {
+            var testUserId = "TrainConnectedUserId1";
+            var testCoachId = "TestCoachId1";
+            var testWorkoutId = "TestWorkoutId";
+            var testPrice = 15.00m;
+
+            await this.usersRepository.AddAsync(new TrainConnectedUser()
+            {
+                Id = testUserId,
+            });
+
+            await this.usersRepository.SaveChangesAsync();
+
+            await this.usersRepository.AddAsync(new TrainConnectedUser()
+            {
+                Id = testCoachId,
+            });
+
+            await this.usersRepository.SaveChangesAsync();
+
+            await this.workoutsRepository.AddAsync(new Workout
+            {
+                Id = testWorkoutId,
+                CoachId = testCoachId,
+                Time = DateTime.Now.AddDays(1),
+                MaxParticipants = 10,
+            });
+
+            await this.workoutsRepository.SaveChangesAsync();
+
+            await this.paymentMethodsRepository.AddAsync(new PaymentMethod
+            {
+                Name = "cash",
+                PaymentInAdvance = false,
+            });
+
+            await this.paymentMethodsRepository.SaveChangesAsync();
+
+            var testInput = new BookingCreateInputModel()
+            {
+                WorkoutId = testWorkoutId,
+                PaymentMethod = "cash",
+                Price = testPrice,
+            };
+
+            await this.bookingsService.CreateAsync(testInput, testUserId);
+
+            var bookingPopulateInDb = await this.bookingsRepository.All()
+                .Where(x => x.WorkoutId == testWorkoutId)
+                .Where(p => p.TrainConnectedUserId == testUserId)
+                .FirstOrDefaultAsync();
+
+            Assert.NotNull(bookingPopulateInDb);
+            Assert.Equal(testUserId, bookingPopulateInDb.TrainConnectedUserId);
+            Assert.Equal(testWorkoutId, bookingPopulateInDb.WorkoutId);
+
+            await Assert.ThrowsAsync<NullReferenceException>(async () => await this.bookingsService.CancelAsync(bookingPopulateInDb.Id + "incorrect"));
+        }
+
+        [Fact]
+        public async Task TestCancelAsync_WithStartedWorkout_ShouldThrowInvOpEx()
+        {
+            var testUserId = "TrainConnectedUserId1";
+            var testCoachId = "TestCoachId1";
+            var testWorkoutId = "TestWorkoutId";
+            var testPrice = 15.00m;
+
+            await this.usersRepository.AddAsync(new TrainConnectedUser()
+            {
+                Id = testUserId,
+            });
+
+            await this.usersRepository.SaveChangesAsync();
+
+            await this.usersRepository.AddAsync(new TrainConnectedUser()
+            {
+                Id = testCoachId,
+            });
+
+            await this.usersRepository.SaveChangesAsync();
+
+            await this.workoutsRepository.AddAsync(new Workout
+            {
+                Id = testWorkoutId,
+                CoachId = testCoachId,
+                Time = DateTime.Now.AddDays(1),
+                MaxParticipants = 10,
+            });
+
+            await this.workoutsRepository.SaveChangesAsync();
+
+            await this.paymentMethodsRepository.AddAsync(new PaymentMethod
+            {
+                Name = "cash",
+                PaymentInAdvance = true,
+            });
+
+            await this.paymentMethodsRepository.SaveChangesAsync();
+
+            var testInput = new BookingCreateInputModel()
+            {
+                WorkoutId = testWorkoutId,
+                PaymentMethod = "cash",
+                Price = testPrice,
+            };
+
+            await this.bookingsService.CreateAsync(testInput, testUserId);
+
+            var bookingPopulateInDb = await this.bookingsRepository.All()
+                .Where(x => x.WorkoutId == testWorkoutId)
+                .Where(p => p.TrainConnectedUserId == testUserId)
+                .FirstOrDefaultAsync();
+
+            Assert.NotNull(bookingPopulateInDb);
+            Assert.Equal(testUserId, bookingPopulateInDb.TrainConnectedUserId);
+            Assert.Equal(testWorkoutId, bookingPopulateInDb.WorkoutId);
+
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await this.bookingsService.CancelAsync(bookingPopulateInDb.Id));
+        }
     }
 }
