@@ -112,7 +112,7 @@
                 .Where(n => workoutCreateInputModel.PaymentMethods.Contains(n.Name))
                 .ToArray();
 
-            if (paymentMethods == null)
+            if (paymentMethods.Count() == 0)
             {
                 throw new NullReferenceException(string.Format(ServiceConstants.Workout.NullReferencePaymentMethodName));
             }
