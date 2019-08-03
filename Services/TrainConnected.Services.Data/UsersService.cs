@@ -17,15 +17,13 @@
     {
         private readonly IRepository<TrainConnectedUser> usersRepository;
         private readonly IRepository<IdentityUserRole<string>> usersRolesRepository;
-        private readonly IRepository<IdentityRole<string>> rolesRepository;
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly UserManager<TrainConnectedUser> userManager;
 
-        public UsersService(IRepository<TrainConnectedUser> usersRepository, IRepository<IdentityUserRole<string>> usersRolesRepository, IRepository<IdentityRole<string>> rolesRepository, RoleManager<ApplicationRole> roleManager, UserManager<TrainConnectedUser> userManager)
+        public UsersService(IRepository<TrainConnectedUser> usersRepository, IRepository<IdentityUserRole<string>> usersRolesRepository, RoleManager<ApplicationRole> roleManager, UserManager<TrainConnectedUser> userManager)
         {
             this.usersRepository = usersRepository;
             this.usersRolesRepository = usersRolesRepository;
-            this.rolesRepository = rolesRepository;
             this.roleManager = roleManager;
             this.userManager = userManager;
         }
