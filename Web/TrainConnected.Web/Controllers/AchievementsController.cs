@@ -40,10 +40,10 @@
                 var achievement = await this.achievementsService.GetDetailsAsync(id, userId);
                 return this.View(achievement);
             }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            //catch (NullReferenceException)
+            //{
+            //    return this.NotFound();
+            //}
             catch (ArgumentException)
             {
                 return this.Unauthorized();
