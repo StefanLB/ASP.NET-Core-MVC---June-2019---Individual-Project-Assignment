@@ -17,7 +17,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" id="create-booking">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group form-check">
                 <label asp-for="PaymentMethod"></label><br />
@@ -42,11 +42,14 @@
                 <input asp-for="WorkoutId" class="form-control" value="@workout.Id" hidden />
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Create</button>
+                @*<input type="submit" value="Create" class="btn btn-primary" id="create-booking" hidden/>*@
             </div>
         </form>
     </div>
 </div>
+
+@await this.Html.PartialAsync("_NotifyOfBookingPartial")
 
 <div>
     <h4>Workout Details:</h4>
