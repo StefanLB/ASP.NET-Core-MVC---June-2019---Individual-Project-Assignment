@@ -1,0 +1,56 @@
+﻿@model PaginatedList<TrainConnected.Web.ViewModels.Workouts.WorkoutsHomeViewModel>
+
+@using System.Globalization
+@using TrainConnected.Common
+@using TrainConnected.Web.Helpers
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ActivitySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().ActivityName)</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().CoachUserName)
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TimeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().Time)</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Duration)
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["LocationSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().Location)</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().BookingsCount)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@Url.Content(item.ActivityIcon)" /> |
+                    @item.ActivityName
+                </td>
+                <td>
+                    @item.CoachUserName
+                </td>
+                <td>
+                    @item.Time.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    @item.Duration min
+                </td>
+                <td>
+                    @item.Location
+                </td>
+                <td>
+                    @item.BookingsCount / @item.MaxParticipants
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

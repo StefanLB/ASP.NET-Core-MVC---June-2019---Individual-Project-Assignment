@@ -110,5 +110,15 @@
       "enabled": true,
       "renameLocals": true
     }
+  },
+  {
+    "outputFileName": "wwwroot/lib/assets/css/overwrite.min.css",
+    "inputFiles": [
+      "wwwroot/lib/assets/css/overwrite.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
   }
 ]

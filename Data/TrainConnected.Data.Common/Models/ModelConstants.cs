@@ -20,6 +20,8 @@
 
             public const int DescriptionMaxLength = 500;
             public const int DescriptionMinLength = 10;
+
+            public const string AchievedOnNameDisplay = "Achieved On";
         }
 
         public class Booking
@@ -29,7 +31,7 @@
             public const string CreatedOnNameDisplay = "Created On";
             public const string ActivityNameDisplay = "Activity";
             public const string CoachNameDisplay = "Coach";
-            public const string TimeNameDisplay = "Time";
+            public const string TimeNameDisplay = "Start";
             public const string LocationNameDisplay = "Location";
             public const string DurationNameDisplay = "Duration";
             public const string NotesNameDisplay = "Notes";
@@ -124,6 +126,7 @@
             public const string CreatedOnNameDisplay = "Created On";
             public const string MaxParticipantsNameDisplay = "Max Participants";
             public const string PaymentMethodsNameDisplay = "Accepted Payment Methods";
+            public const string TimeNameDisplay = "Start";
 
             public const string DurationRangeError = "Workout duration must be between {1} and {2} minutes";
             public const string LocationRangeError = "Workout location must be between {2} and {1} symbols";

@@ -19,6 +19,7 @@
         [Display(Name = ModelConstants.Workout.CoachNameDisplay)]
         public string CoachUserName { get; set; }
 
+        [Display(Name = ModelConstants.Workout.TimeNameDisplay)]
         public DateTime Time { get; set; }
 
         public string Location { get; set; }

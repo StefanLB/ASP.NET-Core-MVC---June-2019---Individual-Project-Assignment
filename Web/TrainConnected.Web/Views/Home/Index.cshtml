@@ -1,8 +1,6 @@
-﻿@model IEnumerable<TrainConnected.Web.ViewModels.Workouts.WorkoutsHomeViewModel>
-@using System.Globalization
-@using TrainConnected.Common
+﻿@model PaginatedList<TrainConnected.Web.ViewModels.Workouts.WorkoutsHomeViewModel>
 
-
+@using TrainConnected.Web.Helpers
 @using TrainConnected.Data.Models
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<TrainConnectedUser> SignInManager
@@ -16,66 +14,16 @@
     <h1 class="display-4">Welcome to TrainConnected!</h1>
     @if (!this.SignInManager.IsSignedIn(this.User))
     {
-        <p><b><a asp-area="Identity" asp-page="/Account/Register">Join Us</a></b> to explore and sign up for all kinds of various workout activities.</p>
-        <p>Already a member? Well <b><a asp-area="Identity" asp-page="/Account/Login">Sign in</a></b>, buddy!</p>
-
-        <h3>A Preview of Our Upcoming Workouts</h3>
+        @await this.Html.PartialAsync("_GuestGreetingPartial")
     }
     else
     {
-        <p>Hey, Buddy! Below is a list of all upcoming workouts.</p>
-        <p>To sign up for an activity, simply go to your <b><a asp-area="" asp-controller="Workouts" asp-action="Find">Find Workouts</a></b> Tab.</p>
+        @await this.Html.PartialAsync("_LoggedInGreetingPartial")
     }
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ActivityName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CoachUserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Time)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BookingsCount)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    <img src="@Url.Content(item.ActivityIcon)" /> |
-                    @item.ActivityName
-                </td>
-                <td>
-                    @item.CoachUserName
-                </td>
-                <td>
-                    @item.Time.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                </td>
-                <td>
-                    @item.Duration min
-                </td>
-                <td>
-                    @item.Location
-                </td>
-                <td>
-                    @item.BookingsCount / @item.MaxParticipants
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@await this.Html.PartialAsync("_SearchBarPartial")
 
+@await this.Html.PartialAsync("_UpcomingWorkoutsPartial")
+
+@await this.Html.PartialAsync("_PaginationPartial")
