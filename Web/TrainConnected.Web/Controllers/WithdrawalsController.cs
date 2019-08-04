@@ -55,15 +55,8 @@
                 return this.View(withdrawalCreateInputModel);
             }
 
-            try
-            {
-                await this.withdrawalsService.CreateAsync(withdrawalCreateInputModel, userId);
-                return this.RedirectToAction(nameof(this.All));
-            }
-            catch (InvalidOperationException)
-            {
-                return this.BadRequest();
-            }
+            await this.withdrawalsService.CreateAsync(withdrawalCreateInputModel, userId);
+            return this.RedirectToAction(nameof(this.All));
         }
     }
 }

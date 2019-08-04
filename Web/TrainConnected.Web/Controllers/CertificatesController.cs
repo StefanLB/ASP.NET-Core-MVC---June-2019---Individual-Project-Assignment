@@ -42,19 +42,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                var certificate = await this.certificatesService.GetDetailsAsync(id, userId);
-                return this.View(certificate);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
+            var certificate = await this.certificatesService.GetDetailsAsync(id, userId);
+            return this.View(certificate);
         }
 
         [HttpGet]
@@ -78,15 +67,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                var result = await this.certificatesService.CreateAsync(certificateCreateInputModel, userId);
-                return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            var result = await this.certificatesService.CreateAsync(certificateCreateInputModel, userId);
+            return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
         }
 
         [HttpGet]
@@ -99,20 +81,9 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
-                var certificate = await this.certificatesService.GetEditDetailsAsync(id, userId);
-                return this.View(certificate);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
+            this.ViewData["Activities"] = await this.GetAllWorkoutActivitiesAsSelectListItems();
+            var certificate = await this.certificatesService.GetEditDetailsAsync(id, userId);
+            return this.View(certificate);
         }
 
         [HttpPost]
@@ -132,19 +103,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                await this.certificatesService.UpdateAsync(certificateEditInputModel, userId);
-                return this.RedirectToAction(nameof(this.All));
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
+            await this.certificatesService.UpdateAsync(certificateEditInputModel, userId);
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [HttpGet]
@@ -157,19 +117,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                var certificate = await this.certificatesService.GetDetailsAsync(id, userId);
-                return this.View(certificate);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
+            var certificate = await this.certificatesService.GetDetailsAsync(id, userId);
+            return this.View(certificate);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -183,23 +132,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                await this.certificatesService.DeleteAsync(id, userId);
-                return this.RedirectToAction(nameof(this.All));
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
-            catch (InvalidOperationException)
-            {
-                return this.BadRequest();
-            }
+            await this.certificatesService.DeleteAsync(id, userId);
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [NonAction]

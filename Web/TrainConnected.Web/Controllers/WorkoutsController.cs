@@ -93,15 +93,8 @@
             workoutCreateInputModel.PaymentMethods = acceptedPaymentMethods;
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                var result = await this.workoutsService.CreateAsync(workoutCreateInputModel, userId);
-                return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            var result = await this.workoutsService.CreateAsync(workoutCreateInputModel, userId);
+            return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
         }
 
         [HttpGet]
@@ -114,15 +107,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                var workout = await this.workoutsService.GetDetailsAsync(id, userId);
-                return this.View(workout);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            var workout = await this.workoutsService.GetDetailsAsync(id, userId);
+            return this.View(workout);
         }
 
         [HttpGet]
@@ -136,25 +122,14 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                var workout = await this.workoutsService.GetCancelDetailsAsync(id, userId);
+            var workout = await this.workoutsService.GetCancelDetailsAsync(id, userId);
 
-                if (DateTime.UtcNow.ToLocalTime() > workout.Time || workout.BookingsCount != 0)
-                {
-                    return this.BadRequest();
-                }
+            if (DateTime.UtcNow.ToLocalTime() > workout.Time || workout.BookingsCount != 0)
+            {
+                return this.BadRequest();
+            }
 
-                return this.View(workout);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
+            return this.View(workout);
         }
 
         [HttpPost, ActionName("Cancel")]
@@ -169,23 +144,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                await this.workoutsService.CancelAsync(id, userId);
-                return this.RedirectToAction(nameof(this.Find));
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
-            catch (InvalidOperationException)
-            {
-                return this.BadRequest();
-            }
+            await this.workoutsService.CancelAsync(id, userId);
+            return this.RedirectToAction(nameof(this.Find));
         }
 
         [NonAction]

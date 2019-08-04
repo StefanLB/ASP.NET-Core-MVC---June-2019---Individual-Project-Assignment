@@ -28,6 +28,7 @@
     using TrainConnected.Services.Mapping;
     using TrainConnected.Services.Messaging;
     using TrainConnected.Web.InputModels.WorkoutActivities;
+    using TrainConnected.Web.Middleware;
     using TrainConnected.Web.ViewModels;
 
     public class Startup
@@ -77,9 +78,6 @@
                     facebookOptions.AppId = this.configuration["Authentication:Facebook:AppId"];
                     facebookOptions.AppSecret = this.configuration["Authentication:Facebook:AppSecret"];
                 });
-
-            services
-                .AddAutoMapper();
 
             services
                 .AddMvc()
@@ -148,7 +146,6 @@
             // Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<TrainConnectedDbContext>();
 
                 dbContext.Database.EnsureCreated();
@@ -181,6 +178,7 @@
                 app.UseHsts();
             }
 
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

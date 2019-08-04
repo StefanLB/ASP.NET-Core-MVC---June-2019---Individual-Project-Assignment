@@ -32,15 +32,8 @@
                 return this.NotFound();
             }
 
-            try
-            {
-                var paymentMethod = await this.paymentMethodsService.GetDetailsAsync(id);
-                return this.View(paymentMethod);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            var paymentMethod = await this.paymentMethodsService.GetDetailsAsync(id);
+            return this.View(paymentMethod);
         }
 
         [HttpGet]
@@ -58,16 +51,8 @@
                 return this.View(paymentMethodCreateInputModel);
             }
 
-            try
-            {
-                var paymentMethod = await this.paymentMethodsService.CreateAsync(paymentMethodCreateInputModel);
-                return this.RedirectToAction(nameof(this.Details), new { id = paymentMethod.Id });
-            }
-            catch (InvalidOperationException)
-            {
-                return this.BadRequest();
-            }
-
+            var paymentMethod = await this.paymentMethodsService.CreateAsync(paymentMethodCreateInputModel);
+            return this.RedirectToAction(nameof(this.Details), new { id = paymentMethod.Id });
         }
 
         [HttpGet]
@@ -78,15 +63,8 @@
                 return this.NotFound();
             }
 
-            try
-            {
-                var paymentMethod = await this.paymentMethodsService.GetDetailsAsync(id);
-                return this.View(paymentMethod);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            var paymentMethod = await this.paymentMethodsService.GetDetailsAsync(id);
+            return this.View(paymentMethod);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -98,15 +76,8 @@
                 return this.NotFound();
             }
 
-            try
-            {
-                await this.paymentMethodsService.DeleteAsync(id);
-                return this.RedirectToAction(nameof(this.All));
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            await this.paymentMethodsService.DeleteAsync(id);
+            return this.RedirectToAction(nameof(this.All));
         }
     }
 }

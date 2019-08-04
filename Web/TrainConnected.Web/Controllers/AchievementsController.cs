@@ -35,19 +35,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                var achievement = await this.achievementsService.GetDetailsAsync(id, userId);
-                return this.View(achievement);
-            }
-            //catch (NullReferenceException)
-            //{
-            //    return this.NotFound();
-            //}
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
+            var achievement = await this.achievementsService.GetDetailsAsync(id, userId);
+            return this.View(achievement);
         }
     }
 }

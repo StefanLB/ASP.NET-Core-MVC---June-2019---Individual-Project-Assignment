@@ -45,19 +45,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                var buddyDetails = await this.buddiesService.GetDetailsAsync(id, userId);
-                return this.View(buddyDetails);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
+            var buddyDetails = await this.buddiesService.GetDetailsAsync(id, userId);
+            return this.View(buddyDetails);
         }
 
         [HttpGet]
@@ -68,15 +57,8 @@
                 return this.NotFound();
             }
 
-            try
-            {
-                var coachDetails = await this.buddiesService.GetCoachDetailsAsync(coachUserName);
-                return this.View(coachDetails);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            var coachDetails = await this.buddiesService.GetCoachDetailsAsync(coachUserName);
+            return this.View(coachDetails);
         }
 
         [HttpGet]
@@ -89,19 +71,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                await this.buddiesService.AddAsync(id, userId);
-                return this.RedirectToAction(nameof(this.Find));
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (InvalidOperationException)
-            {
-                return this.BadRequest();
-            }
+            await this.buddiesService.AddAsync(id, userId);
+            return this.RedirectToAction(nameof(this.Find));
         }
 
         [HttpGet]
@@ -114,19 +85,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                var buddyDetails = await this.buddiesService.GetDetailsAsync(id, userId);
-                return this.View(buddyDetails);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
+            var buddyDetails = await this.buddiesService.GetDetailsAsync(id, userId);
+            return this.View(buddyDetails);
         }
 
         [HttpPost, ActionName("Remove")]
@@ -140,19 +100,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                await this.buddiesService.RemoveAsync(id, userId);
-                return this.RedirectToAction(nameof(this.All));
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
+            await this.buddiesService.RemoveAsync(id, userId);
+            return this.RedirectToAction(nameof(this.All));
         }
     }
 }

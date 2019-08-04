@@ -35,15 +35,8 @@
                 return this.NotFound();
             }
 
-            try
-            {
-                var activity = await this.workoutActivitiesService.GetDetailsAsync(id);
-                return this.View(activity);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            var activity = await this.workoutActivitiesService.GetDetailsAsync(id);
+            return this.View(activity);
         }
 
         [HttpGet]
@@ -81,15 +74,8 @@
                 return this.NotFound();
             }
 
-            try
-            {
-                var workoutActivity = await this.workoutActivitiesService.GetEditDetailsAsync(id);
-                return this.View(workoutActivity);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            var workoutActivity = await this.workoutActivitiesService.GetEditDetailsAsync(id);
+            return this.View(workoutActivity);
         }
 
         [HttpPost]
@@ -101,19 +87,8 @@
                 return this.View(workoutActivityEditInputModel);
             }
 
-            try
-            {
-                await this.workoutActivitiesService.UpdateAsync(workoutActivityEditInputModel);
-                return this.RedirectToAction(nameof(this.All));
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (InvalidOperationException)
-            {
-                return this.BadRequest();
-            }
+            await this.workoutActivitiesService.UpdateAsync(workoutActivityEditInputModel);
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [HttpGet]
@@ -124,31 +99,16 @@
                 return this.NotFound();
             }
 
-            try
-            {
-                var workoutActivity = await this.workoutActivitiesService.GetDetailsAsync(id);
-                return this.View(workoutActivity);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            var workoutActivity = await this.workoutActivitiesService.GetDetailsAsync(id);
+            return this.View(workoutActivity);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            try
-            {
-                await this.workoutActivitiesService.DeleteAsync(id);
-                return this.RedirectToAction(nameof(this.All));
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-
+            await this.workoutActivitiesService.DeleteAsync(id);
+            return this.RedirectToAction(nameof(this.All));
         }
     }
 }

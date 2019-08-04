@@ -33,16 +33,9 @@
                 return this.NotFound();
             }
 
-            try
-            {
-                var withdrawal = await this.withdrawalsService.GetForProcessingAsync(id);
-                this.ViewData["withdrawal"] = withdrawal;
-                return this.View();
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            var withdrawal = await this.withdrawalsService.GetForProcessingAsync(id);
+            this.ViewData["withdrawal"] = withdrawal;
+            return this.View();
         }
 
         [HttpPost]
@@ -59,16 +52,9 @@
                 return this.View(withdrawalProcessInputModel);
             }
 
-            try
-            {
-                var processedByUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                await this.withdrawalsService.ProcessAsync(withdrawalProcessInputModel, processedByUserId);
-                return this.RedirectToAction(nameof(this.All));
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            var processedByUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            await this.withdrawalsService.ProcessAsync(withdrawalProcessInputModel, processedByUserId);
+            return this.RedirectToAction(nameof(this.All));
         }
     }
 }

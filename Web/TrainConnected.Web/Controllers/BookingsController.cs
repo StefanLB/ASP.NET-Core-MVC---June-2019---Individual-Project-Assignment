@@ -50,19 +50,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                var booking = await this.bookingsService.GetDetailsAsync(id, userId);
-                return this.View(booking);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
+            var booking = await this.bookingsService.GetDetailsAsync(id, userId);
+            return this.View(booking);
         }
 
         [HttpGet]
@@ -75,15 +64,8 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                var booking = await this.bookingsService.GetDetailsByWorkoutIdAsync(id, userId);
-                return this.RedirectToAction(nameof(this.Details), new { id = booking.Id });
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            var booking = await this.bookingsService.GetDetailsByWorkoutIdAsync(id, userId);
+            return this.RedirectToAction(nameof(this.Details), new { id = booking.Id });
         }
 
         [HttpGet]
@@ -93,14 +75,7 @@
 
             WorkoutDetailsViewModel workout;
 
-            try
-            {
-                workout = await this.workoutsService.GetDetailsAsync(id, userId);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
+            workout = await this.workoutsService.GetDetailsAsync(id, userId);
 
             var paymentMethodsByType = await this.GetApplicablePaymentMethodsByTypeAsync(workout);
 
@@ -121,14 +96,7 @@
             {
                 WorkoutDetailsViewModel workout;
 
-                try
-                {
-                    workout = await this.workoutsService.GetDetailsAsync(bookingCreateInputModel.WorkoutId, userId);
-                }
-                catch (NullReferenceException)
-                {
-                    return this.NotFound();
-                }
+                workout = await this.workoutsService.GetDetailsAsync(bookingCreateInputModel.WorkoutId, userId);
 
                 var paymentMethodsByType = await this.GetApplicablePaymentMethodsByTypeAsync(workout);
 
@@ -139,20 +107,9 @@
                 return this.View(bookingCreateInputModel);
             }
 
-            try
-            {
-                var result = await this.bookingsService.CreateAsync(bookingCreateInputModel, userId);
+            var result = await this.bookingsService.CreateAsync(bookingCreateInputModel, userId);
 
-                return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (InvalidOperationException)
-            {
-                return this.BadRequest();
-            }
+            return this.RedirectToAction(nameof(this.Details), new { id = result.Id });
         }
 
         [HttpGet]
@@ -165,25 +122,14 @@
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            try
-            {
-                var booking = await this.bookingsService.GetDetailsAsync(id, userId);
+            var booking = await this.bookingsService.GetDetailsAsync(id, userId);
 
-                if (DateTime.UtcNow.ToLocalTime() > booking.WorkoutTime || booking.PaymentMethodPaymentInAdvance == true)
-                {
-                    return this.BadRequest();
-                }
+            if (DateTime.UtcNow.ToLocalTime() > booking.WorkoutTime || booking.PaymentMethodPaymentInAdvance == true)
+            {
+                return this.BadRequest();
+            }
 
-                return this.View(booking);
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (ArgumentException)
-            {
-                return this.Unauthorized();
-            }
+            return this.View(booking);
         }
 
         [HttpPost, ActionName("Cancel")]
@@ -195,19 +141,8 @@
                 return this.NotFound();
             }
 
-            try
-            {
-                await this.bookingsService.CancelAsync(id);
-                return this.RedirectToAction(nameof(this.All));
-            }
-            catch (NullReferenceException)
-            {
-                return this.NotFound();
-            }
-            catch (InvalidOperationException)
-            {
-                return this.BadRequest();
-            }
+            await this.bookingsService.CancelAsync(id);
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [NonAction]
