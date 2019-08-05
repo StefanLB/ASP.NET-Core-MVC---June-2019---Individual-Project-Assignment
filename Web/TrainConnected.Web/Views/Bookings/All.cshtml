@@ -9,73 +9,75 @@
 
 <h1>My Bookings</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentMethodName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkoutActivityName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkoutCoachUserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkoutTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkoutLocation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkoutNotes)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @item.PaymentMethodName
-                </td>
-                <td>
-                    @item.Price @GlobalConstants.Currency
-                </td>
-                <td>
-                    @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                </td>
-                <td>
-                    <img src="@Url.Content(item.WorkoutActivityIcon)" /> |
-                    @item.WorkoutActivityName
-                </td>
-                <td>
-                    @item.WorkoutCoachUserName
-                </td>
-                <td>
-                    @item.WorkoutTime.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                </td>
-                <td>
-                    @item.WorkoutLocation
-                </td>
-                <td>
-                    @item.WorkoutNotes
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details </a>
-                    @if (item.PaymentMethodPaymentInAdvance == false)
-                    {
-                        <a asp-action="Cancel" asp-route-id="@item.Id">| Cancel</a>
-                    }
-                </td>
+<div class="table-responsive-xl">
+    <table class="table table-hover">
+        <thead class="thead">
+            <tr class="table-trainconnected">
+                <th>
+                    @Html.DisplayNameFor(model => model.PaymentMethodName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkoutActivityName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkoutCoachUserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkoutTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkoutLocation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkoutNotes)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.PaymentMethodName
+                    </td>
+                    <td>
+                        @item.Price @GlobalConstants.Currency
+                    </td>
+                    <td>
+                        @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        <img src="@Url.Content(item.WorkoutActivityIcon)" /> |
+                        @item.WorkoutActivityName
+                    </td>
+                    <td>
+                        @item.WorkoutCoachUserName
+                    </td>
+                    <td>
+                        @item.WorkoutTime.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        @item.WorkoutLocation
+                    </td>
+                    <td class="d-inline-block text-truncate" style="max-width: 100px;">
+                        @item.WorkoutNotes
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details </a>
+                        @if (item.PaymentMethodPaymentInAdvance == false)
+                        {
+                            <a asp-action="Cancel" asp-route-id="@item.Id">| Cancel</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

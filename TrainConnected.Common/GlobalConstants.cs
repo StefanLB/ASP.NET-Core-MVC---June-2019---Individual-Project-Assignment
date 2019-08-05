@@ -16,5 +16,6 @@
 
         public const string TimeMeasurement = "min";
 
+        public const string TextMaxWidth = "140px";
     }
 }
