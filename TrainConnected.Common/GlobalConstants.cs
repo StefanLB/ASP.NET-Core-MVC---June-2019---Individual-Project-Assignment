@@ -12,5 +12,9 @@
 
         public const string DateFormat = "dd-MM-yyy";
 
+        public const string Currency = "BGN";
+
+        public const string TimeMeasurement = "min";
+
     }
 }

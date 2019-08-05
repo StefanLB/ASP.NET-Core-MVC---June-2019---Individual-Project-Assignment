@@ -57,13 +57,13 @@
                     @item.Time.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                 </td>
                 <td>
-                    @item.Duration min
+                    @item.Duration @GlobalConstants.TimeMeasurement
                 </td>
                 <td>
                     @item.Location
                 </td>
                 <td>
-                    @item.Price
+                    @item.Price @GlobalConstants.Currency
                 </td>
                 <td>
                     @item.Notes

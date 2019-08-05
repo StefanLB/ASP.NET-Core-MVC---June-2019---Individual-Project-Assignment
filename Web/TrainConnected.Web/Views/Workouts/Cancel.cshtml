@@ -37,7 +37,7 @@
             @Html.DisplayNameFor(model => model.Duration)
         </dt>
         <dd class="col-sm-10">
-            @Model.Duration min
+            @Model.Duration @GlobalConstants.TimeMeasurement
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Location)
@@ -49,7 +49,7 @@
             @Html.DisplayNameFor(model => model.Price)
         </dt>
         <dd class="col-sm-10">
-            @Model.Price
+            @Model.Price @GlobalConstants.Currency
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AcceptedPaymentMethods)

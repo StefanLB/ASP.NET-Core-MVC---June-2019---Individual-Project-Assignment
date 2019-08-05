@@ -35,7 +35,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" value="@workout.Price" readonly />
+                <input asp-for="Price" class="form-control" value="@workout.Price" readonly /> @GlobalConstants.Currency
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -43,7 +43,6 @@
             </div>
             <div class="form-group">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Create</button>
-                @*<input type="submit" value="Create" class="btn btn-primary" id="create-booking" hidden/>*@
             </div>
         </form>
     </div>
@@ -77,7 +76,7 @@
             Duration
         </dt>
         <dd class="col-sm-10">
-            @workout.Duration
+            @workout.Duration @GlobalConstants.TimeMeasurement
         </dd>
         <dt class="col-sm-2">
             Location
@@ -89,7 +88,7 @@
             Price
         </dt>
         <dd class="col-sm-10">
-            @workout.Price
+            @workout.Price @GlobalConstants.Currency
         </dd>
         <dt class="col-sm-2">
             Notes

@@ -47,7 +47,7 @@
                     @item.PaymentMethodName
                 </td>
                 <td>
-                    @item.Price
+                    @item.Price @GlobalConstants.Currency
                 </td>
                 <td>
                     @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)

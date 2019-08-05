@@ -27,7 +27,7 @@
             @Html.DisplayNameFor(model => model.Price)
         </dt>
         <dd class="col-sm-10">
-            @Model.Price
+            @Model.Price @GlobalConstants.Currency
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedOn)
@@ -76,7 +76,7 @@
             @Html.DisplayNameFor(model => model.WorkoutDuration)
         </dt>
         <dd class="col-sm-10">
-            @Model.WorkoutDuration
+            @Model.WorkoutDuration @GlobalConstants.TimeMeasurement
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.WorkoutLocation)

@@ -9,91 +9,96 @@
 
 <h1>Details</h1>
 
-<div>
-    <h4>Booking</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PaymentMethodName)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.PaymentMethodName
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Price
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Id
-        </dd>
-    </dl>
+<div class="d-flex justify-content-around row">
+    <div class="w-50">
+        <h4>Booking</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.PaymentMethodName)
+            </dt>
+            <dd class="col-sm-9">
+                @Model.PaymentMethodName
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Price @GlobalConstants.Currency
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </dt>
+            <dd class="col-sm-9">
+                @Model.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Id
+            </dd>
+        </dl>
+    </div>
+
+    <div class="w-50">
+        <h4>Workout Details:</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.WorkoutActivityName)
+            </dt>
+            <dd class="col-sm-10">
+                <img src="@Url.Content(Model.WorkoutActivityIcon)" /> |
+                @Model.WorkoutActivityName
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.WorkoutCoachUserName)
+            </dt>
+            <dd class="col-sm-10">
+                @Model.WorkoutCoachUserName
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.WorkoutTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Model.WorkoutTime.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.WorkoutDuration)
+            </dt>
+            <dd class="col-sm-10">
+                @Model.WorkoutDuration @GlobalConstants.TimeMeasurement
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.WorkoutLocation)
+            </dt>
+            <dd class="col-sm-10">
+                @Model.WorkoutLocation
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.WorkoutNotes)
+            </dt>
+            <dd class="col-sm-10">
+                @Model.WorkoutNotes
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.WorkoutBookingsCount)
+            </dt>
+            <dd class="col-sm-10">
+                @Model.WorkoutBookingsCount / @Model.WorkoutMaxParticipants
+            </dd>
+        </dl>
+    </div>
 </div>
 
 <div>
-    <h4>Workout Details:</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkoutActivityName)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="@Url.Content(Model.WorkoutActivityIcon)" /> |
-            @Model.WorkoutActivityName
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkoutCoachUserName)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.WorkoutCoachUserName
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkoutTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.WorkoutTime.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkoutDuration)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.WorkoutDuration
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkoutLocation)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.WorkoutLocation
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkoutNotes)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.WorkoutNotes
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkoutBookingsCount)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.WorkoutBookingsCount / @Model.WorkoutMaxParticipants
-        </dd>
-    </dl>
-</div>
-<div>
     @if (Model.WorkoutTime > DateTime.UtcNow.ToLocalTime() &&
-       Model.PaymentMethodPaymentInAdvance == false)
+   Model.PaymentMethodPaymentInAdvance == false)
     {
         <a asp-action="Cancel" asp-route-id="@Model.Id">Cancel |</a>
     }
     <a asp-action="All">Back to List</a>
 </div>
+
+

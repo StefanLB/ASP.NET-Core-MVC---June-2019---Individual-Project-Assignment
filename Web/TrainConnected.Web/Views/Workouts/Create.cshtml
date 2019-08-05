@@ -1,6 +1,7 @@
 ﻿@model TrainConnected.Web.InputModels.Workouts.WorkoutCreateInputModel
 @using TrainConnected.Web.InputModels.PaymentMethods
-@using System.Linq;
+@using System.Linq
+@using TrainConnected.Common
 
 @{
     ViewData["Title"] = "Create";
@@ -37,12 +38,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Duration" class="control-label"></label>
-                <input asp-for="Duration" class="form-control" />
+                <input asp-for="Duration" class="form-control" /> @GlobalConstants.TimeMeasurement
                 <span asp-validation-for="Duration" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" class="form-control" /> @GlobalConstants.Currency
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
