@@ -1,5 +1,5 @@
 ﻿@{
-    this.ViewData["Title"] = "Admin dashboard";
+    this.ViewData["Title"] = "Admin Dashboard";
 }
 
 <div class="container-fluid text-md-center mb-5">
@@ -7,17 +7,24 @@
 </div>
 
 
-<div class="w-100">
-        <div class="text-center w-50 mb-3 border-bottom">
-            <h3 asp-area="Administration" asp-controller="WorkoutActivities" asp-action="All">Workout Activities</h3>
+<div class="col-md-12">
+    <div class="row">
+        <div class="text-center col-md-6 mb-3 border-bottom">
+            <a class="nav-link text-dark" asp-area="Administration" asp-controller="PaymentMethods" asp-action="All">Payment Methods</a>
         </div>
-        <div class="text-center w-50 mb-3 border-bottom">
-            <h3 asp-area="Administration" asp-controller="PaymentMethods" asp-action="All">Payment Methods</h3>
+        <div class="text-center col-md-6 mb-3 border-bottom">
+            <a class="nav-link text-dark" asp-area="Administration" asp-controller="Users" asp-action="All">Users</a>
         </div>
-        <div class="text-center w-50 mb-3 border-bottom">
-            <h3 asp-area="Administration" asp-controller="Withdrawals" asp-action="All">Withdrawals</h3>
+    </div>
+</div>
+<p></p>
+<div class="col-md-12">
+    <div class="row">
+        <div class="text-center col-md-6 mb-3 border-bottom">
+            <a class="nav-link text-dark" asp-area="Administration" asp-controller="Withdrawals" asp-action="All">Withdrawals</a>
         </div>
-        <div class="text-center w-50 mb-3 border-bottom">
-            <h3 asp-area="Administration" asp-controller="Users" asp-action="All">Users</h3>
+        <div class="text-center col-md-6 mb-3 border-bottom">
+            <a class="nav-link text-dark" asp-area="Administration" asp-controller="WorkoutActivities" asp-action="All">Workout Activities</a>
         </div>
+    </div>
 </div>
