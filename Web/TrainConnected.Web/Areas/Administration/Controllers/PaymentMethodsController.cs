@@ -1,6 +1,5 @@
 ﻿namespace TrainConnected.Web.Areas.Administration.Controllers
 {
-    using System;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;

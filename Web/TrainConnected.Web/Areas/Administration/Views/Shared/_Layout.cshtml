@@ -12,10 +12,6 @@
         <link href="~/lib/assets/css/style.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/lib/assets/css/overwrite.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/lib/assets/color/default.css" rel="stylesheet" asp-append-version="true" />
-        <link href="~/css/jquery.datetimepicker.css" rel="stylesheet" asp-append-version="true" />
-        <script src="~/js/jquery-3.4.1.min.js" asp-append-version="true"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css" asp-append-version="true">
-        <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700" rel="stylesheet" asp-append-version="true" />
@@ -24,10 +20,6 @@
         <link href="~/lib/assets/css/style.min.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/lib/assets/css/overwrite.min.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/lib/assets/color/default.min.css" rel="stylesheet" asp-append-version="true" />
-        <link href="~/css/jquery.datetimepicker.min.css" rel="stylesheet" asp-append-version="true" />
-        <script src="~/js/jquery-3.4.1.min.js" asp-append-version="true"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css" asp-append-version="true">
-        <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js" asp-append-version="true"></script>
     </environment>
 </head>
 <body>
@@ -41,7 +33,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <partial name="_LoginPartial" />
+                        <partial name="_AdminPartial" />
                         <ul class="navbar-nav flex-grow-1"></ul>
                     </div>
                 </div>
@@ -74,8 +66,6 @@
         <script src="~/js/site.js" asp-append-version="true"></script>
         <!-- Template Custom JavaScript File -->
         <script src="~/lib/assets/js/custom.js" asp-append-version="true"></script>
-        <script src="~/js/jquery-3.4.1.min.js" asp-append-version="true"></script>
-        <script src="~/js/jquery.datetimepicker.full.min.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
@@ -85,8 +75,6 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
         <!-- Template Custom JavaScript File -->
         <script src="~/lib/assets/js/custom.min.js" asp-append-version="true"></script>
-        <script src="~/js/jquery-3.4.1.min.js" asp-append-version="true"></script>
-        <script src="~/js/jquery.datetimepicker.full.min.js" asp-append-version="true"></script>
     </environment>
 
     @this.RenderSection("Scripts", required: false)

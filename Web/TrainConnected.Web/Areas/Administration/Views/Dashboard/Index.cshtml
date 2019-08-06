@@ -2,19 +2,22 @@
     this.ViewData["Title"] = "Admin dashboard";
 }
 
-<h1>@this.ViewData["Title"]</h1>
+<div class="container-fluid text-md-center mb-5">
+    <h1>@this.ViewData["Title"]</h1>
+</div>
 
-<ul>
-    <li class="nav-item">
-        <a asp-area="Administration" asp-controller="WorkoutActivities" asp-action="All">Workout Activities</a>
-    </li>
-    <li class="nav-item">
-        <a asp-area="Administration" asp-controller="PaymentMethods" asp-action="All">Payment Methods</a>
-    </li>
-    <li class="nav-item">
-        <a asp-area="Administration" asp-controller="Withdrawals" asp-action="All">Withdrawals</a>
-    </li>
-    <li class="nav-item">
-        <a asp-area="Administration" asp-controller="Users" asp-action="All">Users</a>
-    </li>
-</ul>
+
+<div class="w-100">
+        <div class="text-center w-50 mb-3 border-bottom">
+            <h3 asp-area="Administration" asp-controller="WorkoutActivities" asp-action="All">Workout Activities</h3>
+        </div>
+        <div class="text-center w-50 mb-3 border-bottom">
+            <h3 asp-area="Administration" asp-controller="PaymentMethods" asp-action="All">Payment Methods</h3>
+        </div>
+        <div class="text-center w-50 mb-3 border-bottom">
+            <h3 asp-area="Administration" asp-controller="Withdrawals" asp-action="All">Withdrawals</h3>
+        </div>
+        <div class="text-center w-50 mb-3 border-bottom">
+            <h3 asp-area="Administration" asp-controller="Users" asp-action="All">Users</h3>
+        </div>
+</div>
