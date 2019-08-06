@@ -168,3 +168,10 @@ footer {
 .navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {
     color: #2ECC71;
 }
+
+/*Make Images Responsive*/
+.responsive {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+}

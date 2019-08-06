@@ -22,8 +22,28 @@
     }
 </div>
 
+@await this.Html.PartialAsync("_SliderPhotosPartial")
+
+@if (!this.SignInManager.IsSignedIn(this.User))
+{
+    <div class="text-center">
+        <h3>A Preview of Our Upcoming Workouts</h3>
+    </div>
+}
+
 @await this.Html.PartialAsync("_SearchBarPartial")
 
 @await this.Html.PartialAsync("_UpcomingWorkoutsPartial")
 
 @await this.Html.PartialAsync("_PaginationPartial")
+
+<script>
+    $('.bxslider').bxSlider({
+        auto: true,
+        stopAutoOnClick: true,
+        pager: true,
+        captions: true,
+        autoHover: true,
+        responsive: true
+    });
+</script>

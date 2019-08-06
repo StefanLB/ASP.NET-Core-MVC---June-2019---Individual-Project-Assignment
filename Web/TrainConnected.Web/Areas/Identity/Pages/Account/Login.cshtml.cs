@@ -81,12 +81,14 @@
                 }
                 else
                 {
+                    this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
                     this.ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return this.Page();
                 }
             }
 
             // If we got this far, something failed, redisplay form
+            this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             return this.Page();
         }
 
