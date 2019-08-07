@@ -71,6 +71,7 @@
             this.IsEmailConfirmed = await this.userManager.IsEmailConfirmedAsync(user);
             this.Username = userName;
             this.Email = email;
+            this.ViewData["ProfilePictureLink"] = user.ProfilePicture;
 
             return this.Page();
         }

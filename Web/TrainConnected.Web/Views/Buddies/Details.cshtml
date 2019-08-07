@@ -9,52 +9,73 @@
 }
 
 <div>
-    <h4>Details about your buddy @Model.UserName</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.UserName
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.FirstName
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.LastName
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.CreatedOn.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkoutsCount)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.WorkoutsCount
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AchievementsCount)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.AchievementsCount
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AddedOn)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.AddedOn.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture)
-        </dd>
-    </dl>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Details about your buddy @Model.UserName</h4>
+        </div>
+        <div class="col-md-6">
+            <h4>Profile Picture</h4>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.UserName
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.FirstName
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.LastName
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.CreatedOn)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.CreatedOn.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.WorkoutsCount)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.WorkoutsCount
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.AchievementsCount)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.AchievementsCount
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.AddedOn)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.AddedOn.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture)
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-md-3">
+                @if (@Model.ProfilePicture != null)
+                {
+                    <img src=@Model.ProfilePicture />
+                }
+                else
+                {
+                    <img src=@GlobalConstants.DefaultProfilePicture />
+                }
+            </div>
+        </div>
+    </div>
 </div>
 <div>
     <a asp-action="All">Back to List</a>
