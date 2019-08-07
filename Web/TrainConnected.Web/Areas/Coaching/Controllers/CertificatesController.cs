@@ -1,19 +1,15 @@
-﻿namespace TrainConnected.Web.Controllers
+﻿namespace TrainConnected.Web.Areas.Coaching.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using TrainConnected.Common;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Certificates;
 
-    [Authorize(Roles = GlobalConstants.CoachRoleName)]
-    public class CertificatesController : BaseController
+    public class CertificatesController : CoachingController
     {
         private readonly ICertificatesService certificatesService;
         private readonly IWorkoutActivitiesService workoutActivitiesService;

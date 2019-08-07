@@ -5,7 +5,6 @@
 
 @{
     ViewData["Title"] = "All";
-    Layout = "~/Views/Shared/_Layout.cshtml";
     var balance = this.ViewData["userBalance"];
     var pending = this.ViewData["pendingWithdrawals"];
     var pendingWithdrawals = Model.Where(s => s.Status == nameof(StatusCode.Initiated) || s.Status == nameof(StatusCode.InProcess));

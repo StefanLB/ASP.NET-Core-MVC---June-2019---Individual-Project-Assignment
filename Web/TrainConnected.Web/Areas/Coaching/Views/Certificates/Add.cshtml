@@ -1,25 +1,23 @@
-﻿@model TrainConnected.Web.InputModels.Certificates.CertificateEditInputModel
+﻿@model TrainConnected.Web.InputModels.Certificates.CertificateCreateInputModel
 
 @{
-    ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Create";
     var activities = this.ViewData["Activities"] as IEnumerable<SelectListItem>;
 }
 
-<h1>Edit</h1>
+<h1>Add Certificate</h1>
 
-<h4>Certificate</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ActivityName"></label>
-                <select asp-for="ActivityName" asp-items="activities" class="form-control col-md-12">
-                    <option selected="selected">@Model.ActivityName</option>
+                <label asp-for="Activity" ></label>
+                <select asp-for="Activity" asp-items="activities" class="form-control col-md-12">
+                    <option selected="" disabled="">--Select activity type--</option>
                 </select>
-                <span asp-validation-for="ActivityName" class="text-danger"></span>
+                <span asp-validation-for="Activity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IssuedBy" class="control-label"></label>
@@ -42,7 +40,7 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

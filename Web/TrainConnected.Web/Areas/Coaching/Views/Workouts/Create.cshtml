@@ -5,7 +5,6 @@
 
 @{
     ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
     var activities = this.ViewData["Activities"] as IEnumerable<SelectListItem>;
     IEnumerable<string> paymentsInAdvance = this.ViewData["paymentMethodsInAdvance"] as IEnumerable<string>;
     IEnumerable<string> paymentsOnSite = this.ViewData["paymentMethodsOnSite"] as IEnumerable<string>;

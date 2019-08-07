@@ -1,17 +1,13 @@
-﻿namespace TrainConnected.Web.Controllers
+﻿namespace TrainConnected.Web.Areas.Coaching.Controllers
 {
-    using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using TrainConnected.Common;
     using TrainConnected.Services.Data.Contracts;
     using TrainConnected.Web.InputModels.Withdrawals;
 
-    [Authorize(Roles = GlobalConstants.CoachRoleName)]
-    public class WithdrawalsController : BaseController
+    public class WithdrawalsController : CoachingController
     {
         private readonly IWithdrawalsService withdrawalsService;
 

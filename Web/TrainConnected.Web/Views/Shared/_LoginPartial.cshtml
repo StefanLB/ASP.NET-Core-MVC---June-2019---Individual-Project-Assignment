@@ -17,8 +17,8 @@
                 <a class="dropdown-item" asp-area="" asp-controller="Workouts" asp-action="Find">Find Workouts</a>
                 @if (this.User.IsInRole(GlobalConstants.CoachRoleName))
                 {
-                    <a class="dropdown-item" asp-area="" asp-controller="Workouts" asp-action="MyCreated">My Created Workouts</a>
-                    <a class="dropdown-item" asp-area="" asp-controller="Workouts" asp-action="Create">Create Workout</a>
+                    <a class="dropdown-item" asp-area="Coaching" asp-controller="Workouts" asp-action="MyCreated">My Created Workouts</a>
+                    <a class="dropdown-item" asp-area="Coaching" asp-controller="Workouts" asp-action="Create">Create Workout</a>
                 }
             </div>
         </li>
@@ -36,29 +36,23 @@
                 <a class="dropdown-item" asp-area="" asp-controller="Buddies" asp-action="Find">Find Buddies</a>
             </div>
         </li>
-        @if (this.User.IsInRole(GlobalConstants.CoachRoleName))
-        {
-            <li class="nav-item dropdown">
-                <a class="nav-link dropbtn text-dark" asp-area="" asp-controller="Certificates" asp-action="All" role="button" aria-haspopup="true" aria-expanded="false">Certificates</a>
-                <div class="dropdown-content">
-                    <a class="dropdown-item" asp-area="" asp-controller="Certificates" asp-action="All">My Certificates</a>
-                    <a class="dropdown-item" asp-area="" asp-controller="Certificates" asp-action="Add">Add Certificate</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropbtn text-dark" asp-area="" asp-controller="Withdrawals" asp-action="All" role="button" aria-haspopup="true" aria-expanded="false">Withdrawals</a>
-                <div class="dropdown-content">
-                    <a class="dropdown-item" asp-area="" asp-controller="Withdrawals" asp-action="Create">Create Withdrawal</a>
-                    <a class="dropdown-item" asp-area="" asp-controller="Withdrawals" asp-action="All">History</a>
-                </div>
-            </li>
-        }
         <li class="nav-item dropdown">
             <a class="nav-link dropbtn text-dark" asp-area="" asp-controller="Achievements" asp-action="All" role="button" aria-haspopup="true" aria-expanded="false">Achievements</a>
             <div class="dropdown-content">
                 <a class="dropdown-item" asp-area="" asp-controller="Achievements" asp-action="All">My Achievements</a>
             </div>
         </li>
+        @if (this.User.IsInRole(GlobalConstants.CoachRoleName))
+        {
+            <li class="nav-item dropdown">
+                <a class="nav-link dropbtn text-dark" asp-area="Coaching" asp-controller="Workouts" asp-action="MyCreated" role="button" aria-haspopup="true" aria-expanded="false">Coaching</a>
+                <div class="dropdown-content">
+                    <a class="dropdown-item" asp-area="Coaching" asp-controller="Certificates" asp-action="All">Certificates</a>
+                    <a class="dropdown-item" asp-area="Coaching" asp-controller="Withdrawals" asp-action="All">Withdrawals</a>
+                    <a class="dropdown-item" asp-area="Coaching" asp-controller="Workouts" asp-action="MyCreated">Workouts</a>
+                </div>
+            </li>
+        }
         @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
             <li class="nav-item dropdown">

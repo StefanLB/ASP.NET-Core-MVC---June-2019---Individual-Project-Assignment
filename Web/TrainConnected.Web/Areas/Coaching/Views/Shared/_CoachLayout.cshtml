@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@this.ViewData["Title"] - TrainConnected</title>
+
+    <environment names="Development">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/css/style.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/css/overwrite.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/color/default.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/css/jquery.datetimepicker.css" rel="stylesheet" asp-append-version="true" />
+        <script src="~/js/jquery-3.4.1.min.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/css/style.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/css/overwrite.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/assets/color/default.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/css/jquery.datetimepicker.min.css" rel="stylesheet" asp-append-version="true" />
+        <script src="~/js/jquery-3.4.1.min.js" asp-append-version="true"></script>
+    </environment>
+</head>
+<body>
+    <div class="main-container">
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TrainConnected</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <partial name="_CoachPartial" />
+                        <ul class="navbar-nav flex-grow-1"></ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="container-fluid">
+            <div class="container">
+                <partial name="_CookieConsentPartial" />
+                <main role="main" class="pb-3">
+                    @this.RenderBody()
+                </main>
+            </div>
+        </div>
+
+        <footer>
+            <div class="bg-light rounded">
+                <div class="text-center p-3 font-weight-bold">
+                    &copy; CopyRight TrainConnected @DateTime.Now.Year. Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <!-- Template Custom JavaScript File -->
+        <script src="~/lib/assets/js/custom.js" asp-append-version="true"></script>
+        <script src="~/js/jquery-3.4.1.min.js" asp-append-version="true"></script>
+        <script src="~/js/jquery.datetimepicker.full.min.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <!-- Template Custom JavaScript File -->
+        <script src="~/lib/assets/js/custom.min.js" asp-append-version="true"></script>
+        <script src="~/js/jquery-3.4.1.min.js" asp-append-version="true"></script>
+        <script src="~/js/jquery.datetimepicker.full.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @this.RenderSection("Scripts", required: false)
+</body>
+</html>
