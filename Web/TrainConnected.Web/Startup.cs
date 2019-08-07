@@ -178,7 +178,7 @@
                 app.UseHsts();
             }
 
-            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+            //app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@
     using TrainConnected.Common;
     using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
+    using TrainConnected.Services.Data.Contracts;
 
     [AllowAnonymous]
 #pragma warning disable SA1649 // File name should match first type name
@@ -23,17 +25,20 @@
         private readonly UserManager<TrainConnectedUser> userManager;
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
+        private readonly ICloudinaryService cloudinaryService;
 
         public RegisterModel(
             UserManager<TrainConnectedUser> userManager,
             SignInManager<TrainConnectedUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ICloudinaryService cloudinaryService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
             this.emailSender = emailSender;
+            this.cloudinaryService = cloudinaryService;
         }
 
         [BindProperty]
@@ -51,15 +56,29 @@
             returnUrl = returnUrl ?? this.Url.Content("~/");
             if (this.ModelState.IsValid)
             {
-                var user = new TrainConnectedUser { UserName = this.Input.UserName, Email = this.Input.Email,
-                                                PhoneNumber = this.Input.PhoneNumber,
-                                                FirstName = this.Input.FirstName,
-                                                LastName = this.Input.LastName, };
+                string pictureUrl = string.Empty;
+
+                if (this.Input.ProfilePicture != null)
+                {
+                    pictureUrl = await this.cloudinaryService.UploadPictureAsync(
+                        this.Input.ProfilePicture,
+                        this.Input.UserName);
+                }
+
+                var user = new TrainConnectedUser
+                {
+                    UserName = this.Input.UserName,
+                    Email = this.Input.Email,
+                    PhoneNumber = this.Input.PhoneNumber,
+                    FirstName = this.Input.FirstName,
+                    LastName = this.Input.LastName,
+                    ProfilePicture = pictureUrl,
+                };
 
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
 
                 var userToAssignRole = await this.userManager.FindByIdAsync(user.Id);
-                
+
                 // All newly registered users are assigned the "TraineeUser" role.
                 await this.userManager.AddToRoleAsync(userToAssignRole, GlobalConstants.TraineeRoleName);
 
@@ -128,10 +147,13 @@
 
             [Required]
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = ModelConstants.User.ConfirmPasswordNameDisplay)]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             [StringLength(ModelConstants.User.PasswordMaxLength, MinimumLength = ModelConstants.User.PasswordMinLength, ErrorMessage = ModelConstants.User.PasswordLengthError)]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name = ModelConstants.User.ProfilePictureNameDisplay)]
+            public IFormFile ProfilePicture { get; set; }
         }
     }
 }

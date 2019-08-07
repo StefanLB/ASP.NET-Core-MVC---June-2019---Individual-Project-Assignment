@@ -5,12 +5,14 @@
     using System.Text.Encodings.Web;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using TrainConnected.Data.Common.Models;
     using TrainConnected.Data.Models;
+    using TrainConnected.Services.Data.Contracts;
 
 #pragma warning disable SA1649 // File name should match first type name
     public class IndexModel : PageModel
@@ -19,15 +21,18 @@
         private readonly UserManager<TrainConnectedUser> userManager;
         private readonly SignInManager<TrainConnectedUser> signInManager;
         private readonly IEmailSender emailSender;
+        private readonly ICloudinaryService cloudinaryService;
 
         public IndexModel(
             UserManager<TrainConnectedUser> userManager,
             SignInManager<TrainConnectedUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ICloudinaryService cloudinaryService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailSender = emailSender;
+            this.cloudinaryService = cloudinaryService;
         }
 
         public string Username { get; set; }
@@ -53,7 +58,6 @@
             var userName = await this.userManager.GetUserNameAsync(user);
             var email = await this.userManager.GetEmailAsync(user);
             var phoneNumber = await this.userManager.GetPhoneNumberAsync(user);
-
 
             this.Input = new InputModel
             {
@@ -135,6 +139,16 @@
                 user.LastName = this.Input.LastName;
             }
 
+            string pictureUrl = string.Empty;
+            if (this.Input.ProfilePicture != null)
+            {
+                pictureUrl = await this.cloudinaryService.UploadPictureAsync(
+                    this.Input.ProfilePicture,
+                    this.Input.UserName);
+
+                user.ProfilePicture = pictureUrl;
+            }
+
             await this.userManager.UpdateAsync(user);
 
             await this.signInManager.RefreshSignInAsync(user);
@@ -200,6 +214,9 @@
             [StringLength(ModelConstants.User.NameMaxLength, MinimumLength = ModelConstants.User.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
             [Display(Name = ModelConstants.User.LastNameDisplay)]
             public string LastName { get; set; }
+
+            [Display(Name = ModelConstants.User.ProfilePictureNameDisplay)]
+            public IFormFile ProfilePicture { get; set; }
         }
     }
 }
