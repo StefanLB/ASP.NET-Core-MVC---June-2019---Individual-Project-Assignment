@@ -7,50 +7,53 @@
 
 <h1>My Buddies</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkoutsCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AchievementsCount)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.UserName
-            </td>
-            <td>
-                @item.FirstName
-            </td>
-            <td>
-                @item.LastName
-            </td>
-            <td>
-                @item.WorkoutsCount
-            </td>
-            <td>
-                @item.AchievementsCount
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Remove" asp-route-id="@item.Id">Remove</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="table-responsive-xl">
+    <table class="table table-hover">
+        <thead class="thead">
+            <tr class="table-trainconnected">
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkoutsCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AchievementsCount)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.UserName
+                    </td>
+                    <td>
+                        @item.FirstName
+                    </td>
+                    <td>
+                        @item.LastName
+                    </td>
+                    <td>
+                        @item.WorkoutsCount
+                    </td>
+                    <td>
+                        @item.AchievementsCount
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Remove" asp-route-id="@item.Id">Remove</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -8,64 +8,66 @@
 
 <h1>Users</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LockoutEndDateTime)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @item.UserName
-                </td>
-                <td>
-                    @item.FirstName
-                </td>
-                <td>
-                    @item.LastName
-                </td>
-                <td>
-                    @item.Email
-                </td>
-                <td>
-                    @item.PhoneNumber
-                </td>
-                <td>
-                    @item.LockoutEndDateTime?.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-area="Administration" asp-route-id="@item.Id">Details</a> |
-                    @if (item.LockoutEndDateTime != null)
-                    {
-                        <a asp-action="Unlock" asp-area="Administration" asp-route-id="@item.Id">Unlock</a>
-                    }
-                    else
-                    {
-                        <a asp-action="Lock" asp-area="Administration" asp-route-id="@item.Id">Lock</a>
-                    }
-                </td>
+<div class="table-responsive-xl">
+    <table class="table table-hover">
+        <thead class="thead">
+            <tr class="table-trainconnected">
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LockoutEndDateTime)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.UserName
+                    </td>
+                    <td>
+                        @item.FirstName
+                    </td>
+                    <td>
+                        @item.LastName
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td>
+                        @item.PhoneNumber
+                    </td>
+                    <td>
+                        @item.LockoutEndDateTime?.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-area="Administration" asp-route-id="@item.Id">Details</a> |
+                        @if (item.LockoutEndDateTime != null)
+                        {
+                            <a asp-action="Unlock" asp-area="Administration" asp-route-id="@item.Id">Unlock</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Lock" asp-area="Administration" asp-route-id="@item.Id">Lock</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

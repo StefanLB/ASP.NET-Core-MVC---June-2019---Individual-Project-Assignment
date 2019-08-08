@@ -154,13 +154,13 @@ footer {
 }
 
 .table-hover .table-trainconnected:hover {
-    background-color: #b1dfbb;
+    background-color: #1cb85e;
     color: #fff;
 }
 
 .table-hover .table-trainconnected:hover > td,
 .table-hover .table-trainconnected:hover > th {
-    background-color: #b1dfbb;
+    background-color: #1cb85e;
     color: #fff;
 }
 
@@ -169,9 +169,21 @@ footer {
     color: #2ECC71;
 }
 
-/*Make Images Responsive*/
+/*Make Images Responsive */ 
 .responsive {
     width: 100%;
     max-width: 400px;
     height: auto;
+}
+
+a.trainconnected {
+    color: white;
+}
+
+a.trainconnected:hover{
+    color: beige;
+}
+
+th{
+    font-size:16px;
 }

@@ -11,13 +11,6 @@
             <a class="nav-link dropbtn text-dark" asp-area="" asp-controller="Home" asp-action="Index" role="button" aria-haspopup="true" aria-expanded="false">Home</a>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropbtn text-dark" asp-area="Coaching" asp-controller="Workouts" asp-action="MyCreated" role="button" aria-haspopup="true" aria-expanded="false">Workouts</a>
-            <div class="dropdown-content">
-                <a class="dropdown-item" asp-area="Coaching" asp-controller="Workouts" asp-action="MyCreated">My Created Workouts</a>
-                <a class="dropdown-item" asp-area="Coaching" asp-controller="Workouts" asp-action="Create">Create Workout</a>
-            </div>
-        </li>
-        <li class="nav-item dropdown">
             <a class="nav-link dropbtn text-dark" asp-area="Coaching" asp-controller="Certificates" asp-action="All" role="button" aria-haspopup="true" aria-expanded="false">Certificates</a>
             <div class="dropdown-content">
                 <a class="dropdown-item" asp-area="Coaching" asp-controller="Certificates" asp-action="All">My Certificates</a>
@@ -29,6 +22,13 @@
             <div class="dropdown-content">
                 <a class="dropdown-item" asp-area="Coaching" asp-controller="Withdrawals" asp-action="Create">Create Withdrawal</a>
                 <a class="dropdown-item" asp-area="Coaching" asp-controller="Withdrawals" asp-action="All">History</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropbtn text-dark" asp-area="Coaching" asp-controller="Workouts" asp-action="MyCreated" role="button" aria-haspopup="true" aria-expanded="false">Workouts</a>
+            <div class="dropdown-content">
+                <a class="dropdown-item" asp-area="Coaching" asp-controller="Workouts" asp-action="MyCreated">My Created Workouts</a>
+                <a class="dropdown-item" asp-area="Coaching" asp-controller="Workouts" asp-action="Create">Create Workout</a>
             </div>
         </li>
         <li class="nav-item dropdown">

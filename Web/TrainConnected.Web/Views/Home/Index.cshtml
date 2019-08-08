@@ -38,7 +38,11 @@
 @await this.Html.PartialAsync("_PaginationPartial")
 
 <script>
-    $('.bxslider').bxSlider({
+    jQuery(document).ready(function () {
+        jQuery('#show-when-loaded').css('opacity', '1');
+    });
+
+    $('.bxslider').delay(200).bxSlider({
         auto: true,
         stopAutoOnClick: true,
         pager: true,

@@ -13,124 +13,128 @@
 <h1>Withdrawals Processing Panel</h1>
 
 <h4>Pending Withdrawals</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdditionalInstructions)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrainConnectedUserUserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in pendingWithdrawals)
-        {
-            <tr>
-                <td>
-                    @item.Id
-                </td>
-                <td>
-                    @item.Amount BGN
-                </td>
-                <td>
-                    @item.AdditionalInstructions
-                </td>
-                <td>
-                    @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                </td>
-                <td>
-                    @item.TrainConnectedUserUserName
-                </td>
-                <td>
-                    @item.Status
-                </td>
-                <td>
-                    <a asp-action="Process" asp-route-id="@item.Id">Process</a>
-                </td>
+<div class="table-responsive-xl">
+    <table class="table table-hover">
+        <thead class="thead">
+            <tr class="table-trainconnected text-center align-text-top">
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AdditionalInstructions)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TrainConnectedUserUserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in pendingWithdrawals)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.Amount BGN
+                    </td>
+                    <td>
+                        @item.AdditionalInstructions
+                    </td>
+                    <td>
+                        @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        @item.TrainConnectedUserUserName
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        <a asp-action="Process" asp-route-id="@item.Id">Process</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 <h4>Completed Withdrawals</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdditionalInstructions)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrainConnectedUserUserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CompletedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProcessedByUserUserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ResolutionNotes)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in completedWithdrawals)
-        {
-            <tr>
-                <td>
-                    @item.Id
-                </td>
-                <td>
-                    @item.Amount BGN
-                </td>
-                <td>
-                    @item.AdditionalInstructions
-                </td>
-                <td>
-                    @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                </td>
-                <td>
-                    @item.TrainConnectedUserUserName
-                </td>
-                <td>
-                    @item.Status
-                </td>
-                <td>
-                    @item.CompletedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                </td>
-                <td>
-                    @item.ProcessedByUserUserName
-                </td>
-                <td>
-                    @item.ResolutionNotes
-                </td>
+<div class="table-responsive-xl">
+    <table class="table table-hover">
+        <thead class="thead">
+            <tr class="table-trainconnected text-center align-text-top">
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AdditionalInstructions)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TrainConnectedUserUserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompletedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProcessedByUserUserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ResolutionNotes)
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in completedWithdrawals)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.Amount BGN
+                    </td>
+                    <td>
+                        @item.AdditionalInstructions
+                    </td>
+                    <td>
+                        @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        @item.TrainConnectedUserUserName
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        @item.CompletedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        @item.ProcessedByUserUserName
+                    </td>
+                    <td>
+                        @item.ResolutionNotes
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

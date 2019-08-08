@@ -19,102 +19,104 @@
     <a asp-action="Create">Create New</a>
 </p>
 <h4>Your Pending Withdrawals</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdditionalInstructions)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in pendingWithdrawals)
-        {
-            <tr>
-                <td>
-                    @item.Id
-                </td>
-                <td>
-                    @item.Amount BGN
-                </td>
-                <td>
-                    @item.AdditionalInstructions
-                </td>
-                <td>
-                    @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                </td>
-                <td>
-                    @item.Status
-                </td>
+<div class="table-responsive-xl">
+    <table class="table table-hover">
+        <thead class="thead">
+            <tr class="table-trainconnected">
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AdditionalInstructions)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
-<h4>Your Completed Withdrawals</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdditionalInstructions)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CompletedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ResolutionNotes)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in completedWithdrawals)
-        {
+        </thead>
+        <tbody>
+            @foreach (var item in pendingWithdrawals)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.Amount BGN
+                    </td>
+                    <td>
+                        @item.AdditionalInstructions
+                    </td>
+                    <td>
+                        @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h4>Your Completed Withdrawals</h4>
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @item.Id
-                </td>
-                <td>
-                    @item.Amount BGN
-                </td>
-                <td>
-                    @item.AdditionalInstructions
-                </td>
-                <td>
-                    @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                </td>
-                <td>
-                    @item.Status
-                </td>
-                <td>
-                    @item.CompletedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                </td>
-                <td>
-                    @item.ResolutionNotes
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AdditionalInstructions)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompletedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ResolutionNotes)
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in completedWithdrawals)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.Amount BGN
+                    </td>
+                    <td>
+                        @item.AdditionalInstructions
+                    </td>
+                    <td>
+                        @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        @item.CompletedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        @item.ResolutionNotes
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

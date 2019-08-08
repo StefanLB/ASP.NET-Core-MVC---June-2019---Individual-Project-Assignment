@@ -9,79 +9,81 @@
 
 <h1>Find Upcoming Workouts</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ActivityName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CoachUserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Time)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BookingsCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    <img src="@Url.Content(item.ActivityIcon)" /> |
-                    @item.ActivityName
-                </td>
-                <td>
-                    <a asp-controller="Buddies" asp-action="CoachDetails" asp-route-coachUserName="@item.CoachUserName">@item.CoachUserName</a>
-                </td>
-                <td>
-                    @item.Time.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                </td>
-                <td>
-                    @item.Duration @GlobalConstants.TimeMeasurement
-                </td>
-                <td class="d-inline-block text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
-                    @item.Location
-                </td>
-                <td>
-                    @item.Price @GlobalConstants.Currency
-                </td>
-                <td class="d-inline-block text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
-                    @item.Notes
-                </td>
-                <td>
-                    @item.BookingsCount / @item.MaxParticipants
-                </td>
-                <td>
-                    @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                </td>
-                <td>
-                    @if (item.BookingsCount < item.MaxParticipants)
-                    {
-                        <a asp-controller="Bookings" asp-action="Create" asp-route-id="@item.Id">Sign Up |</a>
-                    }
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                </td>
+<div class="table-responsive-xl">
+    <table class="table table-hover">
+        <thead class="thead">
+            <tr class="table-trainconnected">
+                <th>
+                    @Html.DisplayNameFor(model => model.ActivityName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CoachUserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Time)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Duration)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Notes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BookingsCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@Url.Content(item.ActivityIcon)" /> |
+                        @item.ActivityName
+                    </td>
+                    <td>
+                        <a asp-controller="Buddies" asp-action="CoachDetails" asp-route-coachUserName="@item.CoachUserName">@item.CoachUserName</a>
+                    </td>
+                    <td>
+                        @item.Time.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        @item.Duration @GlobalConstants.TimeMeasurement
+                    </td>
+                    <td class="d-inline-block text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
+                        @item.Location
+                    </td>
+                    <td>
+                        @item.Price @GlobalConstants.Currency
+                    </td>
+                    <td class="d-inline-block text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
+                        @item.Notes
+                    </td>
+                    <td>
+                        @item.BookingsCount / @item.MaxParticipants
+                    </td>
+                    <td>
+                        @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        @if (item.BookingsCount < item.MaxParticipants)
+                        {
+                            <a asp-controller="Bookings" asp-action="Create" asp-route-id="@item.Id">Sign Up |</a>
+                        }
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
