@@ -63,10 +63,10 @@
                     <td>
                         @item.WorkoutTime.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                     </td>
-                    <td>
+                    <td class="d-inline-block text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
                         @item.WorkoutLocation
                     </td>
-                    <td>
+                    <td class="d-inline-block text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
                         @item.WorkoutNotes
                     </td>
                     <td>

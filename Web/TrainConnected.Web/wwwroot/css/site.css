@@ -180,10 +180,24 @@ a.trainconnected {
     color: white;
 }
 
-a.trainconnected:hover{
+a.trainconnected:hover {
     color: beige;
 }
 
 th{
     font-size:16px;
+}
+
+td.trainconnected {
+    max-width: 200px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+td.trainconnected:hover {
+    display: inline-block;
+    overflow: visible;
+    white-space:normal;
 }
