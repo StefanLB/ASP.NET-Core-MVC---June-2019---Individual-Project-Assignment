@@ -1,0 +1,11 @@
+﻿<div class="d-flex justify-content-center mt-3">
+    <form asp-action="All" method="get">
+        <div class="form-actions no-color d-flex justify-content-center">
+            <p>
+                <strong>Find a user:</strong> <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-action="All">Back to Full List</a>
+            </p>
+        </div>
+    </form>
+</div>

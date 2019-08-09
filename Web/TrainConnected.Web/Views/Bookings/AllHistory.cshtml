@@ -3,36 +3,38 @@
 @using TrainConnected.Common
 
 @{
-    ViewData["Title"] = "All";
+    ViewData["Title"] = "AllHistory";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Past Bookings</h1>
+
+@await this.Html.PartialAsync("_AllHistorySearchBarPartial")
 
 <div class="table-responsive-xl">
     <table class="table table-hover">
         <thead class="thead">
             <tr class="table-trainconnected">
                 <th>
-                    @Html.DisplayNameFor(model => model.PaymentMethodName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CreatedOn)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.WorkoutActivityName)
+                    <a class="trainconnected" asp-action="AllHistory" asp-route-sortOrder="@ViewData["ActivitySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().WorkoutActivityName) &#8693;</a>
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.WorkoutCoachUserName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.WorkoutTime)
+                    <a class="trainconnected" asp-action="AllHistory" asp-route-sortOrder="@ViewData["TimeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().WorkoutTime) &#8693;</a>
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.WorkoutLocation)
+                    <a class="trainconnected" asp-action="AllHistory" asp-route-sortOrder="@ViewData["LocationSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().WorkoutLocation) &#8693;</a>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PaymentMethodName)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.WorkoutNotes)
@@ -45,15 +47,6 @@
             {
                 <tr>
                     <td>
-                        @item.PaymentMethodName
-                    </td>
-                    <td>
-                        @item.Price @GlobalConstants.Currency
-                    </td>
-                    <td>
-                        @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-                    </td>
-                    <td>
                         <img src="@Url.Content(item.WorkoutActivityIcon)" /> |
                         @item.WorkoutActivityName
                     </td>
@@ -63,10 +56,19 @@
                     <td>
                         @item.WorkoutTime.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                     </td>
-                    <td class="d-inline-block text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
+                    <td class="text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
                         @item.WorkoutLocation
                     </td>
-                    <td class="d-inline-block text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
+                    <td>
+                        @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+                    </td>
+                    <td>
+                        @item.Price @GlobalConstants.Currency
+                    </td>
+                    <td>
+                        @item.PaymentMethodName
+                    </td>
+                    <td class="text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
                         @item.WorkoutNotes
                     </td>
                     <td>
@@ -77,3 +79,5 @@
         </tbody>
     </table>
 </div>
+
+@await this.Html.PartialAsync("_AllHistoryPaginationPartial")

@@ -1,6 +1,7 @@
 ﻿namespace TrainConnected.Web.Areas.Administration.Controllers
 {
     using System;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -18,9 +19,16 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(string searchString)
         {
+            this.ViewData["CurrentFilter"] = searchString;
+
             var withdrawals = await this.withdrawalsService.GetAllAdminAsync();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                withdrawals = withdrawals.Where(w => w.Id.Contains(searchString));
+            }
 
             return this.View(withdrawals);
         }

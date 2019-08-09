@@ -1,11 +1,14 @@
 ﻿namespace TrainConnected.Web.Areas.Administration.Controllers
 {
     using System;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
     using TrainConnected.Services.Data.Contracts;
+    using TrainConnected.Web.Helpers;
+    using TrainConnected.Web.ViewModels.Users;
 
     public class UsersController : AdministrationController
     {
@@ -17,12 +20,60 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            this.ViewData["CurrentSort"] = sortOrder;
+            this.ViewData["UserNameSortParm"] = sortOrder == "UserName" ? "userName_desc" : "UserName";
+            this.ViewData["FirstNameSortParm"] = sortOrder == "FirstName" ? "firstName_desc" : "FirstName";
+            this.ViewData["LastNameSortParm"] = sortOrder == "LastName" ? "lastName_desc" : "LastName";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            this.ViewData["CurrentFilter"] = searchString;
+
             var adminId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var users = await this.usersService.GetAllAsync(adminId);
 
-            return this.View(users);
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                users = users.Where(b => b.UserName.ToLower().Contains(searchString.ToLower()) ||
+                                             b.FirstName.ToLower().Contains(searchString.ToLower()) ||
+                                             b.LastName.ToLower().Contains(searchString.ToLower()));
+            }
+
+            switch (sortOrder)
+            {
+                case "UserName":
+                    users = users.OrderBy(b => b.UserName);
+                    break;
+                case "userName_desc":
+                    users = users.OrderByDescending(b => b.UserName);
+                    break;
+                case "FirstName":
+                    users = users.OrderBy(b => b.FirstName);
+                    break;
+                case "firstName_desc":
+                    users = users.OrderByDescending(b => b.FirstName);
+                    break;
+                case "LastName":
+                    users = users.OrderBy(b => b.LastName);
+                    break;
+                case "lastName_desc":
+                    users = users.OrderByDescending(b => b.LastName);
+                    break;
+                default:
+                    break;
+            }
+
+            int pageSize = 12;
+            return this.View(await PaginatedList<UsersAllViewModel>.CreateAsync(users, pageNumber ?? 1, pageSize));
         }
 
         [HttpGet]

@@ -9,24 +9,26 @@
 
 <h1>Find Upcoming Workouts</h1>
 
+@await this.Html.PartialAsync("_FindSearchBarPartial")
+
 <div class="table-responsive-xl">
     <table class="table table-hover">
         <thead class="thead">
             <tr class="table-trainconnected">
                 <th>
-                    @Html.DisplayNameFor(model => model.ActivityName)
+                    <a class="trainconnected" asp-action="Find" asp-route-sortOrder="@ViewData["ActivitySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().ActivityName) &#8693;</a>
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.CoachUserName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Time)
+                    <a class="trainconnected" asp-action="Find" asp-route-sortOrder="@ViewData["TimeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().Time) &#8693;</a>
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Duration)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Location)
+                    <a class="trainconnected" asp-action="Find" asp-route-sortOrder="@ViewData["LocationSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().Location) &#8693;</a>
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Price)
@@ -76,3 +78,5 @@
         </tbody>
     </table>
 </div>
+
+@await this.Html.PartialAsync("_FindPaginationPartial")

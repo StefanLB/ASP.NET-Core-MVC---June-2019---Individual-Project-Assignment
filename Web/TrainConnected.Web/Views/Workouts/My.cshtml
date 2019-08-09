@@ -9,24 +9,26 @@
 
 <h1>My Workouts</h1>
 
+@await this.Html.PartialAsync("_MySearchBarPartial")
+
 <div class="table-responsive-xl">
     <table class="table table-hover">
         <thead class="thead">
             <tr class="table-trainconnected">
                 <th>
-                    @Html.DisplayNameFor(model => model.ActivityName)
+                    <a class="trainconnected" asp-action="My" asp-route-sortOrder="@ViewData["ActivitySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().ActivityName) &#8693;</a>
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.CoachUserName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Time)
+                    <a class="trainconnected" asp-action="My" asp-route-sortOrder="@ViewData["TimeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().Time) &#8693;</a>
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Duration)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Location)
+                    <a class="trainconnected" asp-action="My" asp-route-sortOrder="@ViewData["LocationSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().Location) &#8693;</a>
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Price)
@@ -54,7 +56,7 @@
                     <td>
                         @item.Duration @GlobalConstants.TimeMeasurement
                     </td>
-                    <td class="d-inline-block text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
+                    <td class="text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
                         @item.Location
                     </td>
                     <td>
@@ -72,3 +74,5 @@
         </tbody>
     </table>
 </div>
+
+@await this.Html.PartialAsync("_MyPaginationPartial")

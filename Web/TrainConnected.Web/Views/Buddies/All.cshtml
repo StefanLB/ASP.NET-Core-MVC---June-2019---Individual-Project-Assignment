@@ -7,18 +7,20 @@
 
 <h1>My Buddies</h1>
 
+@await this.Html.PartialAsync("_AllSearchBarPartial")
+
 <div class="table-responsive-xl">
     <table class="table table-hover">
         <thead class="thead">
             <tr class="table-trainconnected">
                 <th>
-                    @Html.DisplayNameFor(model => model.UserName)
+                    <a class="trainconnected" asp-action="All" asp-route-sortOrder="@ViewData["UserNameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().UserName) &#8693;</a>
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstName)
+                    <a class="trainconnected" asp-action="All" asp-route-sortOrder="@ViewData["FirstNameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().FirstName) &#8693;</a>
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.LastName)
+                    <a class="trainconnected" asp-action="All" asp-route-sortOrder="@ViewData["LastNameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model.FirstOrDefault().LastName) &#8693;</a>
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.WorkoutsCount)
@@ -57,3 +59,5 @@
         </tbody>
     </table>
 </div>
+
+@await this.Html.PartialAsync("_AllPaginationPartial")

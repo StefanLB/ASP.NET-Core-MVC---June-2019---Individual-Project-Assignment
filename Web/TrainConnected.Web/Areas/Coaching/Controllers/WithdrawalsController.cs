@@ -1,5 +1,6 @@
 ﻿namespace TrainConnected.Web.Areas.Coaching.Controllers
 {
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -17,12 +18,19 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(string searchString)
         {
+            this.ViewData["CurrentFilter"] = searchString;
+
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var withdrawals = await this.withdrawalsService.GetAllAsync(userId);
             this.ViewData["userBalance"] = await this.withdrawalsService.GetUserBalanceAsync(userId);
             this.ViewData["pendingWithdrawals"] = await this.withdrawalsService.GetUserPendingWithdrawalsBalance(userId);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                withdrawals = withdrawals.Where(w => w.Id.Contains(searchString));
+            }
 
             return this.View(withdrawals);
         }

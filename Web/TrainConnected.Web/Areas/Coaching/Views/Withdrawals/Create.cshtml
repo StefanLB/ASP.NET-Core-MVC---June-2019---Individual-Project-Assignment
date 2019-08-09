@@ -1,4 +1,5 @@
 ﻿@model TrainConnected.Web.InputModels.Withdrawals.WithdrawalCreateInputModel
+@using TrainConnected.Common
 
 @{
     ViewData["Title"] = "Create";
@@ -10,9 +11,9 @@
 
 <h1>Create</h1>
 
-<h5>Your Balance: @balance BGN</h5>
-<h5>Your Pending Withdrawals: @pending BGN</h5>
-<h4>Withdrawable Amount: @withdrawableAmonut BGN</h4>
+<h5>Your Balance: @balance @GlobalConstants.Currency</h5>
+<h5>Your Pending Withdrawals: @pending  @GlobalConstants.Currency</h5>
+<h4>Withdrawable Amount: @withdrawableAmonut  @GlobalConstants.Currency</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">

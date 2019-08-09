@@ -8,7 +8,9 @@
 
     using Microsoft.AspNetCore.Mvc;
     using TrainConnected.Services.Data.Contracts;
+    using TrainConnected.Web.Helpers;
     using TrainConnected.Web.InputModels.Bookings;
+    using TrainConnected.Web.ViewModels.Bookings;
     using TrainConnected.Web.ViewModels.Workouts;
 
     public class BookingsController : BaseController
@@ -25,19 +27,113 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            this.ViewData["CurrentSort"] = sortOrder;
+            this.ViewData["TimeSortParm"] = sortOrder == "Time" ? "time_desc" : "Time";
+            this.ViewData["ActivitySortParm"] = sortOrder == "Activity" ? "activity_desc" : "Activity";
+            this.ViewData["LocationSortParm"] = sortOrder == "Location" ? "location_desc" : "Location";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            this.ViewData["CurrentFilter"] = searchString;
+
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var bookings = await this.bookingsService.GetAllAsync(userId);
-            return this.View(bookings);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                bookings = bookings.Where(w => w.WorkoutActivityName.ToLower().Contains(searchString.ToLower()));
+            }
+
+            switch (sortOrder)
+            {
+                case "Time":
+                    bookings = bookings.OrderBy(w => w.WorkoutTime);
+                    break;
+                case "time_desc":
+                    bookings = bookings.OrderByDescending(w => w.WorkoutTime);
+                    break;
+                case "Activity":
+                    bookings = bookings.OrderBy(w => w.WorkoutActivityName);
+                    break;
+                case "activity_desc":
+                    bookings = bookings.OrderByDescending(w => w.WorkoutActivityName);
+                    break;
+                case "Location":
+                    bookings = bookings.OrderBy(w => w.WorkoutLocation);
+                    break;
+                case "location_desc":
+                    bookings = bookings.OrderByDescending(w => w.WorkoutLocation);
+                    break;
+                default:
+                    break;
+            }
+
+            int pageSize = 12;
+            return this.View(await PaginatedList<BookingsAllViewModel>.CreateAsync(bookings, pageNumber ?? 1, pageSize));
         }
 
         [HttpGet]
-        public async Task<IActionResult> AllHistory()
+        public async Task<IActionResult> AllHistory(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            this.ViewData["CurrentSort"] = sortOrder;
+            this.ViewData["TimeSortParm"] = sortOrder == "Time" ? "time_desc" : "Time";
+            this.ViewData["ActivitySortParm"] = sortOrder == "Activity" ? "activity_desc" : "Activity";
+            this.ViewData["LocationSortParm"] = sortOrder == "Location" ? "location_desc" : "Location";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            this.ViewData["CurrentFilter"] = searchString;
+
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var bookings = await this.bookingsService.GetAllHistoryAsync(userId);
-            return this.View(bookings);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                bookings = bookings.Where(w => w.WorkoutActivityName.ToLower().Contains(searchString.ToLower()));
+            }
+
+            switch (sortOrder)
+            {
+                case "Time":
+                    bookings = bookings.OrderBy(w => w.WorkoutTime);
+                    break;
+                case "time_desc":
+                    bookings = bookings.OrderByDescending(w => w.WorkoutTime);
+                    break;
+                case "Activity":
+                    bookings = bookings.OrderBy(w => w.WorkoutActivityName);
+                    break;
+                case "activity_desc":
+                    bookings = bookings.OrderByDescending(w => w.WorkoutActivityName);
+                    break;
+                case "Location":
+                    bookings = bookings.OrderBy(w => w.WorkoutLocation);
+                    break;
+                case "location_desc":
+                    bookings = bookings.OrderByDescending(w => w.WorkoutLocation);
+                    break;
+                default:
+                    break;
+            }
+
+            int pageSize = 12;
+            return this.View(await PaginatedList<BookingsAllViewModel>.CreateAsync(bookings, pageNumber ?? 1, pageSize));
         }
 
         [HttpGet]

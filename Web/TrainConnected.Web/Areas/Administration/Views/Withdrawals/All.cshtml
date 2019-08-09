@@ -11,12 +11,18 @@
 }
 
 <h1>Withdrawals Processing Panel</h1>
-
-<h4>Pending Withdrawals</h4>
-<div class="table-responsive-xl">
+<br />
+<div class="d-flex justify-content-center" style="padding:5px;">
+    <button type="button" class="btn btn-trainconnected" style="margin:5px;" onclick="showPending()">Show Pending</button>
+    <button type="button" class="btn btn-trainconnected" style="margin:5px;" onclick="showCompleted()">Show Completed</button>
+</div>
+<br />
+@await this.Html.PartialAsync("_AllSearchBarPartial")
+<div class="table-responsive-xl" id="pendingWithdrawals" style="display:block;">
+    <h4>Pending Withdrawals</h4>
     <table class="table table-hover">
         <thead class="thead">
-            <tr class="table-trainconnected text-center align-text-top">
+            <tr class="table-trainconnected text-center">
                 <th>
                     @Html.DisplayNameFor(model => model.Id)
                 </th>
@@ -46,7 +52,7 @@
                         @item.Id
                     </td>
                     <td>
-                        @item.Amount BGN
+                        @item.Amount @GlobalConstants.Currency
                     </td>
                     <td class="trainconnected">
                         @item.AdditionalInstructions
@@ -68,11 +74,11 @@
         </tbody>
     </table>
 </div>
-<h4>Completed Withdrawals</h4>
-<div class="table-responsive-xl">
+<div class="table-responsive-xl" id="completedWithdrawals" style="display:none;">
+    <h4>Completed Withdrawals</h4>
     <table class="table table-hover">
         <thead class="thead">
-            <tr class="table-trainconnected text-center align-text-top">
+            <tr class="table-trainconnected text-center">
                 <th>
                     @Html.DisplayNameFor(model => model.Id)
                 </th>
@@ -110,9 +116,9 @@
                         @item.Id
                     </td>
                     <td>
-                        @item.Amount BGN
+                        @item.Amount @GlobalConstants.Currency
                     </td>
-                    <td class="trainconnected">
+                    <td class="trainconnected" style="max-width:100px;">
                         @item.AdditionalInstructions
                     </td>
                     <td>
@@ -130,7 +136,7 @@
                     <td>
                         @item.ProcessedByUserUserName
                     </td>
-                    <td class="trainconnected">
+                    <td class="trainconnected" style="max-width:100px;">
                         @item.ResolutionNotes
                     </td>
                 </tr>
@@ -138,3 +144,35 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    window.onload = () => {
+        checkForEmpty()
+    };
+
+    function checkForEmpty() {
+        var pendingWithdrawals = document.getElementById("pendingWithdrawals");
+        var completedWithdrawals = document.getElementById("completedWithdrawals");
+          if (@pendingWithdrawals.Count() == 0 && @completedWithdrawals.Count() != 0) {
+            pendingWithdrawals.style.display = "none";
+            completedWithdrawals.style.display = "block";
+          } else if (@pendingWithdrawals.Count() != 0 && @completedWithdrawals.Count() == 0) {
+            pendingWithdrawals.style.display = "block";
+            completedWithdrawals.style.display = "none";
+          }
+    };
+
+    function showPending() {
+        var pendingWithdrawals = document.getElementById("pendingWithdrawals");
+        var completedWithdrawals = document.getElementById("completedWithdrawals");
+        pendingWithdrawals.style.display = "block";
+        completedWithdrawals.style.display = "none";
+    };
+
+    function showCompleted() {
+        var pendingWithdrawals = document.getElementById("pendingWithdrawals");
+        var completedWithdrawals = document.getElementById("completedWithdrawals");
+        pendingWithdrawals.style.display = "none";
+        completedWithdrawals.style.display = "block";
+    };
+</script>

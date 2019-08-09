@@ -11,15 +11,21 @@
     var completedWithdrawals = Model.Where(s => s.Status == nameof(StatusCode.Approved) || s.Status == nameof(StatusCode.Rejected));
 }
 
-<h1>Withdrawal history</h1>
-
-<h5>Balance: @balance BGN</h5>
-<h5>Pending Withdrawals: @pending BGN</h5>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<h4>Your Pending Withdrawals</h4>
-<div class="table-responsive-xl">
+<h1>Withdrawal History</h1>
+<div class="d-flex justify-content-between">
+    <a class="text-center" asp-action="Create"><strong>Create New</strong></a>
+    <strong>Balance: @balance @GlobalConstants.Currency</strong>
+</div>
+<div class="d-flex justify-content-end"><i>(Pending Withdrawals: @pending @GlobalConstants.Currency)</i></div>
+<br />
+<div class="d-flex justify-content-center" style="padding:5px;">
+    <button type="button" class="btn btn-trainconnected" style="margin:5px;" onclick="showPending()">Show Pending</button>
+    <button type="button" class="btn btn-trainconnected" style="margin:5px;" onclick="showCompleted()">Show Completed</button>
+</div>
+<br />
+@await this.Html.PartialAsync("_AllSearchBarPartial")
+<div class="table-responsive-xl" id="pendingWithdrawals" style="display:block;">
+    <h4>Your Pending Withdrawals</h4>
     <table class="table table-hover">
         <thead class="thead">
             <tr class="table-trainconnected">
@@ -48,7 +54,7 @@
                         @item.Id
                     </td>
                     <td>
-                        @item.Amount BGN
+                        @item.Amount @GlobalConstants.Currency
                     </td>
                     <td class="trainconnected">
                         @item.AdditionalInstructions
@@ -63,10 +69,12 @@
             }
         </tbody>
     </table>
+</div>
+<div class="table-responsive-xl" id="completedWithdrawals" style="display:none;">
     <h4>Your Completed Withdrawals</h4>
-    <table class="table">
-        <thead>
-            <tr>
+    <table class="table table-hover">
+        <thead class="thead">
+            <tr class="table-trainconnected text-center">
                 <th>
                     @Html.DisplayNameFor(model => model.Id)
                 </th>
@@ -98,7 +106,7 @@
                         @item.Id
                     </td>
                     <td>
-                        @item.Amount BGN
+                        @item.Amount @GlobalConstants.Currency
                     </td>
                     <td class="trainconnected">
                         @item.AdditionalInstructions
@@ -120,3 +128,35 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    window.onload = () => {
+        checkForEmpty()
+    };
+
+    function checkForEmpty() {
+        var pendingWithdrawals = document.getElementById("pendingWithdrawals");
+        var completedWithdrawals = document.getElementById("completedWithdrawals");
+            if (@pendingWithdrawals.Count() == 0 && @completedWithdrawals.Count() != 0) {
+            pendingWithdrawals.style.display = "none";
+            completedWithdrawals.style.display = "block";
+            } else if (@pendingWithdrawals.Count() != 0 && @completedWithdrawals.Count() == 0) {
+            pendingWithdrawals.style.display = "block";
+            completedWithdrawals.style.display = "none";
+            }
+    };
+
+    function showPending() {
+        var pendingWithdrawals = document.getElementById("pendingWithdrawals");
+        var completedWithdrawals = document.getElementById("completedWithdrawals");
+        pendingWithdrawals.style.display = "block";
+        completedWithdrawals.style.display = "none";
+    };
+
+    function showCompleted() {
+        var pendingWithdrawals = document.getElementById("pendingWithdrawals");
+        var completedWithdrawals = document.getElementById("completedWithdrawals");
+        pendingWithdrawals.style.display = "none";
+        completedWithdrawals.style.display = "block";
+    };
+</script>
