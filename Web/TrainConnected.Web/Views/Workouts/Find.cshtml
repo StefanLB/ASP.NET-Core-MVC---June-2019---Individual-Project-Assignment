@@ -32,13 +32,7 @@
                     @Html.DisplayNameFor(model => model.Price)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Notes)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.BookingsCount)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CreatedOn)
                 </th>
                 <th></th>
             </tr>
@@ -66,14 +60,9 @@
                     <td>
                         @item.Price @GlobalConstants.Currency
                     </td>
-                    <td class="d-inline-block text-truncate" style="max-width: @GlobalConstants.TextMaxWidth;">
-                        @item.Notes
-                    </td>
+
                     <td>
                         @item.BookingsCount / @item.MaxParticipants
-                    </td>
-                    <td>
-                        @item.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
                     </td>
                     <td>
                         @if (item.BookingsCount < item.MaxParticipants)
