@@ -1,6 +1,7 @@
 ﻿namespace TrainConnected.Web.Areas.Identity.Pages.Account
 {
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -115,7 +116,13 @@
 
             if (this.ModelState.IsValid)
             {
-                var user = new TrainConnectedUser { UserName = this.Input.Email, Email = this.Input.Email };
+                var user = new TrainConnectedUser {
+                    UserName = this.Input.Email,
+                    Email = this.Input.Email,
+                    FirstName = info.Principal.Identity.Name.Split(" ").ToArray().FirstOrDefault(),
+                    LastName = info.Principal.Identity.Name.Split(" ").ToArray().LastOrDefault(),
+                    PhoneNumber = "0123 456 789",
+                };
                 var result = await this.userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

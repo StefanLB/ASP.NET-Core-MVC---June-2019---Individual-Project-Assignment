@@ -57,7 +57,7 @@
         </form>
     </div>
     <div class="col-md-6">
-        @if (userPicture != string.Empty)
+        @if (userPicture != string.Empty && userPicture != null)
         {
             <img src=@userPicture />
         }

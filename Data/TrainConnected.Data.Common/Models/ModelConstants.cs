@@ -4,13 +4,13 @@
     {
         public const int DefaultPageNumber = 1;
         public const int DefaultPageSize = 6;
-        public const string NameRegex = "^[A-Z]\\D+[a-z]$";
+        public const string NameRegex = "^[A-ZА-Я]\\D+[a-zа-я]$";
         public const string PriceMin = "0";
         public const string PriceMax = "79228162514264337593543950335";
 
         public const string DescriptionLengthError = "Description must be between {2} and {1} symbols";
         public const string NameLengthError = "Name must be between {2} and {1} symbols";
-        public const string NameRegexError = "Name must start with upper case and end with lower case";
+        public const string NameRegexError = "Name must start with upper case and end with lower case.";
         public const string PriceRangeError = "Price must be a positive value";
 
         public class Achievement
@@ -146,7 +146,6 @@
 
             public const int DescriptionMaxLength = 500;
             public const int DescriptionMinLength = 10;
-
         }
     }
 }
