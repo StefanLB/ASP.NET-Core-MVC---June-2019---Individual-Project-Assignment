@@ -28,15 +28,10 @@
 
         public decimal Price { get; set; }
 
-        public string Notes { get; set; }
-
         [Display(Name = ModelConstants.Workout.BookingsCountNameDisplay)]
         public int BookingsCount { get; set; }
 
         [Display(Name = ModelConstants.Workout.MaxParticipantsNameDisplay)]
         public int MaxParticipants { get; set; }
-
-        [Display(Name = ModelConstants.Workout.CreatedOnNameDisplay)]
-        public DateTime CreatedOn { get; set; }
     }
 }

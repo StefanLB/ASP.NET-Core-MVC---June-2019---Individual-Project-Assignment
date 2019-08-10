@@ -57,6 +57,8 @@ namespace TrainConnected.Data.Models
         [Required]
         public decimal Balance { get; set; }
 
+        public string ProfilePicture { get; set; }
+
         public ICollection<TrainConnectedUsersWorkouts> Workouts { get; set; }
 
         public ICollection<Booking> Bookings { get; set; }

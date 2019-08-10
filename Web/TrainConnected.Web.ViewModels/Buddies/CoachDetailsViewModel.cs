@@ -21,6 +21,9 @@
         [Display(Name = ModelConstants.User.LastNameDisplay)]
         public string LastName { get; set; }
 
+        [Display(Name = ModelConstants.User.ProfilePictureNameDisplay)]
+        public string ProfilePicture { get; set; }
+
         [Display(Name = ModelConstants.User.JoinedOnNameDisplay)]
         public DateTime CreatedOn { get; set; }
 

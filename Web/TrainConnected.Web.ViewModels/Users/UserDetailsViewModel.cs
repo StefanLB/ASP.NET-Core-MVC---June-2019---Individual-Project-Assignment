@@ -31,6 +31,9 @@
         [Display(Name = ModelConstants.User.PhoneNumberNameDisplay)]
         public string PhoneNumber { get; set; }
 
+        [Display(Name = ModelConstants.User.ProfilePictureNameDisplay)]
+        public string ProfilePicture { get; set; }
+
         [Display(Name = ModelConstants.User.RolesNameDisplay)]
         public ICollection<string> RolesNames { get; set; }
     }

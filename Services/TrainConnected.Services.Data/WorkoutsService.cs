@@ -58,7 +58,6 @@
                 .To<WorkoutsAllViewModel>()
                 .OrderBy(x => x.Time)
                 .ThenBy(x => x.ActivityName)
-                .ThenByDescending(x => x.CreatedOn)
                 .ToArrayAsync();
 
             return workouts;
@@ -76,7 +75,6 @@
                 .To<WorkoutsAllViewModel>()
                 .OrderByDescending(x => x.Time)
                 .ThenBy(x => x.ActivityName)
-                .ThenByDescending(x => x.CreatedOn)
                 .ToArrayAsync();
 
             return workouts;
@@ -89,7 +87,6 @@
                 .To<WorkoutsAllViewModel>()
                 .OrderByDescending(x => x.Time)
                 .ThenBy(x => x.ActivityName)
-                .ThenByDescending(x => x.CreatedOn)
                 .ToArrayAsync();
 
             return workouts;

@@ -86,6 +86,9 @@
             public const string PhoneNumberNameDisplay = "Phone Number";
             public const string LockedOutNameDisplay = "Locked Until";
             public const string RolesNameDisplay = "Assigned Roles";
+            public const string ConfirmPasswordNameDisplay = "Confirm Password";
+            public const string ProfilePictureNameDisplay = "Profile Picture";
+
         }
 
         public class Withdrawal

@@ -4,11 +4,10 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using TrainConnected.Common;
-    using TrainConnected.Data.Models;
-
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
+    using TrainConnected.Common;
+    using TrainConnected.Data.Models;
 
     internal class RolesSeeder : ISeeder
     {

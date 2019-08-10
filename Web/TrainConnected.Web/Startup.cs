@@ -155,13 +155,6 @@
                     dbContext.Database.Migrate();
                 }
 
-                // TODO: Remove below if not necessary, roles added via RoleSeeder
-                if (!dbContext.Roles.Any())
-                {
-                    dbContext.Roles.Add(new ApplicationRole { Name = "TraineeUser", NormalizedName = "TRAINEEUSER" });
-                    dbContext.Roles.Add(new ApplicationRole { Name = "CoachUser", NormalizedName = "COACHUSER" });
-                }
-
                 dbContext.SaveChanges();
 
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
