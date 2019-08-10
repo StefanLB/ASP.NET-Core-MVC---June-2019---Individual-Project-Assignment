@@ -20,7 +20,7 @@
         public string Activity { get; set; }
 
         [Required]
-        [GreaterThanOrEqualAttribute(nameof(DateTimeUtc), ErrorMessage = ModelConstants.Workout.TimeError)]
+        [GreaterThanOrEqualAttribute(nameof(DateTimeNow), ErrorMessage = ModelConstants.Workout.TimeError)]
         public DateTime Time { get; set; }
 
         [Required]
@@ -46,9 +46,9 @@
         [Range(ModelConstants.Workout.ParticipantsMin, ModelConstants.Workout.ParticipantsMax, ErrorMessage = ModelConstants.Workout.ParticipantsRangeError)]
         public int MaxParticipants { get; set; }
 
-        public DateTime DateTimeUtc
+        public DateTime DateTimeNow
         {
-            get { return DateTime.UtcNow; }
+            get { return DateTime.Now; }
         }
     }
 }

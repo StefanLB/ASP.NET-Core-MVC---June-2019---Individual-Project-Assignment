@@ -22,12 +22,12 @@
         [Required]
         [Display(Name = ModelConstants.Certificate.IssuedOnNameDisplay)]
         [DataType(DataType.Date)]
-        [LessThanOrEqual(nameof(DateTimeUtc), ErrorMessage = ModelConstants.Certificate.IssuedOnError)]
+        [LessThanOrEqual(nameof(DateTime), ErrorMessage = ModelConstants.Certificate.IssuedOnError)]
         public DateTime IssuedOn { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = ModelConstants.Certificate.ExpiresOnNameDisplay)]
-        [GreaterThanOrEqualNullableDateAttribute(nameof(DateTimeUtc), ErrorMessage = ModelConstants.Certificate.ExpiresOnError)]
+        [GreaterThanOrEqualNullableDateAttribute(nameof(DateTime), ErrorMessage = ModelConstants.Certificate.ExpiresOnError)]
         public DateTime? ExpiresOn { get; set; }
 
         [Required]
@@ -35,9 +35,9 @@
         public string Description { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime DateTimeUtc
+        public DateTime DateTime
         {
-            get { return DateTime.UtcNow.Date; }
+            get { return DateTime.Now.Date; }
         }
     }
 }

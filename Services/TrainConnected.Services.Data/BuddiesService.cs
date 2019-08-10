@@ -101,7 +101,7 @@
 
             coachDetailsViewModel.Certificates = await this.certificatesRepository.All()
                 .Where(x => x.TrainConnectedUserId == coachDetailsViewModel.Id)
-                .Where(e => (!e.ExpiresOn.HasValue) || (e.ExpiresOn >= DateTime.UtcNow.Date))
+                .Where(e => (!e.ExpiresOn.HasValue) || (e.ExpiresOn >= DateTime.Now.Date))
                 .To<CertificatesAllViewModel>()
                 .ToArrayAsync();
 
@@ -144,7 +144,7 @@
             {
                 TrainConnectedUserId = user.Id,
                 TrainConnectedBuddyId = buddyToAdd.Id,
-                AddedOn = DateTime.UtcNow,
+                AddedOn = DateTime.Now,
             });
 
             await this.usersBuddiesRepository.SaveChangesAsync();
