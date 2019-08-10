@@ -10,8 +10,8 @@ using TrainConnected.Data;
 namespace TrainConnected.Data.Migrations
 {
     [DbContext(typeof(TrainConnectedDbContext))]
-    [Migration("20190730181925_smallChangesToModelsMostlyTCUser")]
-    partial class smallChangesToModelsMostlyTCUser
+    [Migration("20190810081515_projectDefenseDbSchema")]
+    partial class projectDefenseDbSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -354,6 +354,8 @@ namespace TrainConnected.Data.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("ProfilePicture");
 
                     b.Property<string>("SecurityStamp");
 

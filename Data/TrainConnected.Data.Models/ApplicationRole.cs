@@ -2,11 +2,10 @@
 namespace TrainConnected.Data.Models
 {
     using System;
-
-    using TrainConnected.Data.Common.Models;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using Microsoft.AspNetCore.Identity;
-    using System.ComponentModel.DataAnnotations.Schema;
+    using TrainConnected.Data.Common.Models;
 
     [Table("AspNetRoles")]
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
