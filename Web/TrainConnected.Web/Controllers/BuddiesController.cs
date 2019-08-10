@@ -188,7 +188,8 @@
             return this.View(buddyDetails);
         }
 
-        [HttpPost, ActionName("Remove")]
+        [HttpPost,]
+        [ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveConfirmed(string id)
         {

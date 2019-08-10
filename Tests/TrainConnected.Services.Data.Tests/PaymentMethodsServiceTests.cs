@@ -96,8 +96,10 @@
         [Fact]
         public async Task TestGetDetailsAsync_WithInCorrectData_ShouldThrowNullRefEx()
         {
+#pragma warning disable SA1305 // Field names should not use Hungarian notation
             var pmIdToRetrieve = "GetThisPm";
             var pmNameToCheck = "Cash";
+#pragma warning restore SA1305 // Field names should not use Hungarian notation
 
             var paymentMethods = new List<PaymentMethod>()
             {

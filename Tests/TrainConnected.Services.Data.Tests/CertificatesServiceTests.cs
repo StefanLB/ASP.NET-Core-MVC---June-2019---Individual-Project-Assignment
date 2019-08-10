@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
-    using AutoMapper;
+
     using Microsoft.EntityFrameworkCore;
     using TrainConnected.Data;
     using TrainConnected.Data.Common.Repositories;

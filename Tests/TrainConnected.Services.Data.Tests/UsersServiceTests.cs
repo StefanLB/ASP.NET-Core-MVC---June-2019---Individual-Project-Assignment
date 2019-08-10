@@ -1,13 +1,13 @@
 ﻿namespace TrainConnected.Services.Data.Tests
 {
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
     using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     using TrainConnected.Data;
     using TrainConnected.Data.Common.Repositories;
     using TrainConnected.Data.Models;
@@ -22,9 +22,10 @@
     {
         private readonly IRepository<TrainConnectedUser> usersRepository;
         private readonly IRepository<IdentityUserRole<string>> usersRolesRepository;
+#pragma warning disable CS0649
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly UserManager<TrainConnectedUser> userManager;
-
+#pragma warning restore CS0649
         private readonly UsersService usersService;
 
         public UsersServiceTests()

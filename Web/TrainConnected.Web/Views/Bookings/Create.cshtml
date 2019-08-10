@@ -12,14 +12,14 @@
 }
 
 <h1>Create</h1>
-
-<h4>Booking</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<br/>
+<div class="d-flex justify-content-around row">
+    <div class="col-md-4 w-50">
+        <h4>Booking</h4>
+        <hr />
         <form asp-action="Create" id="create-booking">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group form-check">
+            <div class="form-group form-check" style="padding-left:0rem;">
                 <label asp-for="PaymentMethod"></label><br />
                 @foreach (var paymentInAdvance in paymentsInAdvance)
                 {
@@ -46,73 +46,71 @@
             </div>
         </form>
     </div>
-</div>
 
-@await this.Html.PartialAsync("_NotifyOfBookingPartial")
+    <div class="w-50">
+        <h4>Workout Details</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-4">
+                Activity Name
+            </dt>
+            <dd class="col-sm-8">
+                @workout.ActivityName
+            </dd>
+            <dt class="col-sm-4">
+                Coach
+            </dt>
+            <dd class="col-sm-8">
+                @workout.CoachUserName
+            </dd>
+            <dt class="col-sm-4">
+                Start
+            </dt>
+            <dd class="col-sm-8">
+                @workout.Time.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+            </dd>
+            <dt class="col-sm-4">
+                Duration
+            </dt>
+            <dd class="col-sm-8">
+                @workout.Duration @GlobalConstants.TimeMeasurement
+            </dd>
+            <dt class="col-sm-4">
+                Location
+            </dt>
+            <dd class="col-sm-8">
+                @workout.Location
+            </dd>
+            <dt class="col-sm-4">
+                Price
+            </dt>
+            <dd class="col-sm-8">
+                @workout.Price @GlobalConstants.Currency
+            </dd>
+            <dt class="col-sm-4">
+                Notes
+            </dt>
+            <dd class="col-sm-8">
+                @workout.Notes
+            </dd>
+            <dt class="col-sm-4">
+                Currently Signed Up
+            </dt>
+            <dd class="col-sm-8">
+                @workout.BookingsCount / @workout.MaxParticipants
+            </dd>
+            <dt class="col-sm-4">
+                Created On
+            </dt>
+            <dd class="col-sm-8">
+                @workout.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
+            </dd>
+        </dl>
+    </div>
 
-<div>
-    <h4>Workout Details:</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            Activity Name
-        </dt>
-        <dd class="col-sm-10">
-            @workout.ActivityName
-        </dd>
-        <dt class="col-sm-2">
-            Coach
-        </dt>
-        <dd class="col-sm-10">
-            @workout.CoachUserName
-        </dd>
-        <dt class="col-sm-2">
-            Start
-        </dt>
-        <dd class="col-sm-10">
-            @workout.Time.ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-        </dd>
-        <dt class="col-sm-2">
-            Duration
-        </dt>
-        <dd class="col-sm-10">
-            @workout.Duration @GlobalConstants.TimeMeasurement
-        </dd>
-        <dt class="col-sm-2">
-            Location
-        </dt>
-        <dd class="col-sm-10">
-            @workout.Location
-        </dd>
-        <dt class="col-sm-2">
-            Price
-        </dt>
-        <dd class="col-sm-10">
-            @workout.Price @GlobalConstants.Currency
-        </dd>
-        <dt class="col-sm-2">
-            Notes
-        </dt>
-        <dd class="col-sm-10">
-            @workout.Notes
-        </dd>
-        <dt class="col-sm-2">
-            Currently Signed Up
-        </dt>
-        <dd class="col-sm-10">
-            @workout.BookingsCount / @workout.MaxParticipants
-        </dd>
-        <dt class="col-sm-2">
-            Created On
-        </dt>
-        <dd class="col-sm-10">
-            @workout.CreatedOn.ToLocalTime().ToString(GlobalConstants.DateTimeFormat, CultureInfo.InvariantCulture)
-        </dd>
-    </dl>
-</div>
-
-<div>
-    <a asp-action="All">Back to List</a>
+    <div class="w-100">
+        <a asp-action="All">Back to List</a>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -129,6 +127,8 @@
         });
     });
 </script>
+
+@await this.Html.PartialAsync("_NotifyOfBookingPartial")
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

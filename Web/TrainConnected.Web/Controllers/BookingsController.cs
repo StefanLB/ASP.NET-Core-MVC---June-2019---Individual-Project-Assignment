@@ -228,7 +228,8 @@
             return this.View(booking);
         }
 
-        [HttpPost, ActionName("Cancel")]
+        [HttpPost]
+        [ActionName("Cancel")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CancelConfirmed(string id)
         {

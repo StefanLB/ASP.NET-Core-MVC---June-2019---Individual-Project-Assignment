@@ -213,7 +213,6 @@
         {
             var testUserId = "testUserId";
             var testUserName = "testUserName";
-            var testDifferentUserId = "testDifferentUserId";
 
             await this.usersRepository.AddAsync(new TrainConnectedUser()
             {

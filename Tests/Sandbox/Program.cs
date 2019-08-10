@@ -4,6 +4,13 @@
     using System.Diagnostics;
     using System.IO;
 
+    using CommandLine;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using TrainConnected.Data;
     using TrainConnected.Data.Common;
     using TrainConnected.Data.Common.Repositories;
@@ -11,17 +18,8 @@
     using TrainConnected.Data.Repositories;
     using TrainConnected.Data.Seeding;
     using TrainConnected.Services.Data;
-    using TrainConnected.Services.Messaging;
-
-    using CommandLine;
-
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Identity.UI.Services;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
     using TrainConnected.Services.Data.Contracts;
+    using TrainConnected.Services.Messaging;
 
     public static class Program
     {

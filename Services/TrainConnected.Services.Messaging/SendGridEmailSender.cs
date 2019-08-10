@@ -6,12 +6,10 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    using TrainConnected.Services.Messaging.SendGrid;
-
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.Extensions.Logging;
-
     using Newtonsoft.Json;
+    using TrainConnected.Services.Messaging.SendGrid;
 
     // Documentation: https://sendgrid.com/docs/API_Reference/Web_API_v3/Mail/index.html
     public class SendGridEmailSender : IEmailSender

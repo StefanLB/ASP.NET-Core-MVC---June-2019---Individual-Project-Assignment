@@ -2,9 +2,8 @@
 {
     using System.Linq;
 
-    using TrainConnected.Data.Common.Models;
-
     using Microsoft.EntityFrameworkCore;
+    using TrainConnected.Data.Common.Models;
 
     internal static class EntityIndexesConfiguration
     {

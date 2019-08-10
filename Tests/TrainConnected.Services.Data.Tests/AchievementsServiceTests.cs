@@ -60,7 +60,6 @@
                     Description = achievement.Value,
                     TrainConnectedUserId = userId,
                 });
-
             }
 
             await this.achievementsRepository.SaveChangesAsync();

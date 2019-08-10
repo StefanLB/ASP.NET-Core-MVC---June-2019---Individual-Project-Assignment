@@ -1,10 +1,16 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace TrainConnected.Data.Migrations
+﻿namespace TrainConnected.Data.Migrations
 {
+    using System;
+
+    using Microsoft.EntityFrameworkCore.Metadata;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
+#pragma warning disable SA1413 // Use trailing comma in multi-line initializers
+#pragma warning disable SA1300 // Element should begin with upper-case letter
+#pragma warning disable IDE1006 // Naming Styles
     public partial class projectDefenseDbSchema : Migration
+#pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore SA1300 // Element should begin with upper-case letter
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -668,4 +674,5 @@ namespace TrainConnected.Data.Migrations
                 name: "AspNetUsers");
         }
     }
+#pragma warning restore SA1413 // Use trailing comma in multi-line initializers
 }

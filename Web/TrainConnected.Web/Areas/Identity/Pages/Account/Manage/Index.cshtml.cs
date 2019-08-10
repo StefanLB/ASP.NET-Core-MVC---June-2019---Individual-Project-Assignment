@@ -89,7 +89,6 @@
                 return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
-
             // If username and email are identical, the user will have to change their username prior to changing their email
             var email = await this.userManager.GetEmailAsync(user);
             if (this.Input.Email != email && email != user.UserName)
@@ -140,9 +139,10 @@
                 user.LastName = this.Input.LastName;
             }
 
-            string pictureUrl = string.Empty;
             if (this.Input.ProfilePicture != null)
             {
+                string pictureUrl = string.Empty;
+
                 pictureUrl = await this.cloudinaryService.UploadPictureAsync(
                     this.Input.ProfilePicture,
                     this.Input.UserName);

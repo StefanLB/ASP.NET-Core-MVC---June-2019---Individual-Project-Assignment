@@ -3,9 +3,8 @@
     using System;
     using System.Threading.Tasks;
 
-    using TrainConnected.Data.Common;
-
     using Microsoft.EntityFrameworkCore;
+    using TrainConnected.Data.Common;
 
     public class DbQueryRunner : IDbQueryRunner
     {

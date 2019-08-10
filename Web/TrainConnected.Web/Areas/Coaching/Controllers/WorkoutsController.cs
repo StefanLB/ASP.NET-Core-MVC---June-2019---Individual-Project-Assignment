@@ -148,7 +148,8 @@
             return this.View(workout);
         }
 
-        [HttpPost, ActionName("Cancel")]
+        [HttpPost]
+        [ActionName("Cancel")]
         [Authorize(Roles = GlobalConstants.CoachRoleName)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CancelConfirmed(string id)

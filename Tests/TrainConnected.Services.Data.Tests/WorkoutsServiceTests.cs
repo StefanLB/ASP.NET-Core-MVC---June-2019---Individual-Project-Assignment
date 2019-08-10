@@ -501,9 +501,8 @@
                 Icon = "iconUrl1",
             };
 
-            //await this.workoutActivityRepository.AddAsync(workoutActivity);
-            //await this.workoutActivityRepository.SaveChangesAsync();
-
+            // await this.workoutActivityRepository.AddAsync(workoutActivity);
+            // await this.workoutActivityRepository.SaveChangesAsync();
             var paymentMethod = new PaymentMethod()
             {
                 Id = "activityId1",
@@ -560,9 +559,8 @@
                 PaymentInAdvance = false,
             };
 
-            //await this.paymentMethodsRepository.AddAsync(paymentMethod);
-            //await this.paymentMethodsRepository.SaveChangesAsync();
-
+            // await this.paymentMethodsRepository.AddAsync(paymentMethod);
+            // await this.paymentMethodsRepository.SaveChangesAsync();
             WorkoutCreateInputModel workoutCreateInputModel = new WorkoutCreateInputModel()
             {
                 Activity = workoutActivity.Name,

@@ -1,12 +1,12 @@
 ﻿namespace TrainConnected.Services.Data.Tests
 {
-    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
     using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
     using TrainConnected.Data;
     using TrainConnected.Data.Common.Repositories;
     using TrainConnected.Data.Models;
@@ -102,7 +102,6 @@
             var testUserId = "testUserId";
             var testAdminId = "testAdminId";
             var testWithdrawalId = "testWithdrawalId";
-
 
             var user = new TrainConnectedUser()
             {
@@ -202,7 +201,6 @@
             var incorrectTestUserId = "incorrectTestUserId";
             var testAdminId = "testAdminId";
             var testWithdrawalId = "testWithdrawalId";
-
 
             var user = new TrainConnectedUser()
             {

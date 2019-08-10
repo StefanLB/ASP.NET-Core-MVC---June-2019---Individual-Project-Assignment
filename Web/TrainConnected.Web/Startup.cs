@@ -131,11 +131,12 @@
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IPaymentMethodsService, PaymentMethodsService>();
             services.AddTransient<IUsersService, UsersService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+#pragma warning disable IDE0060 // Remove unused parameter
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             AutoMapperConfig.RegisterMappings(new[]
             {
@@ -171,7 +172,7 @@
                 app.UseHsts();
             }
 
-            //app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
