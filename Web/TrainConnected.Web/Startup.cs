@@ -64,9 +64,9 @@
                 .AddDefaultUI(UIFramework.Bootstrap4);
 
             Account cloudinaryCredentials = new Account(
-                this.configuration["Authentication:Cloudinary:CloudName"],
-                this.configuration["Authentication:Cloudinary:ApiKey"],
-                this.configuration["Authentication:Cloudinary:ApiSecret"]);
+                this.configuration["Cloudinary:CloudName"],
+                this.configuration["Cloudinary:ApiKey"],
+                this.configuration["Cloudinary:ApiSecret"]);
 
             Cloudinary cloudinaryUtility = new Cloudinary(cloudinaryCredentials);
 
@@ -75,8 +75,8 @@
             services.
                 AddAuthentication().AddFacebook(facebookOptions =>
                 {
-                    facebookOptions.AppId = this.configuration["Authentication:Facebook:AppId"];
-                    facebookOptions.AppSecret = this.configuration["Authentication:Facebook:AppSecret"];
+                    facebookOptions.AppId = this.configuration["Facebook:AppId"];
+                    facebookOptions.AppSecret = this.configuration["Facebook:AppSecret"];
                 });
 
             services
